@@ -102,7 +102,7 @@ public class OuterRedAutonomous extends LinearOpMode {
             robot.depositWobbleGoal();
             robot.forward(0.5, 2);
         } else if (ringNmb == RobotClass.RingPosition.FOUR) {
-            robot.pause(4000);
+          //  robot.pause(4000);
             robot.pivotRight(.3, 28);
             robot.forward(.5,-6.15);
             robot.pivotRight(0.4,90);
