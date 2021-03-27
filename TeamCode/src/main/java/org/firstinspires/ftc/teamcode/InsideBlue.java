@@ -18,7 +18,7 @@ public class InsideBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
+       // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         robot= new RobotClassInnerBlueOuterRed(hardwareMap, telemetry, this, "blue");

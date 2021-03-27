@@ -15,7 +15,7 @@ public class AtonomousWitchcraft extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
+       // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         robotClass= new RobotClass(hardwareMap, telemetry, this);

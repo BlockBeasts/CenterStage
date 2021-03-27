@@ -19,7 +19,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
     DcMotor rightFrontMotor = null;
     DcMotor leftRearMotor = null;
     DcMotor rightRearMotor = null;
-    DcMotor wobbleGoalExtendMotor = null;
+  //  DcMotor wobbleGoalExtendMotor = null;
     DcMotor wobbleGoalRaiseMotor = null;
     DcMotorImplEx shooterMotor = null;
     Servo wobbleGoalGrippyThing = null;
@@ -45,7 +45,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
         rightFrontMotor = hardwareMap.dcMotor.get("frontRight");
         leftRearMotor = hardwareMap.dcMotor.get("backLeft");
         rightRearMotor = hardwareMap.dcMotor.get("backRight");
-        wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
+       // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         shooterMotor = (DcMotorImplEx) hardwareMap.dcMotor.get("shooterMotor");
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
@@ -137,11 +137,11 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             }
 
 
-            if (gamepad2.right_bumper == true) {
-                wobbleGoalExtendMotor.setPower(-.5);
-            } else {
-                wobbleGoalExtendMotor.setPower(0);
-            }
+//            if (gamepad2.right_bumper == true) {
+//                wobbleGoalExtendMotor.setPower(-.5);
+//            } else {
+//                wobbleGoalExtendMotor.setPower(0);
+//            }
 
             if (gamepad2.a) {
                 intakeOne.setPower(0.9);

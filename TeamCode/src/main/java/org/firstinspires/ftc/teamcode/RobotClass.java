@@ -71,7 +71,7 @@ public class RobotClass {
         shooterServo1 = hardwareMap.get(CRServo.class,"shooterServo1");
         wobbleGoalRaise = hardwareMap.dcMotor.get("wobbleLift");
         intakeServo = hardwareMap.crservo.get("intakeServoOne");
-        shooterServo1 = hardwareMap.crservo.get("shooterServo1");
+       // shooterServo1 = hardwareMap.crservo.get("shooterServo1");
         shooterServo2 = hardwareMap.crservo.get("shooterServo2");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
 
