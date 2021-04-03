@@ -63,7 +63,6 @@ public class InsideBlueTop extends LinearOpMode {
         } else if (ringNmb == RobotClass.RingPosition.ONE) {
 //            here is the stuff for getting ring
 
-
             robot.forward(0.5, -4);
             robot.depositWobbleGoal();
             robot.forward(0.5, 2.5);

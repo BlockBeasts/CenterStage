@@ -31,6 +31,9 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
 
     private double ticks = 537;//537
 
+    double TOP_TARGET_SPEED= -5400*0.73*28/60;
+    double POWERSHOT_SPEED= -5400*0.65*28/60;
+    boolean shooterSpeedTop = true;
 
     @Override
     public void runOpMode() {
@@ -145,12 +148,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             } else if (gamepad2.x){
                 intakeOne.setPower(0);
             }
-            /*beep boop
-            *
-            * robot thigd
-            *
-            *
-            * */
+
             if (gamepad2.y) {
                 if (!yPressed) {
                     if (yOpen) {
@@ -169,6 +167,21 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
                 forwardToWhite(.9,.5,.3);
                 forward(.5, -2.5);
             }
+            if (gamepad1.right_trigger >= .87) {
+                shooterMotor.setVelocity(POWERSHOT_SPEED);
+                shooterSpeedTop = false;
+            }
+            if (gamepad1.left_trigger >= .87) {
+                shooterMotor.setVelocity(TOP_TARGET_SPEED);
+                shooterSpeedTop = true;
+            }
+
+            if (shooterSpeedTop) {
+                telemetry.addData("Shooter Motor Target Velocity: ", "Top Speed" );
+            } else {
+                telemetry.addData("Shooter Motor Target Velocity: ", "Powershot Speed" );
+            }
+            telemetry.update();
 
         }
     }
