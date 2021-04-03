@@ -43,9 +43,10 @@ public class InsideBlueTop extends LinearOpMode {
 
         robot.forward(0.1,-0.3);
         robot.strafeLeft(0.4,1.3);
-        robot.forward(0.5, -4.1);
+        robot.forward(0.5, -2.1);
         //shoot here please
-        robot.pivotLeft(0.3, 20);
+        robot.pivotLeft(0.3, 24);
+        //turn more. Originally twenty.
         robot.shooterEngageAlt();
         robot.pause(1000);
         shoot();
@@ -56,18 +57,18 @@ public class InsideBlueTop extends LinearOpMode {
         robot.pivotRight(0.3,20);
 
         if (ringNmb == RobotClass.RingPosition.NONE) {
-            robot.forward(0.5, -1.7);
+            robot.forward(0.5, -3.7);
             robot.strafeRight(0.5, 2);
             robot.depositWobbleGoal();
             robot.strafeLeft(0.5,2.2);
         } else if (ringNmb == RobotClass.RingPosition.ONE) {
 //            here is the stuff for getting ring
 
-            robot.forward(0.5, -4);
+            robot.forward(0.5, -6);
             robot.depositWobbleGoal();
             robot.forward(0.5, 2.5);
         } else if (ringNmb == RobotClass.RingPosition.FOUR) {
-            robot.forward(0.5,-5.3);
+            robot.forward(0.5,-7.3);
             robot.strafeRight(0.5, 2.3);
             robot.depositWobbleGoal();
             robot.strafeLeft(0.5,2.5);

@@ -39,7 +39,7 @@ public class OuterBlueAutonomous extends LinearOpMode{
             telemetry.update();
         }
         robot.strafeRight(0.4,1.9);
-        robot.forward(.5,-1.7);
+        robot.forward(.5,-1.9);
         robot.shooterEngageAlt();
         robot.pause(800);
         robot.shooterServo1(.8);
