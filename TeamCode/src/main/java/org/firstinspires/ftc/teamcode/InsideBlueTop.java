@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Date;
 
-@Autonomous (name="Inside Blue")
-public class InsideBlue extends LinearOpMode {
+@Autonomous (name="Inside Blue Top Goal")
+public class InsideBlueTop extends LinearOpMode {
 
     DcMotor wobbleGoalExtendMotor = null;
     DcMotor wobbleGoalRaiseMotor = null;
@@ -18,7 +18,7 @@ public class InsideBlue extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-       // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
+        // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         robot= new RobotClassInnerBlueOuterRed(hardwareMap, telemetry, this, "blue");
@@ -44,17 +44,16 @@ public class InsideBlue extends LinearOpMode {
         robot.forward(0.1,-0.3);
         robot.strafeLeft(0.4,1.3);
         robot.forward(0.5, -4.1);
-        robot.pivotLeft(0.1, 17);
-       robot.shooterEngageAlt();
+        //shoot here please
+        robot.pivotLeft(0.3, 20);
+        robot.shooterEngageAlt();
         robot.pause(1000);
-       shoot();
-        robot.pivotRight(0.1, 6);
         shoot();
-        robot.pivotRight(.1, 4);
-       shoot();
-       robot.intakeServoEngage(0);
+        shoot();
+        shoot();
+        robot.intakeServoStop();
         robot.stopShooting();
-        robot.pivotRight(0.1, 7);
+        robot.pivotRight(0.3,20);
 
         if (ringNmb == RobotClass.RingPosition.NONE) {
             robot.forward(0.5, -1.7);
@@ -62,6 +61,8 @@ public class InsideBlue extends LinearOpMode {
             robot.depositWobbleGoal();
             robot.strafeLeft(0.5,2.2);
         } else if (ringNmb == RobotClass.RingPosition.ONE) {
+//            here is the stuff for getting ring
+
 
             robot.forward(0.5, -4);
             robot.depositWobbleGoal();
@@ -87,3 +88,4 @@ public class InsideBlue extends LinearOpMode {
     }
 
 }
+

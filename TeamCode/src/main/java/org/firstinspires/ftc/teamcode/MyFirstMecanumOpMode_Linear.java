@@ -67,6 +67,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
         boolean intake = false;
         wobbleGoalGrippyThing.setPosition(0.9);
 
+
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
@@ -131,17 +132,11 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             }
 
             if (gamepad2.right_trigger >= .87) {
-                shooterMotor.setVelocity(-5400*0.85*28/60);
+                shooterMotor.setVelocity(robot.TOP_TARGET_SPEED);
             } else if(gamepad2.right_bumper == true){
                 shooterMotor.setVelocity(0);
             }
 
-
-//            if (gamepad2.right_bumper == true) {
-//                wobbleGoalExtendMotor.setPower(-.5);
-//            } else {
-//                wobbleGoalExtendMotor.setPower(0);
-//            }
 
             if (gamepad2.a) {
                 intakeOne.setPower(0.9);
@@ -172,7 +167,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             }
             if (gamepad1.a) {
                 forwardToWhite(.9,.5,.3);
-                forward(.5, -2.7);
+                forward(.5, -2.5);
             }
 
         }

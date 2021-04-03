@@ -8,8 +8,18 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 
 public class TestShooter extends LinearOpMode {
 
+    RobotClass robot;
     @Override
     public void runOpMode() {
+        robot= new RobotClassInnerBlueOuterRed(hardwareMap, telemetry, this, "blue");
+        waitForStart();
 
+        robot.shooterEngage();
+
+        while(true){
+            telemetry.addData("velocity", robot.getShooterMotor().getVelocity());
+            telemetry.update();
+            robot.pause(50);
+        }
     }
 }

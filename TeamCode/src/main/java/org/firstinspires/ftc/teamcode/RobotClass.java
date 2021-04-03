@@ -57,6 +57,8 @@ public class RobotClass {
     String color;
 
     static Point REGION1_TOPLEFT_ANCHOR_POINT;
+    double TOP_TARGET_SPEED= -5400*0.73*28/60;
+    double POWERSHOT_SPEED= -5400*0.65*28/60;
 
 
     public RobotClass(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opmode, String color) {
@@ -540,23 +542,25 @@ this.color= color;
 //    }
     //Pretend "Engage" is actually "ENGAGE!"
 
-    public void shooterEngageTeleop () {
-        double targetVelocity = -5400*0.85*28/60;
-        shooterMotor.setVelocity(targetVelocity);
-
-    }
     public void shooterEngage () {
-        double targetVelocity = -5400*0.80*28/60;
-        shooterMotor.setVelocity(targetVelocity);
-        while (shooterMotor.getVelocity()<targetVelocity && this.opmode.opModeIsActive()) {
+
+        shooterMotor.setVelocity(TOP_TARGET_SPEED);
+        while (shooterMotor.getVelocity()<TOP_TARGET_SPEED && this.opmode.opModeIsActive()) {
 
         }
     }
 
     public void shooterEngageAlt () {
-        double targetVelocity = -5400*0.85*28/60;
-        shooterMotor.setVelocity(targetVelocity);
-        while (shooterMotor.getVelocity()<targetVelocity && this.opmode.opModeIsActive()){
+
+        shooterMotor.setVelocity(TOP_TARGET_SPEED);
+        while (shooterMotor.getVelocity()<TOP_TARGET_SPEED && this.opmode.opModeIsActive()){
+        }
+    }
+
+    public void shooterPowershotEngage () {
+
+        shooterMotor.setVelocity(POWERSHOT_SPEED);
+        while (shooterMotor.getVelocity()<POWERSHOT_SPEED && this.opmode.opModeIsActive()){
         }
     }
 
@@ -604,9 +608,6 @@ this.color= color;
             telemetry.update();
         }
         wobbleGoalRaise.setPower(0);
-
-
-
     }
 
     public void intakeServoEngage(double speed) {
@@ -648,7 +649,6 @@ this.color= color;
         shooterServo2(.8);
         pause(500);
         intakeServoEngage(.9);
-
 
     }
 
@@ -816,5 +816,8 @@ this.color= color;
         //inside red, the same as outer blue
         //outer red, the same as inside blue
 
+    public DcMotorImplEx getShooterMotor(){
+        return shooterMotor;
+    }
 
     }

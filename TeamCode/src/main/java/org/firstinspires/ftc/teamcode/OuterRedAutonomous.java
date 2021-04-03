@@ -38,7 +38,7 @@ public class OuterRedAutonomous extends LinearOpMode {
         robot.forward(.1, -0.3);
         robot.strafeLeft(.3,1);
         robot.forward(.3,-1.7);
-        robot.pivotLeft(.3,28);
+        robot.pivotLeft(.3,24);
         robot.shooterEngage();
         robot.pause(800);
         robot.shooterServo1(.8);
@@ -62,7 +62,7 @@ public class OuterRedAutonomous extends LinearOpMode {
 //        robot.pause(2000);
  //       robot.stopShooting();
         if (ringNmb == RobotClass.RingPosition.NONE) {
-            robot.pivotRight(.5, 28);
+            robot.pivotRight(.5, 24);
             robot.strafeRight(0.5, 2);
             robot.forward(0.5, -4);
             robot.pivotRight(0.4, 170);
@@ -103,7 +103,7 @@ public class OuterRedAutonomous extends LinearOpMode {
             robot.forward(0.5, 2);
         } else if (ringNmb == RobotClass.RingPosition.FOUR) {
           //  robot.pause(4000);
-            robot.pivotRight(.3, 28);
+            robot.pivotRight(.3, 24);
             robot.forward(.5,-6.15);
             robot.pivotRight(0.4,90);
             robot.pause(500);
