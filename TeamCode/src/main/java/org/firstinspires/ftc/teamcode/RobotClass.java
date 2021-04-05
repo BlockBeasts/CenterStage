@@ -57,7 +57,7 @@ public class RobotClass {
     String color;
 
     static Point REGION1_TOPLEFT_ANCHOR_POINT;
-    double TOP_TARGET_SPEED= -5400*0.73*28/60;
+    double TOP_TARGET_SPEED= -5400*0.71*28/60;
     double POWERSHOT_SPEED= -5400*0.65*28/60;
 
 
@@ -301,8 +301,8 @@ this.color= color;
         double targetAngle = getAngleFromGyro() - angle;
 
         while (getAngleFromGyro() > targetAngle && opmode.opModeIsActive()) {
-            telemetry.addData("Gyro Angle: ", getAngleFromGyro());
-            telemetry.update();
+//            telemetry.addData("Gyro Angle: ", getAngleFromGyro());
+//            telemetry.update();
         }
 
         stopMotors();
@@ -317,8 +317,8 @@ this.color= color;
         double targetAngle = getAngleFromGyro() + angle;
 
         while (getAngleFromGyro() < targetAngle && opmode.opModeIsActive()) {
-            telemetry.addData("Gyro Angle: ", getAngleFromGyro());
-            telemetry.update();
+//            telemetry.addData("Gyro Angle: ", getAngleFromGyro());
+//            telemetry.update();
         }
 
         stopMotors();
@@ -545,15 +545,35 @@ this.color= color;
     public void shooterEngage () {
 
         shooterMotor.setVelocity(TOP_TARGET_SPEED);
-        while (shooterMotor.getVelocity()<TOP_TARGET_SPEED && this.opmode.opModeIsActive()) {
-
+        while ((shooterMotor.getVelocity()>TOP_TARGET_SPEED+9 || shooterMotor.getVelocity()<TOP_TARGET_SPEED-9) && this.opmode.opModeIsActive()) {
+//            telemetry.addData("velocity", shooterMotor.getVelocity());
+//            telemetry.update();
         }
+    }
+
+    public void shooterEngageAndMove (int moveMillis, int shootMillis) {
+        long startTime = new Date().getTime();
+        long time = 0;
+        startTimingBelt();
+
+        shooterMotor.setVelocity(TOP_TARGET_SPEED);
+        while ((shooterMotor.getVelocity()>TOP_TARGET_SPEED+8 || shooterMotor.getVelocity()<TOP_TARGET_SPEED-8) && this.opmode.opModeIsActive()) {
+            time = new Date().getTime() - startTime;
+            if (time>moveMillis){
+                stopTimingBelt();
+            }
+        }
+        while (time<moveMillis+shootMillis && opmode.opModeIsActive()) {
+            startTimingBelt();
+            time = new Date().getTime() - startTime;
+        }
+        stopTimingBelt();
     }
 
     public void shooterEngageAlt () {
 
         shooterMotor.setVelocity(TOP_TARGET_SPEED);
-        while (shooterMotor.getVelocity()<TOP_TARGET_SPEED && this.opmode.opModeIsActive()){
+        while (shooterMotor.getVelocity()>TOP_TARGET_SPEED && this.opmode.opModeIsActive()){
         }
     }
 
@@ -664,8 +684,19 @@ this.color= color;
         shooterServo2Stop();
     }
     public void startTimingBelt() {
-        shooterServo1(.8);
-        shooterServo2(.8);
+        shooterServo1(1);
+        shooterServo2(1);
+    }
+
+    public void shoot3Autonomous(){
+        shooterEngage();
+        shooterServo1(1);
+        shooterServo2(1);
+        intakeServoEngage(1);
+        pause(1000);
+        stopTimingBelt();
+        shooterEngageAndMove(400, 300);
+        shooterEngageAndMove(500, 400);
     }
 
     public void openCVInnitShenanigans() {

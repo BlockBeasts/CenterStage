@@ -10,17 +10,11 @@ import java.util.Date;
 @Autonomous (name="Inside Blue Top Goal")
 public class InsideBlueTop extends LinearOpMode {
 
-    DcMotor wobbleGoalExtendMotor = null;
-    DcMotor wobbleGoalRaiseMotor = null;
-    Servo wobbleGoalGrippyThing = null;
     RobotClass robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
-        wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
-        wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         robot= new RobotClassInnerBlueOuterRed(hardwareMap, telemetry, this, "blue");
 
         robot.wobbleGoalGrippyThingGrab();
@@ -40,21 +34,15 @@ public class InsideBlueTop extends LinearOpMode {
             telemetry.addData("Position", ringNmb);
             telemetry.update();
         }
-
+        robot.getShooterMotor().setVelocity(robot.TOP_TARGET_SPEED);
         robot.forward(0.1,-0.3);
         robot.strafeLeft(0.4,1.3);
-        robot.forward(0.5, -2.1);
+        robot.forward(0.5, -2.5);
         //shoot here please
-        robot.pivotLeft(0.3, 24);
+        robot.pivotLeft(0.3, 28);
         //turn more. Originally twenty.
-        robot.shooterEngageAlt();
-        robot.pause(1000);
-        shoot();
-        shoot();
-        shoot();
-        robot.intakeServoStop();
-        robot.stopShooting();
-        robot.pivotRight(0.3,20);
+        robot.shoot3Autonomous();
+        robot.pivotRight(0.3,28);
 
         if (ringNmb == RobotClass.RingPosition.NONE) {
             robot.forward(0.5, -3.7);

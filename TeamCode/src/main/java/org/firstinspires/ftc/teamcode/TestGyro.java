@@ -15,8 +15,11 @@ public class TestGyro extends LinearOpMode {
         robot= new RobotClass(hardwareMap, telemetry, this);
 
         waitForStart();
-
-        robot.testGyro();
+        robot.pivotRightSloppy(.8,120);
+        telemetry.addData("angle", robot.getAngleFromGyro());
+        telemetry.update();
+        robot.pivotRight(.2,175-Math.abs(robot.getAngleFromGyro()));
+        //robot.testGyro();
 //        Thread.sleep(1000);
 //        robot.pivotRight(0.2, 45);
 //        Thread.sleep(1000);

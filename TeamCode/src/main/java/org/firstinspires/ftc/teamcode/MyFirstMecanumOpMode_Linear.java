@@ -107,6 +107,11 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             rightFrontMotor.setPower(rightFrontPower);
             rightRearMotor.setPower(rightRearPower);
 
+            telemetry.addData("left front", leftFrontPower);
+            telemetry.addData("left rear", leftRearPower);
+            telemetry.addData("right front", rightFrontPower);
+            telemetry.addData("right rear", rightRearPower);
+
             if (gamepad2.dpad_down) {
                 if (!shooterServoPressed) {
                     if (shooterServoOn) {
