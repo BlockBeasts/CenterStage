@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import java.util.Date;
 
-@Autonomous(name = "Autonomous Computer Vision Test")
+@Autonomous(name = "Autonomous Computer Vision Test", group="Test")
 public class TestCVAutonomous extends LinearOpMode {
     RobotClass robot;
 

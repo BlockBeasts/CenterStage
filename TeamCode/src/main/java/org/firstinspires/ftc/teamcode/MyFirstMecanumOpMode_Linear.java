@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -51,6 +52,9 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
        // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         shooterMotor = (DcMotorImplEx) hardwareMap.dcMotor.get("shooterMotor");
+        shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,new PIDFCoefficients(70,0,13,13.4));
+
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         intakeOne = hardwareMap.crservo.get("intakeServoOne");
       //  intakeTwo = hardwareMap.crservo.get("intakeServoTwo");
@@ -169,8 +173,8 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
                 yPressed = false;
             }
             if (gamepad1.a) {
-                forwardToWhite(.9,.5,.3);
-                forward(.5, -2.5);
+                forwardToWhite(.5);
+                forward(.5, -2.2);
             }
             if (gamepad1.right_trigger >= .87) {
                 shooterMotor.setVelocity(POWERSHOT_SPEED);
@@ -179,6 +183,13 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
             if (gamepad1.left_trigger >= .87) {
                 shooterMotor.setVelocity(TOP_TARGET_SPEED);
                 shooterSpeedTop = true;
+            }
+
+            if (gamepad1.b){
+                robot.strafeRight(0.5, 0.9);
+            }
+            if (gamepad1.y){
+                robot.strafeLeft(0.5, 0.9);
             }
 
             if (shooterSpeedTop) {
@@ -190,7 +201,7 @@ public class MyFirstMecanumOpMode_Linear extends LinearOpMode {
 
         }
     }
-    public void forwardToWhite (double speed, double rotations, double speed2) {
+    public void forwardToWhite ( double speed2) {
         robot.frontLeft.setPower(speed2);
         robot.frontRight.setPower(speed2);
         robot.backLeft.setPower(speed2);

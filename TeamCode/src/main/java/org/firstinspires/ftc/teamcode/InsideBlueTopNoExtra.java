@@ -2,32 +2,24 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Date;
 
-@Autonomous
-public class InsideBlue extends LinearOpMode {
+@Autonomous (name="Inside Blue Top No Extra", group="Blue")
+public class InsideBlueTopNoExtra extends LinearOpMode {
 
-    DcMotor wobbleGoalExtendMotor = null;
-    DcMotor wobbleGoalRaiseMotor = null;
-    Servo wobbleGoalGrippyThing = null;
     RobotClass robot;
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-       // wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
-        wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
-        wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
         robot= new RobotClassInnerBlueOuterRed(hardwareMap, telemetry, this, "blue");
 
         robot.wobbleGoalGrippyThingGrab();
         // here you detect rings
         robot.openCVInnitShenanigans();
 
-        RobotClass.RingPosition ringNmb = null;
+        RobotClass.RingPosition ringNmb = RobotClass.RingPosition.NONE;
         waitForStart();
 
         long startTime = new Date().getTime();
@@ -40,34 +32,31 @@ public class InsideBlue extends LinearOpMode {
             telemetry.addData("Position", ringNmb);
             telemetry.update();
         }
-
+        robot.getShooterMotor().setVelocity(robot.TOP_TARGET_SPEED);
         robot.forward(0.1,-0.3);
         robot.strafeLeft(0.4,1.3);
-        robot.forward(0.5, -4.1);
-        robot.pivotLeft(0.1, 17);
-       robot.shooterEngageAlt();
-        robot.pause(1000);
-       shoot();
-        robot.pivotRight(0.1, 6);
-        shoot();
-        robot.pivotRight(.1, 4);
-       shoot();
-       robot.intakeServoEngage(0);
+        robot.forward(0.5, -2.5);
+        //shoot here please
+        robot.pivotLeft(0.3, 28);
+        //turn more. Originally twenty.
+        robot.shoot3Autonomous();
         robot.stopShooting();
-        robot.pivotRight(0.1, 7);
+        robot.pivotRight(0.3,28);
 
         if (ringNmb == RobotClass.RingPosition.NONE) {
-            robot.forward(0.5, -1.7);
+            robot.forward(0.5, -3.7);
             robot.strafeRight(0.5, 2);
             robot.depositWobbleGoal();
             robot.strafeLeft(0.5,2.2);
+            robot.forward(0.2, 0.3);
         } else if (ringNmb == RobotClass.RingPosition.ONE) {
+//            here is the stuff for getting ring
 
-            robot.forward(0.5, -4);
+            robot.forward(0.5, -5.5);
             robot.depositWobbleGoal();
             robot.forward(0.5, 2.5);
         } else if (ringNmb == RobotClass.RingPosition.FOUR) {
-            robot.forward(0.5,-5.3);
+            robot.forward(0.5,-7.3);
             robot.strafeRight(0.5, 2.3);
             robot.depositWobbleGoal();
             robot.strafeLeft(0.5,2.5);
@@ -87,3 +76,4 @@ public class InsideBlue extends LinearOpMode {
     }
 
 }
+

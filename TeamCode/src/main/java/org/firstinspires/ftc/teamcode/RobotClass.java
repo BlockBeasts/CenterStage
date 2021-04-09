@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -57,8 +58,8 @@ public class RobotClass {
     String color;
 
     static Point REGION1_TOPLEFT_ANCHOR_POINT;
-    double TOP_TARGET_SPEED= -5400*0.71*28/60;
-    double POWERSHOT_SPEED= -5400*0.65*28/60;
+    double TOP_TARGET_SPEED= -5400*0.72*28/60;
+    double POWERSHOT_SPEED= -5400*0.68*28/60;
 
 
     public RobotClass(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opmode, String color) {
@@ -78,6 +79,8 @@ public class RobotClass {
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
 
         motorSetMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,new PIDFCoefficients(70,0,13,13.4));
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
@@ -119,7 +122,8 @@ this.color= color;
         shooterServo1 = hardwareMap.crservo.get("shooterServo1");
         shooterServo2 = hardwareMap.crservo.get("shooterServo2");
         colorSensor = hardwareMap.colorSensor.get("colorSensor");
-
+        //shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER,new PIDFCoefficients(70,0,13,13.4));
         motorSetMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -546,7 +550,7 @@ this.color= color;
 
         shooterMotor.setVelocity(TOP_TARGET_SPEED);
         while ((shooterMotor.getVelocity()>TOP_TARGET_SPEED+9 || shooterMotor.getVelocity()<TOP_TARGET_SPEED-9) && this.opmode.opModeIsActive()) {
-//            telemetry.addData("velocity", shooterMotor.getVelocity());
+//             telemetry.addData("velocity", shooterMotor.getVelocity());
 //            telemetry.update();
         }
     }
@@ -557,7 +561,7 @@ this.color= color;
         startTimingBelt();
 
         shooterMotor.setVelocity(TOP_TARGET_SPEED);
-        while ((shooterMotor.getVelocity()>TOP_TARGET_SPEED+8 || shooterMotor.getVelocity()<TOP_TARGET_SPEED-8) && this.opmode.opModeIsActive()) {
+        while ((shooterMotor.getVelocity()>TOP_TARGET_SPEED+9 || shooterMotor.getVelocity()<TOP_TARGET_SPEED-9) && this.opmode.opModeIsActive()) {
             time = new Date().getTime() - startTime;
             if (time>moveMillis){
                 stopTimingBelt();
@@ -611,6 +615,13 @@ this.color= color;
         shooterServo2.setPower(0);
     }
 
+    public void shotAllshooting(){
+        shooterStop();
+        stopTimingBelt();
+        intakeServoStop();
+    }
+
+
     public void moveWobbleGoalArm (double speed, double rotation) {
         int currentPosition = wobbleGoalRaise.getCurrentPosition();
         telemetry.addData("current:",currentPosition);
@@ -648,9 +659,10 @@ this.color= color;
     }
     public void depositWobbleGoal() {
             moveWobbleGoalArm(.7,-.5);
-            pause(500);
+            pause(200);
             wobbleGoalGrippyThingRelease();
-            pause(350);
+            pause(200);
+            strafeLeft(0.7, 0.2);
             moveWobbleGoalArm(.7, .5);
     }
 
@@ -696,7 +708,7 @@ this.color= color;
         pause(1000);
         stopTimingBelt();
         shooterEngageAndMove(400, 300);
-        shooterEngageAndMove(500, 400);
+        shooterEngageAndMove(400, 800);
     }
 
     public void openCVInnitShenanigans() {
@@ -733,8 +745,8 @@ this.color= color;
 
         public SkystoneDeterminationPipeline(String color){
             if ("red".equalsIgnoreCase(color)){
-                int FOUR_RING_THRESHOLD = 150;
-                int ONE_RING_THRESHOLD = 140;
+                FOUR_RING_THRESHOLD = 150;
+                ONE_RING_THRESHOLD = 140;
             }
         }
         /*

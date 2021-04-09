@@ -10,6 +10,6 @@ public class RobotClassInnerBlueOuterRed extends RobotClass {
 
     public RobotClassInnerBlueOuterRed(HardwareMap hardwareMap, Telemetry telemetry, LinearOpMode opmode, String color) {
         super(hardwareMap, telemetry, opmode, color);
-        REGION1_TOPLEFT_ANCHOR_POINT= new Point(68,176);
+        REGION1_TOPLEFT_ANCHOR_POINT= new Point(68,171); //was 176
     }
 }

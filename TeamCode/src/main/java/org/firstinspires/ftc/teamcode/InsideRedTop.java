@@ -6,8 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.Date;
-
-@Autonomous (name="Inside Red Top Goal")
+@Autonomous (name="Inside Red Top Goal", group="Red")
 public class InsideRedTop extends LinearOpMode {
 
     DcMotor wobbleGoalExtendMotor = null;
@@ -18,10 +17,9 @@ public class InsideRedTop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        //   wobbleGoalExtendMotor = hardwareMap.dcMotor.get("wobbleExtendo");
         wobbleGoalRaiseMotor = hardwareMap.dcMotor.get("wobbleLift");
         wobbleGoalGrippyThing = hardwareMap.servo.get("wobbleGrip");
-        robot= new RobotClass(hardwareMap, telemetry, this, "red");
+        robot = new RobotClass(hardwareMap, telemetry, this, "red");
 
         robot.wobbleGoalGrippyThingGrab();
         // here you detect rings
@@ -42,20 +40,20 @@ public class InsideRedTop extends LinearOpMode {
             telemetry.update();
         }
         robot.getShooterMotor().setVelocity(robot.TOP_TARGET_SPEED);
-        robot.strafeRight(0.5,1.9);
-        robot.forward(.5,-2.5);
-        double angle= robot.getAngleFromGyro();
+        robot.strafeRight(0.5, 2.0);
+        robot.forward(.5, -2.5);
+        double angle = robot.getAngleFromGyro();
         telemetry.addData("angle", angle);
         telemetry.update();
-        if (angle<0){
-            robot.pivotLeft(.1, -angle);
+        if (angle < 1) {
+            robot.pivotLeft(.1, -angle+1);
         }
 
         robot.shoot3Autonomous();
 
         if (ringNmb == RobotClass.RingPosition.NONE) {
-            robot.forward(0.5,-1.5);
-            robot.strafeLeft(0.5,2);
+            robot.forward(0.5, -2.5);
+            robot.strafeLeft(0.5, 2);
             robot.pivotLeft(0.3, 170);
             robot.depositWobbleGoal();
             robot.strafeLeft(0.4, 2);
@@ -66,67 +64,46 @@ public class InsideRedTop extends LinearOpMode {
             robot.pivotLeftSloppy(.8, 65);
             angle= robot.getAngleFromGyro();
             robot.pivotLeft(.3, 90-Math.abs(angle));
-            robot.forward(.6, 1.5);
-
-            robot.forward(.6, -1.2);
-
-            angle= robot.getAngleFromGyro();
-            telemetry.addData("angle", angle);
-            telemetry.update();
-            robot.pivotRightSloppy(.8, 60);
+            //get the ring
+            robot.forward(.6, 1.4);
             robot.stopTimingBelt();
-            angle= robot.getAngleFromGyro();
-            telemetry.addData("angle", angle);
-            telemetry.update();
-            robot.pivotRight(.3, Math.abs(angle));
-
-            robot.forward(0.3, .3);
-            if (angle<0){
-                robot.pivotLeft(.05, -angle);
-            }
-            robot.shooterEngageAndMove(800,400);
+            robot.pivotRight(0.5,80);
+            robot.startTimingBelt();
+            robot.forward(0.3,0.3);
+            robot.pause(2100);
             robot.shooterStop();
-            robot.shooterServo1Stop();
-            robot.shooterServo2Stop();
-            robot.intakeServoStop();
-            angle= robot.getAngleFromGyro();
-            if (angle>0){
-                robot.pivotRight(.1, angle);
-            }
-            robot.forward(.8,-4.8);
-            robot.pivotRightSloppy(.7,130);
-            angle= robot.getAngleFromGyro();
-            telemetry.addData("angle", robot.getAngleFromGyro());
-            telemetry.update();
-            robot.pivotRight(.2,175-Math.abs(angle));
+            robot.pivotRight(0.5, 110);
+            robot.strafeRight(0.7, 3.8);
+            robot.forward(0.7,-0.7);
             robot.depositWobbleGoal();
-            robot.forward(0.8,-1.5);
+            robot.forward(0.5, 1.5);
         } else if (ringNmb == RobotClass.RingPosition.FOUR) {
-            robot.forward(0.8,-4.5);
-            robot.strafeLeft(0.8,3.2);
-            robot.pivotLeft(0.4,170);
+            robot.intakeServoEngage(1);
+            robot.startTimingBelt();
+            robot.forward(.3, -.3);
+            robot.pivotLeftSloppy(.8, 65);
+            angle = robot.getAngleFromGyro();
+            robot.pivotLeft(.3, 90 - Math.abs(angle));
+            //get the ring
+            robot.forward(.6, 1.4);
+            //robot.pause(300);
+            robot.stopTimingBelt();
+            robot.pivotRight(0.5, 80);
+            robot.startTimingBelt();
+            robot.forward(0.3,0.3);
+            robot.pause(2100);
+            robot.shooterStop();
+            robot.stopTimingBelt();
+            robot.intakeServoStop();
+            angle = robot.getAngleFromGyro();
+            robot.pivotRightSloppy(0.8, Math.abs(angle)+120);
+            angle = robot.getAngleFromGyro();
+            robot.pivotRight(0.3, 170-Math.abs(angle));
+            robot.forward(.8, 6.5);
+            robot.strafeRight(0.8, 0.8);
             robot.depositWobbleGoal();
-            // robot.pivotRight(0.3,175);
-            robot.strafeLeft(0.8,1);
-            robot.forward(0.8,-2.8);
+            robot.strafeLeft(0.8, 1);
+            robot.forward(0.9, -2.6);
         }
-
     }
-    protected void shoot(){
-        robot.shooterServo1(.8);
-        robot.shooterServo2(.8);
-        robot.pause(200);
-        robot.intakeServoEngage(.9);
-        robot.pause(800);
-        robot.shooterServo2(0);
-        robot.shooterServo1(0);
-    }
-//    protected void shootLast(){
-//        robot.shooterServo1(.8);
-//        robot.shooterServo2(.8);
-//        robot.pause(1200);
-//        robot.shooterServo2(0);
-//        robot.shooterServo1(0);
-//    }
 }
-
