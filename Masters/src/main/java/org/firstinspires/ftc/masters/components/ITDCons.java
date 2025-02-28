@@ -14,6 +14,7 @@ public class ITDCons {
     public static double intakeInit = 0.5;
     public static double intakeInitLeft = 0;
     public static double intakeInitRight = 1;
+
     public static double intakeArmDrop =0.82;
     public static double intakeChainDrop = 0.32;
 
