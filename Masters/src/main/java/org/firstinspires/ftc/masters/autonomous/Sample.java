@@ -31,9 +31,9 @@ public class Sample extends LinearOpMode {
 
     Pose startPose = new Pose(10,110,0);
     Pose bucketPose = new Pose (19,124, Math.toRadians(-45));
-    Pose sample1 = new Pose(20,128,Math.toRadians(-11));
-    Pose sample2 = new Pose(20,128,Math.toRadians(-5));
-    Pose sample3 = new Pose(20, 128, Math.toRadians(23));
+    Pose sample1 = new Pose(25,128,Math.toRadians(-18));
+    Pose sample2 = new Pose(25,128,Math.toRadians(-5));
+    Pose sample3 = new Pose(25, 128, Math.toRadians(23));
 
     PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1, scoreSample2, scoreSample3;
 
@@ -129,7 +129,7 @@ public class Sample extends LinearOpMode {
                         elapsedTime= null;
 
                     } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-                        intake.extendSlideMAxAuto();
+                        //intake.extendSlideMAxAuto();
                         elapsedTime= new ElapsedTime();
                     }
                     break;
@@ -220,9 +220,10 @@ public class Sample extends LinearOpMode {
 
 
         scoreSample1 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(sample1), new Point(bucketPose)))
-                .setTangentHeadingInterpolation()
-                .setReversed(true)
+                .addPath(new BezierLine(new Point(sample1), new Point(bucketPose.getX()+1, bucketPose.getY())))
+                .setConstantHeadingInterpolation(sample1.getHeading())
+                .addPath(new BezierCurve( new Point(bucketPose.getX()+1, bucketPose.getY()),new Point(bucketPose)))
+                .setLinearHeadingInterpolation(sample1.getHeading(), bucketPose.getHeading())
                 .build();
 
         pickupSample2 = follower.pathBuilder()
