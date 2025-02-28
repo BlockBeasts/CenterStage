@@ -285,6 +285,7 @@ public class Intake {
                         } else if (color == allianceColor) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
+
 //                            if (gamepad1!=null) {
 //                                gamepad1.rumble(2000);
 //                            }
