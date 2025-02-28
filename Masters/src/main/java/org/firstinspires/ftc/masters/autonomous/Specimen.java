@@ -146,7 +146,7 @@ public class Specimen extends LinearOpMode {
                     }
                     break;
                 case ScorePreload:
-                    if (elapsedTime!=null && elapsedTime.milliseconds()>400){
+                    if (elapsedTime!=null && elapsedTime.milliseconds()>350){
 
                         outtake.closeClaw();
                         outtake.moveToPickUpFromWall();

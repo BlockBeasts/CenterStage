@@ -60,7 +60,7 @@ public class Outtake implements Component{
     }
 
     enum WaitTime{
-        Open_Claw (400), CLose_Claw(400)
+        Open_Claw (350), CLose_Claw(400)
         , Turn_Wrist(600), BackUp_Robot(400),
         Servo_To_Transfer(300),
         Move_Position(450)
