@@ -265,12 +265,16 @@ public class Intake {
                         } else if (color == ITDCons.Color.yellow) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
-                            gamepad1.rumble(2000);
+                            if (gamepad1!=null) {
+                                gamepad1.rumble(2000);
+                            }
 
                         } else if (color == allianceColor) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
-                            gamepad1.rumble(2000);
+                            if (gamepad1!=null) {
+                                gamepad1.rumble(2000);
+                            }
                         }
                         resetColorDetection();
 

@@ -70,6 +70,9 @@ public class TeleopManualV2Blue extends LinearOpMode {
         intake.setOuttake(outtake);
         intake.setAllianceColor(ITDCons.Color.blue);
 
+        outtake.setGamepad(gamepad1);
+        intake.setGamepad1(gamepad1);
+
         int target=0;
 
         int dpadUpPressed = 0;
