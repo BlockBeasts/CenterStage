@@ -397,8 +397,8 @@ public class Outtake implements Component{
     public void update(){
         moveSlide();
 
-        telemetry.addData("status", status);
-        telemetry.addData("target", target);
+//        telemetry.addData("status", status);
+//        telemetry.addData("target", target);
 
         switch (status){
             case WallToFront_lift:
@@ -464,12 +464,16 @@ public class Outtake implements Component{
                     elapsedTime = new ElapsedTime();
                 }
                 if ( elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime() && elapsedTime.milliseconds()<WaitTime.Open_Claw.getTime()+WaitTime.BackUp_Robot.getTime() ){
-                    driveTrain.drive(0.6);
-                    drivetrainOverride = true;
+                    if (driveTrain!=null) {
+                        driveTrain.drive(0.6);
+                        drivetrainOverride = true;
+                    }
                 }
                 if (elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime()+WaitTime.BackUp_Robot.getTime()){
-                    drivetrainOverride= false;
-                    driveTrain.drive(0);
+                    if (driveTrain!=null) {
+                        drivetrainOverride = false;
+                        driveTrain.drive(0);
+                    }
                     status= Status.BucketToTransfer_Final;
                     elapsedTime = null;
                 }

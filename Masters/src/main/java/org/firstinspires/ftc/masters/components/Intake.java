@@ -184,6 +184,18 @@ public class Intake {
         multiplier=1;
     }
 
+    public void extendAutoPickup(){
+        target = ITDCons.halfExtension+2000;
+        multiplier=0.2;
+    }
+
+    public void incrementExtends(){
+        multiplier=1;
+        if (target<ITDCons.MaxExtension-100) {
+            target += 100;
+        }
+    }
+
     public void extendSlideMax(){
         target= ITDCons.MaxExtension;
         multiplier =1;
