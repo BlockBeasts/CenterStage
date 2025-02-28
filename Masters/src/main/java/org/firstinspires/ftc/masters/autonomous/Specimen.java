@@ -39,13 +39,13 @@ public class Specimen extends LinearOpMode {
     Pose midPoint2 = new Pose(60,36,0);
 
     Pose pickupPose1 = new Pose(11, 35, 0);
-    Pose pickupPose = new Pose (10.75,38, 0);
+    Pose pickupPose = new Pose (12,38, 0);
     Pose pushPose1 = new Pose(60,28,0);
-    Pose endPushPose1 = new Pose (29,28,0);
+    Pose endPushPose1 = new Pose (30.25,28,0);
     Pose pushPose2 = new Pose(60,17,0);
-    Pose endPushPose2 = new Pose(29,17,0);
+    Pose endPushPose2 = new Pose(30.25,17,0);
     Pose pushPose3 = new Pose(60,10,0);
-    Pose endPushPose3 = new Pose(29,10,0);
+    Pose endPushPose3 = new Pose(30.25,10,0);
     Pose pickupMid = new Pose(30,38,0);
     Pose pickupCycleMid = new Pose(30, 38, 0);
     Pose pickupCycleMid1 = new Pose(30,65, 0);
