@@ -351,7 +351,7 @@ public class Intake {
                         }
                         elapsedTime = new ElapsedTime();
                     }
-                    if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()< status.getTime()*2){
+                    if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()< status.getTime()*2+100){
                         if (target == ITDCons.TransferExtensionOut){
                             servoToTransfer();
                         }
