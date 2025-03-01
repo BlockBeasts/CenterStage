@@ -28,8 +28,8 @@ import java.util.List;
 //position are setup with pedro coordinate from blue side
 //auto can be used for blue and red
 
-@Autonomous(name="Specimen 5")
-public class Specimen extends LinearOpMode {
+@Autonomous(name="Specimen 4")
+public class Specimen4 extends LinearOpMode {
 
     Pose startPose = new Pose(10,66,0);
     Pose scoringPose = new Pose(40,70.5, 0);
@@ -125,7 +125,7 @@ public class Specimen extends LinearOpMode {
 
                         intake.servoToNeutral();
                         elapsedTime= new ElapsedTime();
-                        state=PathState.Start;
+                        state= PathState.Start;
                     }
                     break;
                 case Start:
@@ -173,7 +173,7 @@ public class Specimen extends LinearOpMode {
                         if (elapsedTime==null){
                             elapsedTime = new ElapsedTime();
                         }
-                        if (elapsedTime!=null && elapsedTime.milliseconds()>50){
+                        if (elapsedTime!=null && elapsedTime.milliseconds()>200){
                             outtake.closeClaw();
                         }
                       if (elapsedTime!=null && elapsedTime.milliseconds()>350){
