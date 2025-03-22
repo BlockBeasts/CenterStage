@@ -15,13 +15,15 @@ public class ITDCons {
     public static double intakeInitLeft = 0;
     public static double intakeInitRight = 1;
 
-    public static double intakeArmDrop =0.88;
+    //public static double intakeArmDrop =0.88; Former Axon
+    public static double intakeArmDrop =0.27;
     public static double intakeChainDrop = 0.32;
 
-    public static double intakeArmNeutral= 0.88;
+    public static double intakeArmNeutral= 0.27;
     public static double intakeChainNeutral=0.58;
 
-    public static double intakeArmTransfer=0.33;
+    //public static double intakeArmTransfer=0.33; Former Axon
+    public static double intakeArmTransfer=0.94;
     public static double intakeChainTransfer = 0.60;
     public static double intakeTransferSpeed = 0.65;
     public static double intakeEjectSpeed =0.8;

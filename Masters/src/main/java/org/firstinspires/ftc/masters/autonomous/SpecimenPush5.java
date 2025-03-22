@@ -76,8 +76,7 @@ public class SpecimenPush5 extends LinearOpMode {
         pinpoint = init.getPinpoint();
         led = init.getLed();
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
         buildPaths();
 

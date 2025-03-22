@@ -38,7 +38,7 @@ public class Specimen4 extends LinearOpMode {
     Pose midPoint1 = new Pose(20,25,0);
     Pose midPoint2 = new Pose(60,36,0);
 
-    Pose pickupPose1 = new Pose(11, 35, 0);
+    Pose pickupPose1 = new Pose(10.5, 35, 0);
     Pose pickupPose = new Pose (11,38, 0);
     Pose pushPose1 = new Pose(60,28,0);
     Pose endPushPose1 = new Pose (30.25,28,0);
@@ -79,8 +79,7 @@ public class Specimen4 extends LinearOpMode {
 
         pinpoint = init.getPinpoint();
         led = init.getLed();
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
         buildPaths();
 

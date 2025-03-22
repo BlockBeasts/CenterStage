@@ -212,6 +212,7 @@ public class Outtake implements Component{
 
         } else if (status == Status.Bucket){
             elapsedTime= null;
+            claw.setPosition(ITDCons.clawOpen);
             status = Status.ScoringSampleDone;
         } else {
            claw.setPosition(ITDCons.clawOpen);
@@ -435,10 +436,11 @@ public class Outtake implements Component{
             case TransferToBucket_Lift:
 
                 status= Status.Bucket;
-                isLiftReady = true;
+//                isLiftReady = true;
                //TODO: change from time to vertical slide position
                 if (getLiftPos()>ITDCons.BucketTarget-30000){
                     elapsedTime = new ElapsedTime();
+                    status = Status.Bucket;
                     isLiftReady = true;
                 }
                 break;
