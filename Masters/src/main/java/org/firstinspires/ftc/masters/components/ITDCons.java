@@ -16,14 +16,14 @@ public class ITDCons {
     public static double intakeInitRight = 1;
 
     //public static double intakeArmDrop =0.88; Former Axon
-    public static double intakeArmDrop =0.27;
+    public static double intakeArmDrop =0.39;
     public static double intakeChainDrop = 0.32;
 
-    public static double intakeArmNeutral= 0.27;
+    public static double intakeArmNeutral= 0.39;
     public static double intakeChainNeutral=0.58;
 
     //public static double intakeArmTransfer=0.33; Former Axon
-    public static double intakeArmTransfer=0.94;
+    public static double intakeArmTransfer=0.93;
     public static double intakeChainTransfer = 0.60;
     public static double intakeTransferSpeed = 0.65;
     public static double intakeEjectSpeed =0.8;
@@ -35,7 +35,7 @@ public class ITDCons {
     public static double clawOpen = 0.35;
     public static double clawClose = 0.75;
 
-    public static double wristFront= 0.06;
+    public static double wristFront= 0.03;
     public static double wristBack = 0.75;
 
     public static double positionBack = 0.09;
