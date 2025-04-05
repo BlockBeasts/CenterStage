@@ -4,6 +4,8 @@ import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.masters.components.ITDCons;
+
 @TeleOp(name="Color Test", group = "Test")
 public class ColorTest extends LinearOpMode {
 
@@ -15,15 +17,31 @@ public class ColorTest extends LinearOpMode {
 
         waitForStart();
 
-        while(opModeIsActive()){
+        int checkColorCount =0;
+        int MAX_COUNT = 10;
+        double redTotal=0, blueTotal=0, greenTotal=0;
 
-            if (color.red()>color.blue() && color.red()> color.green()){
-                telemetry.addData("Color", "Red");
-            }
-            else if (color.green()>color.blue() && color.green()>color.red()){
-                telemetry.addData("Color", "yellow");
-            } else if (color.blue()>color.green() && color.blue()>color.red()){
-                telemetry.addData("Color", "Blue");
+        while(opModeIsActive()){
+            if (checkColorCount<MAX_COUNT){
+                redTotal+=color.red();
+                blueTotal+=color.blue();
+                greenTotal+=color.green();
+                checkColorCount++;
+
+                telemetry.addData("red total", redTotal);
+                telemetry.addData("green total", greenTotal);
+                telemetry.addData("blue total", blueTotal);
+                telemetry.addData("count", checkColorCount);
+            } else {
+
+                if (redTotal>blueTotal && redTotal> greenTotal){
+                    telemetry.addData("Color", "Red");
+                }
+                else if (greenTotal>blueTotal && greenTotal>redTotal){
+                    telemetry.addData("Color", "yellow");
+                } else if (blueTotal>greenTotal && blueTotal>redTotal){
+                    telemetry.addData("Color", "Blue");
+                }
             }
 
             telemetry.addData("raw", color.rawOptical());

@@ -73,7 +73,7 @@ public class Intake {
     private int target;
 
     public int checkColorCount=0;
-    public int MAX_COUNT=10;
+    public int MAX_COUNT=15;
     public int redTotal =0;
     public int blueTotal =0;
     public int greenTotal=0;
