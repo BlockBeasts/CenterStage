@@ -38,7 +38,7 @@ public class KillingTheBot extends LinearOpMode {
         led = init.getLed();
         outtakeSlideLeft = init.getOuttakeSlideLeft();
         outtakeSlideRight = init.getOuttakeSlideRight();
-        voltageSensor = init.getVoltageSensor();
+        voltageSensor = init.getControlHubVoltageSensor();
 
         telemetry.update();
 

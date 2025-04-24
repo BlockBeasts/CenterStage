@@ -145,7 +145,7 @@ public class Outtake implements Component{
         this.outtakeSlideLeft =init.getOuttakeSlideLeft();
         this.outtakeSlideRight =init.getOuttakeSlideRight();
         this.outtakeSlideEncoder =init.getOuttakeSlideRight();
-        voltageSensor = init.getVoltageSensor();
+        voltageSensor = init.getControlHubVoltageSensor();
         angleLeft = init.getAngleLeft();
         angleRight = init.getAngleRight();
         position = init.getPosition();
