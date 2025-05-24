@@ -13,9 +13,9 @@ import java.util.Map;
 
 public class TelemetryEx extends TelemetryImpl {
 
-    Map<String, Object> DataMap = new HashMap<>();
-    String Name;
-    List<String> Header;
+    Map<String, Object> dataMap = new HashMap<>();
+    String name;
+    List<String> header;
     Telemetry telemetry;
 
     public TelemetryEx(OpMode opMode, Telemetry telemetry) {
@@ -29,7 +29,7 @@ public class TelemetryEx extends TelemetryImpl {
     public Item addData(String caption, Object value) {
         telemetry.addData(caption, value);
 
-        DataMap.put(caption, value);
+        dataMap.put(caption, value);
 
         return null;
     }
@@ -40,7 +40,7 @@ public class TelemetryEx extends TelemetryImpl {
 
         if(teleWriter.log == null){
             try {
-                teleWriter.newCSVFile(Name, Header);
+                teleWriter.newCSVFile(name, header);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -49,15 +49,15 @@ public class TelemetryEx extends TelemetryImpl {
 
                 ElapsedTime runtime = teleWriter.getRuntime();
 
-                DataMap.put("Time",  Math.round(runtime.milliseconds()));
+                dataMap.put("Time", Math.round(runtime.milliseconds()));
 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("\n");
-                for (String header : Header){
-                    if(DataMap.get(header) == null){
+                for (String header : header){
+                    if(dataMap.get(header) == null){
                         stringBuilder.append(",");
                     } else {
-                        stringBuilder.append(DataMap.get(header));
+                        stringBuilder.append(dataMap.get(header));
                         stringBuilder.append(",");
                     }
                 }
@@ -72,7 +72,7 @@ public class TelemetryEx extends TelemetryImpl {
         return false;
     }
 
-    public void setName(String Name) { this.Name = Name; }
-    public void setHeader(List<String> Header) { this.Header = Header; }
+    public void setName(String Name) { this.name = Name; }
+    public void setHeader(List<String> Header) { this.header = Header; }
 
 }

@@ -25,7 +25,7 @@ public class teleTest extends LinearOpMode {
 
         List<String> headers = new ArrayList<>();
         headers.add("Filler");
-        headers.add("data");
+        headers.add("Data");
 
         telemetryEx.setHeader(headers);
 
