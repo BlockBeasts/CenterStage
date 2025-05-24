@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.masters.components;
+package org.firstinspires.ftc.masters.test;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.lynx.LynxModuleIntf;
 import com.qualcomm.hardware.lynx.LynxNackException;
@@ -11,17 +10,18 @@ import com.qualcomm.hardware.lynx.commands.core.LynxGetADCCommand;
 import com.qualcomm.hardware.lynx.commands.core.LynxGetADCResponse;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
+import org.firstinspires.ftc.masters.components.DriveTrain;
+import org.firstinspires.ftc.masters.components.ITDCons;
+import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 @Config // Enables FTC Dashboard
 @TeleOp
-public class Monitor extends LinearOpMode {
+public class monitorTest extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 

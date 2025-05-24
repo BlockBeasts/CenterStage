@@ -11,14 +11,15 @@ import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.ITDCons;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
-import org.firstinspires.ftc.masters.components.Outtake;
 import org.firstinspires.ftc.masters.TeleEx.Monitor;
+import org.firstinspires.ftc.masters.components.Outtake;
 
+import java.io.IOException;
 import java.util.List;
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "V2 Manual Teleop Red")
-public class TeleopManualV2Red extends LinearOpMode {
+@TeleOp(name = "V2 Monitor Teleop Red")
+public class TeleopManualV2RedMonitor extends LinearOpMode {
 
 
 /*   controls:
@@ -62,6 +63,7 @@ public class TeleopManualV2Red extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         Init init = new Init(hardwareMap);
+        init.setGamePad(gamepad1);
         DriveTrain driveTrain = new DriveTrain(init, telemetry);
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
@@ -94,7 +96,6 @@ public class TeleopManualV2Red extends LinearOpMode {
 
         intake.initStatusTeleop();
         outtake.initTeleopWall();
-
 
         while (opModeIsActive()) {
 
@@ -217,7 +218,13 @@ public class TeleopManualV2Red extends LinearOpMode {
             telemetry.addData("intake color", intake.getColor());
             telemetry.addData("intake status", intake.getStatus());
             telemetry.addData("Outtake status", outtake.getStatus());
+            monitor.telemetryPrint();
 
+            try {
+                monitor.writeCSVFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             telemetry.update();
 

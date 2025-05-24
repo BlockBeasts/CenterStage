@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.masters.components;
 
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
@@ -7,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -43,6 +45,8 @@ public class Init {
 
     private final LynxModule controlHublynx;
     private final LynxModule expansionHublynx;
+
+    private GamepadEx gp1;
     //private final LynxModule servoHublynx;
 
 
@@ -110,6 +114,7 @@ public class Init {
 
         controlHublynx = hardwareMap.get(LynxModule.class, "Control Hub");
         expansionHublynx = hardwareMap.get(LynxModule.class, "Expansion Hub 2");
+
         //servoHublynx = hardwareMap.get(LynxModule.class, "Servo Hub 3");
 
 
@@ -200,5 +205,13 @@ public class Init {
     public LynxModule getControlHublynx() { return controlHublynx; }
     public LynxModule getExpansionHublynx() {  return expansionHublynx; }
     //public LynxModule getServoHublynx() { return servoHublynx; }
+
+    public void setGamePad(Gamepad gp){
+        gp1 = new GamepadEx(gp);
+    }
+
+    public GamepadEx getGp1() {
+        return gp1;
+    }
 
 }
