@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 
 @Config
 public class ITDCons {
+
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public enum Color {red, blue, yellow, unknown}
@@ -72,8 +73,7 @@ public class ITDCons {
     public static int TransferExtensionOut = 7000;
     public static int MinExtension = 500;
 
-
-    //led values
+    // LED Values
     public static double yellow = 0.388;
     public static double blue = 0.611;
     public static double red = 0.279;
@@ -101,9 +101,3 @@ public class ITDCons {
                     ║
 
  */
-
-// Wall Hanging Grab Diffy 1 = .17, Diffy 2 = .65
-// Floor Grab Diffy 1 = .27, Diffy 2 = .34
-
-// Bucket Diffy 1 = .58, Diffy 2 = .65, Slide Target = 50000
-// Specimen Diffy 1 = 0.015, Diffy 2 = 0.815, Slide Target = 18800

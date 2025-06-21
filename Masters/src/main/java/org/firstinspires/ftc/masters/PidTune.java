@@ -16,33 +16,35 @@ public class PidTune extends OpMode {
 
     private PIDController controller;
 
-    public static double p = 0.0015, i = 0, d = 0;
+    public static double p = 0, i = 0, d = 0;
 
     public static int target = 0;
 
-    DcMotor outtakeSlideRight, outtakeSlideLeft;
+    DcMotorEx outtakeSlideFront, outtakeSlideBack, outtakeSlideMiddle;
 
     @Override
     public void init() {
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        outtakeSlideRight = hardwareMap.dcMotor.get("vertSlideRight");
-        outtakeSlideRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtakeSlideRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        outtakeSlideLeft= hardwareMap.dcMotor.get("vertSlideLeft");
-        outtakeSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeSlideFront = hardwareMap.get(DcMotorEx.class, "vertSlideFront");
+        outtakeSlideMiddle = hardwareMap.get(DcMotorEx.class, "vertSlideMiddle");
+        outtakeSlideBack = hardwareMap.get(DcMotorEx.class, "vertSlideBack");
+        outtakeSlideMiddle.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeSlideMiddle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeSlideMiddle.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
     public void loop(){
+
         controller.setPID(p,i,d);
-        int rotatePos = -(outtakeSlideRight.getCurrentPosition());
+        int rotatePos = -(outtakeSlideMiddle.getCurrentPosition());
         double pid = controller.calculate(rotatePos, target);
 
-        outtakeSlideLeft.setPower(pid);
-        outtakeSlideRight.setPower(pid);
+        outtakeSlideFront.setPower(pid);
+        outtakeSlideMiddle.setPower(pid);
+        outtakeSlideBack.setPower(pid);
 
         telemetry.addData("ArmPos", rotatePos);
         telemetry.addData("Target", target);

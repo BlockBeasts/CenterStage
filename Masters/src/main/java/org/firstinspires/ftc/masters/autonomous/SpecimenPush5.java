@@ -103,7 +103,7 @@ public class SpecimenPush5 extends LinearOpMode {
 
         waitForStart();
 
-        outtake.wrist.setPosition(ITDCons.wristBack);
+        //outtake.wrist.setPosition(ITDCons.wristBack);
         outtake.setAngleServoToBack();
 
         //outtake.scoreSpecimen();

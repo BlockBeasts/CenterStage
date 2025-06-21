@@ -38,7 +38,7 @@ public class Monitor implements Component {
     LynxGetADCResponse servoResponse;
 
     VoltageSensor controlHubVoltageSensor, expansionHubVoltageSensor;
-    DcMotorEx leftFrontMotor, rightFrontMotor, leftRearMotor, rightRearMotor, intakeMotor, intakeExtendo, outtakeSlideLeft, outtakeSlideRight;
+    DcMotorEx leftFrontMotor, rightFrontMotor, leftRearMotor, rightRearMotor, intakeExtendo, outtakeSlideLeft, outtakeSlideRight;
     LynxModule controlHublynx, expansionHublynx;
 
     GamepadEx gp1;
@@ -58,15 +58,14 @@ public class Monitor implements Component {
         rightFrontMotor = init.getRightFrontMotor();
         leftRearMotor = init.getLeftRearMotor();
         rightRearMotor = init.getRightRearMotor();
-        intakeMotor = init.getIntake();
         intakeExtendo = init.getIntakeExtendo();
-        outtakeSlideLeft = init.getOuttakeSlideLeft();
-        outtakeSlideRight = init.getOuttakeSlideRight();
+        outtakeSlideLeft = init.getOuttakeSlideFront();
+        outtakeSlideRight = init.getOuttakeSlideBack();
 
         controlHublynx = init.getControlHublynx();
         expansionHublynx = init.getExpansionHublynx();
 
-        gp1 = init.getGp1();
+//        gp1 = init.getGp1();
 
         initializeHardware();
 
@@ -97,7 +96,6 @@ public class Monitor implements Component {
             telemetry.addData("RightFront Current", rightFrontMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("LeftRear Current", leftRearMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("RightRear Current", rightRearMotor.getCurrent(CurrentUnit.AMPS));
-            telemetry.addData("intakeMotor Current", intakeMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("intakeExtendo Current", intakeExtendo.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("outtakeLeft Current", outtakeSlideLeft.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("outtakeRight Current", outtakeSlideRight.getCurrent(CurrentUnit.AMPS));
@@ -142,7 +140,6 @@ public class Monitor implements Component {
                             "RightFront," + rightFrontMotor.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
                             "LeftRear," + leftRearMotor.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
                             "RightRear," + rightRearMotor.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
-                            "IntakeMotor," + intakeMotor.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
                             "IntakeExtendo," + intakeExtendo.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
                             "OuttakeLeft," + outtakeSlideLeft.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
                             "OuttakeRight," + outtakeSlideRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +

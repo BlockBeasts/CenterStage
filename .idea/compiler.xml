@@ -3,9 +3,6 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.8">
       <module name="CenterStage.BlackSwan" target="17" />
-      <module name="CenterStage.FtcRobotController" target="17" />
-      <module name="CenterStage.Masters" target="17" />
-      <module name="CenterStage.TeamCode" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

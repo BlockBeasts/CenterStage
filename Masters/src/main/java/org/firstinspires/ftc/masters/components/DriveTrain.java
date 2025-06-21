@@ -2,8 +2,6 @@ package org.firstinspires.ftc.masters.components;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import org.firstinspires.ftc.masters.components.Init;
 
 import org.firstinspires.ftc.masters.old.CSCons;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -33,11 +31,11 @@ public class DriveTrain implements Component{
      at full motor power
      */
 
-    private final double L = 0.177425;
-    private final double W = 0.156525;
-    private final double R = 0.047999;
-    private final double Vx = 0;
-    private final double Vy = 0;
+// L = 0.177425;
+// W = 0.156525;
+// R = 0.047999;
+// Vx = 0;
+// Vy = 0;
 
     private final DcMotor leftFrontMotor;
     private final DcMotor rightFrontMotor;

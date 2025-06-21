@@ -47,10 +47,9 @@ public class monitorTest extends LinearOpMode {
         DcMotorEx rightFrontMotor = init.getRightFrontMotor();
         DcMotorEx leftRearMotor = init.getLeftRearMotor();
         DcMotorEx rightRearMotor = init.getRightRearMotor();
-        DcMotorEx intakeMotor = init.getIntake();
         DcMotorEx intakeExtendo = init.getIntakeExtendo();
-        DcMotorEx outtakeSlideLeft = init.getOuttakeSlideLeft();
-        DcMotorEx outtakeSlideRight = init.getOuttakeSlideRight();
+        DcMotorEx outtakeSlideLeft = init.getOuttakeSlideFront();
+        DcMotorEx outtakeSlideRight = init.getOuttakeSlideBack();
 
         LynxModule controlHublynx = init.getControlHublynx();
         LynxModule expansionHublynx = init.getExpansionHublynx();
@@ -78,7 +77,6 @@ public class monitorTest extends LinearOpMode {
             telemetry.addData("RightFront Current", rightFrontMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("LeftRear Current", leftRearMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("RightRear Current", rightRearMotor.getCurrent(CurrentUnit.AMPS));
-            telemetry.addData("intakeMotor Current", intakeMotor.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("intakeExtendo Current", intakeExtendo.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("outtakeLeft Current", outtakeSlideLeft.getCurrent(CurrentUnit.AMPS));
             telemetry.addData("outtakeRight Current", outtakeSlideRight.getCurrent(CurrentUnit.AMPS));

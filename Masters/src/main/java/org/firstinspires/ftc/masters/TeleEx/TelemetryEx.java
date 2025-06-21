@@ -17,6 +17,7 @@ public class TelemetryEx extends TelemetryImpl {
     String name;
     List<String> header;
     Telemetry telemetry;
+    double pastRuntime;
 
     public TelemetryEx(OpMode opMode, Telemetry telemetry) {
         super(opMode);

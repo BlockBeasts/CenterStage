@@ -9,9 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
-import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.Init;
-import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outtake;
 
 @Config // Enables FTC Dashboard
@@ -36,8 +34,8 @@ public class KillingTheBot extends LinearOpMode {
         Outtake outtake = new Outtake(init, telemetry);
 
         led = init.getLed();
-        outtakeSlideLeft = init.getOuttakeSlideLeft();
-        outtakeSlideRight = init.getOuttakeSlideRight();
+        outtakeSlideLeft = init.getOuttakeSlideFront();
+        outtakeSlideRight = init.getOuttakeSlideBack();
         voltageSensor = init.getControlHubVoltageSensor();
 
         telemetry.update();

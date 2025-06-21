@@ -4,7 +4,6 @@ import android.os.Environment;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.joda.time.DateTime;
 
 import java.io.File;
@@ -38,8 +37,6 @@ public class TeleWriter {
     }
 
     public void writeCSVFile(String data) throws IOException {
-
-        double time = Math.round(runtime.milliseconds());
 
         logWriter.write(data);
 

@@ -4,127 +4,111 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-import java.util.List;
-
 public class Init {
 
-    GoBildaPinpointDriver pinpoint;
+    GoBildaPinpointDriver pinpoint = null;
 
-    private final DcMotorEx leftFrontMotor;
-    private final DcMotorEx rightFrontMotor;
-    private final DcMotorEx leftRearMotor;
-    private final DcMotorEx rightRearMotor;
+    private final DcMotorEx leftFrontMotor = null;
+    private final DcMotorEx rightFrontMotor = null;
+    private final DcMotorEx leftRearMotor = null;
+    private final DcMotorEx rightRearMotor = null;
 
-    private final DcMotorEx intake, intakeExtendo;
-    private final Servo intakeLeft, intakeRight;
+    private final DcMotorEx intakeExtendo = null;
+    private final Servo intakeArm = null, intakeChain = null;
+    private final CRServo intake = null;
 
-    private final DcMotorEx outtakeSlideLeft, outtakeSlideRight;
+    private final DcMotorEx outtakeSlideFront, outtakeSlideBack, outtakeSlideMiddle;
 
-    private final Servo led, claw;
-    private final Servo wrist, angleLeft, angleRight, position;
-    private final Servo pusherServo;
-//    private final Servo ptoRight, ptoLeft, hangLeft, hangRight;
-    private final RevColorSensorV3 color;
-    private final DigitalChannel breakBeam;
-    private IMU imu;
+    private final Servo led = null, claw = null;
+    private final Servo armPosition = null, clawPosition = null;
+    private final Servo pusherServo = null;
+    private final CRServo hangLeft, hangRight;
+    private final RevColorSensorV3 color = null;
 
-    private final VoltageSensor controlHubVoltageSensor;
-    private final VoltageSensor expansionHubVoltageSensor;
+    private final VoltageSensor controlHubVoltageSensor = null;
+    private final VoltageSensor expansionHubVoltageSensor = null;
 
-    private final LynxModule controlHublynx;
-    private final LynxModule expansionHublynx;
+    private final LynxModule controlHublynx = null;
+    private final LynxModule expansionHublynx = null;
 
-    private GamepadEx gp1;
-    //private final LynxModule servoHublynx;
-
+//    private GamepadEx gp1 = null;
 
     public Telemetry telemetry;
 
     public Init(HardwareMap hardwareMap) {
         // Read from the hardware maps
-        leftFrontMotor = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        rightFrontMotor = hardwareMap.get(DcMotorEx.class, "frontRight");
-        leftRearMotor = hardwareMap.get(DcMotorEx.class, "backLeft");
-        rightRearMotor = hardwareMap.get(DcMotorEx.class, "backRight");
-
-        // Set the drive motor direction:
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
-
-        // Don't use the encoders for motor odometry
-        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        // Engage the brakes when the robot cuts off power to the motors
-        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftFrontMotor = hardwareMap.get(DcMotorEx.class, "frontLeft");
+//        rightFrontMotor = hardwareMap.get(DcMotorEx.class, "frontRight");
+//        leftRearMotor = hardwareMap.get(DcMotorEx.class, "backLeft");
+//        rightRearMotor = hardwareMap.get(DcMotorEx.class, "backRight");
+//
+//        // Set the drive motor direction:
+//        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+//        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
+//        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
+//        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+//
+//        // Don't use the encoders for motor odometry
+//        leftFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        rightFrontMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightRearMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//        // Engage the brakes when the robot cuts off power to the motors
+//        leftFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightFrontMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        leftRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        rightRearMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Initialize intake motors and servos
-        claw = hardwareMap.servo.get("claw");
-        position = hardwareMap.servo.get("position");
-        wrist = hardwareMap.servo.get("wrist");
-        angleLeft = hardwareMap.servo.get("angleLeft");
-        angleRight = hardwareMap.servo.get("angleRight");
+//        claw = hardwareMap.servo.get("claw");
+//        armPosition = hardwareMap.servo.get("angleLeft");
+//        clawPosition = hardwareMap.servo.get("angleRight");
+//
+//        intake = hardwareMap.get(CRServo.class, "intake");
+//        intakeExtendo = hardwareMap.get(DcMotorEx.class, "intakeExtendo");
+//        intakeExtendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        intakeExtendo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//        intakeArm = hardwareMap.servo.get("intakeLeft");
+//        intakeChain = hardwareMap.servo.get("intakeRight");
 
-        intake = hardwareMap.get(DcMotorEx.class, "intake");
-        intake.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeExtendo = hardwareMap.get(DcMotorEx.class, "intakeExtendo");
-        //intakeExtendo.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeExtendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        intakeExtendo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeSlideFront = hardwareMap.get(DcMotorEx.class, "vertSlideFront");
+        outtakeSlideMiddle = hardwareMap.get(DcMotorEx.class, "vertSlideMiddle");
+        outtakeSlideBack = hardwareMap.get(DcMotorEx.class, "vertSlideBack");
+        outtakeSlideMiddle.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        color = hardwareMap.get(RevColorSensorV3.class, "color");
+//        pusherServo = hardwareMap.servo.get("pusher");
 
-        intakeLeft = hardwareMap.servo.get("intakeLeft");
-        intakeRight = hardwareMap.servo.get("intakeRight");
+        hangLeft = hardwareMap.get(CRServo.class, "hangLeft");
+        hangRight = hardwareMap.get(CRServo.class, "hangRight");
+//
+//        // Strange and evil devices
+//        led = hardwareMap.servo.get("led");
+//        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
 
-        outtakeSlideRight = hardwareMap.get(DcMotorEx.class, "vertSlideRight");
+//        controlHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
+//        expansionHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Expansion Hub 2");
 
+//        controlHublynx = hardwareMap.get(LynxModule.class, "Control Hub");
+//        expansionHublynx = hardwareMap.get(LynxModule.class, "Expansion Hub 2");
 
-        outtakeSlideLeft = hardwareMap.get(DcMotorEx.class, "vertSlideLeft");
-        outtakeSlideLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        color = hardwareMap.get(RevColorSensorV3.class, "color");
-        breakBeam = hardwareMap.digitalChannel.get("breakBeam");
-        pusherServo = hardwareMap.servo.get("pusher");
-
-        // Strange and evil devices
-        led = hardwareMap.servo.get("led");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
-
-        controlHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
-        expansionHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Expansion Hub 2");
-
-        controlHublynx = hardwareMap.get(LynxModule.class, "Control Hub");
-        expansionHublynx = hardwareMap.get(LynxModule.class, "Expansion Hub 2");
-
-        //servoHublynx = hardwareMap.get(LynxModule.class, "Servo Hub 3");
-
-
-        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
-
-        for (LynxModule hub : allHubs) {
-            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
-        }
-
-
+//        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+//
+//        for (LynxModule hub : allHubs) {
+//            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+//        }
 
     }
 
@@ -133,7 +117,7 @@ public class Init {
     public DcMotorEx getLeftRearMotor(){return leftRearMotor;}
     public DcMotorEx getRightRearMotor(){return rightRearMotor;}
 
-    public DcMotorEx getIntake() {
+    public CRServo getIntake() {
         return intake;
     }
 
@@ -141,40 +125,36 @@ public class Init {
         return intakeExtendo;
     }
 
-    public Servo getIntakeLeft() {
-        return intakeLeft;
+    public Servo getIntakeArm() {
+        return intakeArm;
     }
 
-    public Servo getIntakeRight() {
-        return intakeRight;
+    public Servo getIntakeChain() {
+        return intakeChain;
     }
 
-    public DcMotorEx getOuttakeSlideLeft() {
-        return outtakeSlideLeft;
+    public DcMotorEx getOuttakeSlideFront() {
+        return outtakeSlideFront;
     }
 
-    public DcMotorEx getOuttakeSlideRight() {
-        return outtakeSlideRight;
+    public DcMotorEx getOuttakeSlideBack() {
+        return outtakeSlideBack;
+    }
+
+    public DcMotorEx getOuttakeSlideMiddle() {
+        return outtakeSlideMiddle;
     }
 
     public Servo getClaw() {
         return claw;
     }
 
-    public Servo getWrist() {
-        return wrist;
+    public Servo getArmPosition() {
+        return armPosition;
     }
 
-    public Servo getAngleLeft() {
-        return angleLeft;
-    }
-
-    public Servo getAngleRight() {
-        return angleRight;
-    }
-
-    public Servo getPosition() {
-        return position;
+    public Servo getClawPosition() {
+        return clawPosition;
     }
 
     public Telemetry getTelemetry() {
@@ -189,13 +169,12 @@ public class Init {
         return color;
     }
 
-    public DigitalChannel getBreakBeam() {
-        return breakBeam;
-    }
-
     public Servo getLed() {
         return led;
     }
+
+    public CRServo getHangLeft() {return hangLeft;}
+    public CRServo getHangRight() {return hangRight;}
 
     public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
 
@@ -204,14 +183,13 @@ public class Init {
 
     public LynxModule getControlHublynx() { return controlHublynx; }
     public LynxModule getExpansionHublynx() {  return expansionHublynx; }
-    //public LynxModule getServoHublynx() { return servoHublynx; }
 
-    public void setGamePad(Gamepad gp){
-        gp1 = new GamepadEx(gp);
-    }
-
-    public GamepadEx getGp1() {
-        return gp1;
-    }
+//    public void setGamePad(Gamepad gp){
+//        gp1 = new GamepadEx(gp);
+//    }
+//
+//    public GamepadEx getGp1() {
+//        return gp1;
+//    }
 
 }

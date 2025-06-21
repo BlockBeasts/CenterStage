@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.hardware.rev.RevTouchSensor;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -19,8 +20,8 @@ public class Intake {
 
     PIDController pidController;
 
-    public static double p = 0.0015, i = 0, d = 0;
-    public static double f = 0.05;
+    public static double p = 0.0007, i = 0, d = 0;
+    public static double f = 0;
 
     public static double ticks_in_degrees = (double) 8192 / 360;
 
@@ -29,18 +30,16 @@ public class Intake {
     Telemetry telemetry;
     Servo intakeLeft;
     Servo intakeRight;
-    DcMotor intakeMotor;
+    CRServo intake;
     DcMotor extendo;
     RevColorSensorV3 colorSensor;
-    RevTouchSensor touchSensor;
-    DigitalChannel breakBeam;
     Servo led;
     Servo pusher;
     Outtake outtake;
     ITDCons.Color allianceColor;
     ITDCons.Color color;
 
-    public double multiplier =1;
+    public double multiplier = 1;
 
     public static double INTAKE_POWER = -1;
     public static double EJECT_POWER = 1;
@@ -84,12 +83,11 @@ public class Intake {
         this.telemetry = telemetry;
         this.init = init;
 
-        intakeLeft = init.getIntakeLeft();
-        intakeRight= init.getIntakeRight();
-        intakeMotor = init.getIntake();
+        intakeLeft = init.getIntakeArm();
+        intakeRight= init.getIntakeChain();
+        intake = init.getIntake();
         extendo = init.getIntakeExtendo();
         colorSensor = init.getColor();
-        breakBeam = init.getBreakBeam();
         led = init.getLed();
         pusher = init.getPusherServo();
 
@@ -150,17 +148,18 @@ public class Intake {
 
 
     protected void startIntake (){
-        intakeMotor.setPower(INTAKE_POWER);
+        intake.setPower(INTAKE_POWER);
     }
 
     public void stopIntake(){
-        intakeMotor.setPower(0);
+        intake.setPower(0);
     }
 
     public void ejectIntake(){
 
         status=Status.EJECT;
         elapsedTime = null;
+
     }
 
 
@@ -237,7 +236,7 @@ public class Intake {
                         target = ITDCons.MaxExtension;
                         servoToDrop();
                     } else  {
-                        intakeMotor.setPower(ITDCons.intakeEjectSpeed);
+                        intake.setPower(ITDCons.intakeEjectSpeed);
                         status= Status.EJECT_TO_HUMAN;
                         elapsedTime = new ElapsedTime();
                         color= ITDCons.Color.unknown;
@@ -245,7 +244,7 @@ public class Intake {
                     break;
                 case EJECT_TO_HUMAN:
                     if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()){
-                        intakeMotor.setPower(0);
+                        intake.setPower(0);
                         servoToNeutral();
                         target = ITDCons.halfExtension;;
                         elapsedTime=null;
@@ -257,12 +256,12 @@ public class Intake {
                 case EJECT:
                     if (elapsedTime==null ){
                         elapsedTime= new ElapsedTime();
-                        intakeMotor.setPower(EJECT_POWER);
+                        intake.setPower(EJECT_POWER);
                         color = ITDCons.Color.unknown;
                     }
 
                     if ( elapsedTime.milliseconds()> status.getTime()){
-                        intakeMotor.setPower(0);
+                        intake.setPower(0);
                         servoToNeutral();
                         elapsedTime=null;
                         color= ITDCons.Color.unknown;

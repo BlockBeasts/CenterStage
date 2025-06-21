@@ -18,18 +18,18 @@ public class Outtake implements Component{
     private PIDController controller;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double p = 0.0015, i = 0, d = 0.00003;
+    public static double p = 0.0008, i = 0, d = 0;
     public static double f = 0;
 
     public static int target = 0;
 
     public int offset =0;
 
-    Servo led;
-    private final Servo claw;
-    public final Servo wrist, angleLeft, angleRight, position;
+    private final Servo claw, led;
+    public final Servo armPosition, clawPosition;
     private final DcMotor outtakeSlideLeft;
     private final DcMotor outtakeSlideRight;
+    private final DcMotor outtakeSlideCenter;
     public final DcMotor outtakeSlideEncoder;
 
     public int slideIncrement = 0;
@@ -139,17 +139,15 @@ public class Outtake implements Component{
         this.telemetry=telemetry;
 
         claw= init.getClaw();
-        wrist= init.getWrist();
-
-
-        this.outtakeSlideLeft =init.getOuttakeSlideLeft();
-        this.outtakeSlideRight =init.getOuttakeSlideRight();
-        this.outtakeSlideEncoder =init.getOuttakeSlideRight();
+        this.outtakeSlideLeft =init.getOuttakeSlideFront();
+        this.outtakeSlideRight =init.getOuttakeSlideBack();
+        this.outtakeSlideCenter =init.getOuttakeSlideMiddle();
+        this.outtakeSlideEncoder =init.getOuttakeSlideBack();
         voltageSensor = init.getControlHubVoltageSensor();
-        angleLeft = init.getAngleLeft();
-        angleRight = init.getAngleRight();
-        position = init.getPosition();
+        armPosition = init.getArmPosition();
+        clawPosition = init.getClawPosition();
         led = init.getLed();
+
         initializeHardware();
         status= Status.InitWall;
 
@@ -180,9 +178,8 @@ public class Outtake implements Component{
     }
 
     public void initTeleopWall(){
-        position.setPosition(ITDCons.positionBack);
-        angleLeft.setPosition(ITDCons.angleBack);
-        angleRight.setPosition(ITDCons.angleBack);
+        armPosition.setPosition(ITDCons.angleBack);
+        clawPosition.setPosition(ITDCons.angleBack);
         claw.setPosition(ITDCons.clawOpen);
         status= Status.InitWall;
     }
@@ -191,15 +188,12 @@ public class Outtake implements Component{
         //position.setPosition(ITDCons.positionInitSpec);
         setAngleServoScore();
         closeClaw();
-        wrist.setPosition(ITDCons.wristFront);
         status= Status.InitAutoSpec;
     }
 
     public void initAutoSample(){
-        position.setPosition(ITDCons.positionBack);
-        angleLeft.setPosition(ITDCons.angleScoreSample);
-        angleRight.setPosition(ITDCons.angleScoreSample);
-        wrist.setPosition(ITDCons.wristFront);
+        armPosition.setPosition(ITDCons.angleScoreSample);
+        clawPosition.setPosition(ITDCons.angleScoreSample);
         closeClaw();
         status= Status.InitAutoSample;
     }
@@ -287,10 +281,8 @@ public class Outtake implements Component{
 
     public void moveToTransferTest(){
 
-            position.setPosition(ITDCons.positionTransfer);
-            wrist.setPosition(ITDCons.wristFront);
-            angleLeft.setPosition(ITDCons.angleTransfer);
-            angleRight.setPosition(ITDCons.angleTransfer);
+            armPosition.setPosition(ITDCons.angleTransfer);
+            clawPosition.setPosition(ITDCons.angleTransfer);
             claw.setPosition(ITDCons.clawOpen);
             target=ITDCons.TransferTarget;
 
@@ -409,10 +401,9 @@ public class Outtake implements Component{
                     elapsedTime = new ElapsedTime();
                 }
                 if (elapsedTime.milliseconds()> status.getTime() && elapsedTime.milliseconds()< status.getTime()+WaitTime.Move_Position.getTime()){
-                    position.setPosition(ITDCons.positionFront);
+
                 }
                 if (elapsedTime.milliseconds()> status.getTime()+WaitTime.Move_Position.getTime()){
-                    wrist.setPosition(ITDCons.wristFront);
                     setAngleServoScore();
                     elapsedTime = null;
                     status = Status.ScoreSpecimen;
@@ -486,12 +477,10 @@ public class Outtake implements Component{
                 if (elapsedTime==null){
                     closeClaw();
                     target = ITDCons.TransferTarget;
-                    position.setPosition(ITDCons.positionTransfer);
                     setAngleServoToMiddle();
                     elapsedTime = new ElapsedTime();
                 }
                 if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()<WaitTime.Servo_To_Transfer.getTime()+ status.getTime()){
-                    wrist.setPosition(ITDCons.wristFront);
                     setAngleServoToTransfer();
                 }
                 if (elapsedTime.milliseconds()>WaitTime.Servo_To_Transfer.getTime()+status.getTime()){
@@ -503,8 +492,6 @@ public class Outtake implements Component{
 
             case WallToTransfer1:
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()){
-                    position.setPosition(ITDCons.positionTransfer);
-                    wrist.setPosition(ITDCons.wristFront);
                     status = Status.WallToTransfer2;
                     elapsedTime= new ElapsedTime();
                 }
@@ -525,7 +512,6 @@ public class Outtake implements Component{
                 }
                 if (elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime() && elapsedTime.milliseconds()<WaitTime.Turn_Wrist.getTime()){
                     target = ITDCons.intermediateTarget;
-                    wrist.setPosition(ITDCons.wristBack);
                     setAngleServoToMiddle();
                 }
                 if (elapsedTime.milliseconds()>WaitTime.Turn_Wrist.getTime()){
@@ -544,7 +530,6 @@ public class Outtake implements Component{
                     openClaw();
                     status= Status.Wall;
                 } else if (elapsedTime!=null && elapsedTime.milliseconds()>200){
-                    position.setPosition(ITDCons.positionBack);
                 }
                 break;
 
@@ -557,7 +542,6 @@ public class Outtake implements Component{
                 }
                 if (elapsedTime.milliseconds()>WaitTime.CLose_Claw.getTime()){
                     setAngleServoToMiddle();
-                    wrist.setPosition(ITDCons.wristBack);
                     status = Status.SpecimenToWall_MoveBack;
                     elapsedTime = new ElapsedTime();
                 }
@@ -606,28 +590,28 @@ public class Outtake implements Component{
     }
 
     private void setAngleServoToTransfer(){
-        angleLeft.setPosition(ITDCons.angleTransfer);
-        angleRight.setPosition(ITDCons.angleTransfer);
+        armPosition.setPosition(ITDCons.angleTransfer);
+        clawPosition.setPosition(ITDCons.angleTransfer);
     }
 
     private void setAngleServoToMiddle(){
-        angleLeft.setPosition(ITDCons.angleMiddle);
-        angleRight.setPosition(ITDCons.angleMiddle);
+        armPosition.setPosition(ITDCons.angleMiddle);
+        clawPosition.setPosition(ITDCons.angleMiddle);
     }
 
     public void setAngleServoToBack(){
-        angleLeft.setPosition(ITDCons.angleBack);
-        angleRight.setPosition(ITDCons.angleBack);
+        armPosition.setPosition(ITDCons.angleBack);
+        clawPosition.setPosition(ITDCons.angleBack);
     }
 
     private void setAngleServoScore(){
-        angleLeft.setPosition(ITDCons.angleScoreSpec);
-        angleRight.setPosition(ITDCons.angleScoreSpec);
+        armPosition.setPosition(ITDCons.angleScoreSpec);
+        clawPosition.setPosition(ITDCons.angleScoreSpec);
     }
 
     private void setAngleServoScoreSample(){
-        angleLeft.setPosition(ITDCons.angleScoreSample);
-        angleRight.setPosition(ITDCons.angleScoreSample);
+        armPosition.setPosition(ITDCons.angleScoreSample);
+        clawPosition.setPosition(ITDCons.angleScoreSample);
     }
 
     private void resetSlides(){
@@ -648,7 +632,7 @@ public class Outtake implements Component{
     }
 
     private void setOuttakeBack(){
-        position.setPosition(ITDCons.positionBack);
+
     }
 
     public void setStatus(Status status) {

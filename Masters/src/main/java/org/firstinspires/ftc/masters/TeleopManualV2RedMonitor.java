@@ -63,7 +63,7 @@ public class TeleopManualV2RedMonitor extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         Init init = new Init(hardwareMap);
-        init.setGamePad(gamepad1);
+        //init.setGamePad(gamepad1);
         DriveTrain driveTrain = new DriveTrain(init, telemetry);
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
