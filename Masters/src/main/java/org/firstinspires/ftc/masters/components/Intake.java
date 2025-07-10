@@ -4,10 +4,8 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.hardware.rev.RevTouchSensor;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -28,8 +26,8 @@ public class Intake {
     Init init;
 
     Telemetry telemetry;
-    Servo intakeLeft;
-    Servo intakeRight;
+    Servo intakeArm;
+    Servo intakeChain;
     CRServo intake;
     DcMotor extendo;
     RevColorSensorV3 colorSensor;
@@ -77,14 +75,12 @@ public class Intake {
     public int blueTotal =0;
     public int greenTotal=0;
 
-
-
     public Intake(Init init, Telemetry telemetry){
         this.telemetry = telemetry;
         this.init = init;
 
-        intakeLeft = init.getIntakeArm();
-        intakeRight= init.getIntakeChain();
+        intakeArm = init.getIntakeArm();
+        intakeChain = init.getIntakeChain();
         intake = init.getIntake();
         extendo = init.getIntakeExtendo();
         colorSensor = init.getColor();
@@ -118,7 +114,8 @@ public class Intake {
         startIntake();
 
     }
-    public  void pickupSampleYellow(){
+
+    public void pickupSampleYellow(){
         elapsedTime = null;
         status = Status.PICKUP_YELLOW;
         color= ITDCons.Color.unknown;
@@ -141,11 +138,9 @@ public class Intake {
     }
 
     public void toTransfer(){
-
         status = Status.TO_TRANSFER;
         elapsedTime = null;
     }
-
 
     protected void startIntake (){
         intake.setPower(INTAKE_POWER);
@@ -156,12 +151,9 @@ public class Intake {
     }
 
     public void ejectIntake(){
-
         status=Status.EJECT;
         elapsedTime = null;
-
     }
-
 
     public void retractSlide() {
         target =0;
@@ -169,7 +161,6 @@ public class Intake {
 
     public void extendSlideHumanPlayer(){
         status= Status.EXTEND_TO_HUMAN;
-
     }
 
     public void extendSlideHalf() {
@@ -207,7 +198,7 @@ public class Intake {
     }
 
     public void transferDone(){
-        status= Status.NEUTRAL;
+        status = Status.NEUTRAL;
         servoToNeutral();
     }
 
@@ -215,9 +206,13 @@ public class Intake {
         target = ITDCons.TransferExtensionOut;
     }
 
-    public void pushOut(){ pusher.setPosition(ITDCons.pushOut); }
+    public void pushOut(){
+        pusher.setPosition(ITDCons.pushOut);
+    }
 
-    public void pushIn(){ pusher.setPosition(ITDCons.pushIn); }
+    public void pushIn(){
+        pusher.setPosition(ITDCons.pushIn);
+    }
 
     public void update(){
 
@@ -392,7 +387,6 @@ public class Intake {
         led.setPosition(1);
     }
 
-
     public void checkColor(){
         if (checkColorCount<MAX_COUNT){
             redTotal+=colorSensor.red();
@@ -440,23 +434,23 @@ public class Intake {
     }
 
     public void intakeintake(){
-        intakeLeft.setPosition(ITDCons.intakeintakearm);
-        intakeRight.setPosition(ITDCons.intakeintakechain);
+        intakeArm.setPosition(ITDCons.intakeintakearm);
+        intakeChain.setPosition(ITDCons.intakeintakechain);
     }
 
     public void servoToDrop(){
-        intakeLeft.setPosition(ITDCons.intakeArmDrop);
-        intakeRight.setPosition(ITDCons.intakeChainDrop);
+        intakeArm.setPosition(ITDCons.intakeArmDrop);
+        intakeChain.setPosition(ITDCons.intakeChainDrop);
     }
 
     public void servoToTransfer(){
-        intakeLeft.setPosition(ITDCons.intakeArmTransfer);
-        intakeRight.setPosition(ITDCons.intakeChainTransfer);
+        intakeArm.setPosition(ITDCons.intakeArmTransfer);
+        intakeChain.setPosition(ITDCons.intakeChainTransfer);
     }
 
     public void servoToNeutral(){
-        intakeLeft.setPosition(ITDCons.intakeArmNeutral);
-        intakeRight.setPosition(ITDCons.intakeChainNeutral);
+        intakeArm.setPosition(ITDCons.intakeArmNeutral);
+        intakeChain.setPosition(ITDCons.intakeChainNeutral);
     }
 
     protected void resetColorDetection(){
@@ -465,6 +459,5 @@ public class Intake {
         blueTotal=0;
         greenTotal=0;
     }
-
 
 }

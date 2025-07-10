@@ -20,8 +20,6 @@ public class PidExtendoTune extends OpMode {
 
     public static int target = 0;
 
-    //
-
     DcMotor intakeExtendo;
 
     @Override
@@ -50,6 +48,10 @@ public class PidExtendoTune extends OpMode {
         telemetry.update();
 
     }
+
+    // 28k full
+    // 14k half
+    // 0 in
 
 
 }

@@ -18,8 +18,7 @@ public class Outtake implements Component{
     private PIDController controller;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double p = 0.0008, i = 0, d = 0;
-    public static double f = 0;
+    public static double p = 0.0009, i = 0, d = 0.00001;
 
     public static int target = 0;
 
@@ -142,7 +141,7 @@ public class Outtake implements Component{
         this.outtakeSlideLeft =init.getOuttakeSlideFront();
         this.outtakeSlideRight =init.getOuttakeSlideBack();
         this.outtakeSlideCenter =init.getOuttakeSlideMiddle();
-        this.outtakeSlideEncoder =init.getOuttakeSlideBack();
+        this.outtakeSlideEncoder =init.getOuttakeSlideFront();
         voltageSensor = init.getControlHubVoltageSensor();
         armPosition = init.getArmPosition();
         clawPosition = init.getClawPosition();
@@ -178,8 +177,8 @@ public class Outtake implements Component{
     }
 
     public void initTeleopWall(){
-        armPosition.setPosition(ITDCons.angleBack);
-        clawPosition.setPosition(ITDCons.angleBack);
+        armPosition.setPosition(ITDCons.angleWallSpecArm);
+        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
         claw.setPosition(ITDCons.clawOpen);
         status= Status.InitWall;
     }
@@ -354,7 +353,7 @@ public class Outtake implements Component{
     protected void moveSlide() {
 
 //frontRight
-        int rotatePos = -outtakeSlideEncoder.getCurrentPosition();
+        int rotatePos = -(outtakeSlideEncoder.getCurrentPosition());
 
 //        telemetry.addData("rotatePos",rotatePos);
         double lift = controller.calculate(rotatePos, target-offset);
@@ -595,18 +594,18 @@ public class Outtake implements Component{
     }
 
     private void setAngleServoToMiddle(){
-        armPosition.setPosition(ITDCons.angleMiddle);
-        clawPosition.setPosition(ITDCons.angleMiddle);
+        armPosition.setPosition(ITDCons.angleMiddleArm);
+        clawPosition.setPosition(ITDCons.angleMiddleClaw);
     }
 
     public void setAngleServoToBack(){
-        armPosition.setPosition(ITDCons.angleBack);
-        clawPosition.setPosition(ITDCons.angleBack);
+        armPosition.setPosition(ITDCons.angleWallSpecArm);
+        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
     }
 
     private void setAngleServoScore(){
-        armPosition.setPosition(ITDCons.angleScoreSpec);
-        clawPosition.setPosition(ITDCons.angleScoreSpec);
+        armPosition.setPosition(ITDCons.angleScoreSpecArm);
+        clawPosition.setPosition(ITDCons.angleScoreSpecClaw);
     }
 
     private void setAngleServoScoreSample(){

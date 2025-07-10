@@ -17,24 +17,24 @@ public class ITDCons {
     public static double intakeInitRight = 1;
 
     //public static double intakeArmDrop =0.88; Former Axon
-    public static double intakeArmDrop =0.86;
-    public static double intakeChainDrop = 0.32;
+    public static double intakeArmDrop = 0.88;
+    public static double intakeChainDrop = 0.75;
 
-    public static double intakeArmNeutral= 0.86;
-    public static double intakeChainNeutral=0.58;
+    public static double intakeArmNeutral= 0.65;
+    public static double intakeChainNeutral=0.75;
 
     //public static double intakeArmTransfer=0.33; Former Axon
-    public static double intakeArmTransfer=0.16;
-    public static double intakeChainTransfer = 0.60;
-    public static double intakeTransferSpeed = 0.65;
-    public static double intakeEjectSpeed =0.8;
+    public static double intakeArmTransfer=0.65;
+    public static double intakeChainTransfer = 0.75;
+    public static double intakeTransferSpeed = 1;
+    public static double intakeEjectSpeed = 1;
 
-    public static double pushIn=0.6;
-    public static double pushOut=0.2;
+    public static double pushIn=0.35;
+    public static double pushOut=0.575;
 
     public static double clawOpenTransfer =0.3;
-    public static double clawOpen = 0.35;
-    public static double clawClose = 0.75;
+    public static double clawOpen = 0.3;
+    public static double clawClose = 0.58;
 
     public static double wristFront= 0.03;
     public static double wristBack = 0.75;
@@ -47,27 +47,34 @@ public class ITDCons {
     public static double angleBack = 0.07;
     public static double angleTransfer = 0.72;
 
-    public static double angleMiddle = 0.38;
-    public static double angleScoreSpec = 0.48;
+    public static double angleMiddle = 0.55;
+    public static double angleScoreSpecArm = .53;
+    public static double angleScoreSpecClaw = 0.9;
     public static double angleScoreSample = 0.18;
 
-    public static int wallPickupTarget = 5500;
+    public static double angleWallSpecArm = .95;
+    public static double angleWallSpecClaw = 0.15;
+
+    public static double angleMiddleArm = .6;
+    public static double angleMiddleClaw = 0.55;
+
+    public static int wallPickupTarget = 0;
 //    public static int transferPickupTarget = 0;
 
     public static int BucketTarget = 60000;
     public static int LowBucketTarget = 30000;
-    public static int SpecimenTarget = 21500;
+    public static int SpecimenTarget = 63000;
 
 //    public static int TransferPickupTarget = 4800;
 //    public static int TransferWaitTarget = 5000;
 
-    public static int intermediateTarget = 10000;
-    public static int WallTarget = 4800;
+    public static int intermediateTarget = 0;
+    public static int WallTarget = 0;
 
     public static int TransferTarget = 6500;
 
-    public static int MaxExtension = 31000;
-    public static int halfExtension= 15000;
+    public static int MaxExtension = 28000;
+    public static int halfExtension= 14000;
 
     public static int TransferExtensionIn = 0;
     public static int TransferExtensionOut = 7000;

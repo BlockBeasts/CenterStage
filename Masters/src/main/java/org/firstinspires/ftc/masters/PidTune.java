@@ -10,13 +10,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp ()
+@TeleOp
 @Config
 public class PidTune extends OpMode {
 
     private PIDController controller;
 
-    public static double p = 0, i = 0, d = 0;
+    public static double p = 0.0009, i = 0, d = 0.00001;
 
     public static int target = 0;
 
@@ -30,16 +30,17 @@ public class PidTune extends OpMode {
         outtakeSlideFront = hardwareMap.get(DcMotorEx.class, "vertSlideFront");
         outtakeSlideMiddle = hardwareMap.get(DcMotorEx.class, "vertSlideMiddle");
         outtakeSlideBack = hardwareMap.get(DcMotorEx.class, "vertSlideBack");
-        outtakeSlideMiddle.setDirection(DcMotorSimple.Direction.REVERSE);
-        outtakeSlideMiddle.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtakeSlideMiddle.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeSlideFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeSlideBack.setDirection(DcMotorSimple.Direction.REVERSE);
+        outtakeSlideFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeSlideFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
     }
 
     public void loop(){
 
         controller.setPID(p,i,d);
-        int rotatePos = -(outtakeSlideMiddle.getCurrentPosition());
+        int rotatePos = -(outtakeSlideFront.getCurrentPosition());
         double pid = controller.calculate(rotatePos, target);
 
         outtakeSlideFront.setPower(pid);
@@ -51,6 +52,10 @@ public class PidTune extends OpMode {
         telemetry.update();
 
     }
+
+    //50k low bucket
+    //100k high
+    //63k spec
 
 
 }

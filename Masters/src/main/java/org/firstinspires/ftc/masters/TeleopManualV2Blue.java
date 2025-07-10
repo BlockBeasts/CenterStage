@@ -91,8 +91,8 @@ public class TeleopManualV2Blue extends LinearOpMode {
         waitForStart();
 
         int outtakePosition = outtake.outtakeSlideEncoder.getCurrentPosition();
-        intake.initStatusTeleop();
-        outtake.initTeleopWall();
+//        intake.initStatusTeleop();
+//        outtake.initTeleopWall();
 
 
         while (opModeIsActive()) {
@@ -182,11 +182,11 @@ public class TeleopManualV2Blue extends LinearOpMode {
             }
             if (leftPressed) {
 
-                intake.pushOut();
+                //intake.pushOut();
 
             } else {
 
-                intake.pushIn();
+                //intake.pushIn();
 
             }
 

@@ -7,22 +7,22 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.masters.TeleEx.Monitor;
 import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.ITDCons;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outtake;
-import org.firstinspires.ftc.masters.TeleEx.Monitor;
 
 import java.util.List;
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "V2 Manual Teleop Red")
-public class TeleopManualV2Red extends LinearOpMode {
+@TeleOp(name = "V3 Manual Teleop Red")
+public class TeleopManualV3Red extends LinearOpMode {
 
 
 /*   controls:
-    x : drop intake/ motor on/ auto spit out wrong color (maybe lift and back down)
+    x : drop intake / motor on / auto spit out wrong color (maybe lift and back down)
     if yellow transfer (maybe retract first
     if red/blue put intake in neutral position. if slide full, retract to half, if half retract fully
     control: low bucket
@@ -47,9 +47,6 @@ public class TeleopManualV2Red extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-
-    public static double Blank = 0;
-
     public void runOpMode() throws InterruptedException {
 
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
@@ -58,7 +55,6 @@ public class TeleopManualV2Red extends LinearOpMode {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         }
 
-
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         Init init = new Init(hardwareMap);
@@ -66,7 +62,6 @@ public class TeleopManualV2Red extends LinearOpMode {
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
         Monitor monitor = new Monitor(init, telemetry);
-
 
         outtake.setIntake(intake);
         outtake.setDriveTrain(driveTrain);
@@ -82,7 +77,6 @@ public class TeleopManualV2Red extends LinearOpMode {
 
         boolean leftDown = false, leftPressed = false;
 
-
         boolean bPressed = false;
         boolean relased = true;
 
@@ -93,7 +87,7 @@ public class TeleopManualV2Red extends LinearOpMode {
         waitForStart();
 
 //        intake.initStatusTeleop();
-        outtake.initTeleopWall();
+//        outtake.initTeleopWall();
 
 
         while (opModeIsActive()) {
@@ -102,50 +96,49 @@ public class TeleopManualV2Red extends LinearOpMode {
                 hub.clearBulkCache();
             }
             if (!outtake.drivetrainOverride) {
-
                 driveTrain.driveNoMultiplier(gamepad1, DriveTrain.RestrictTo.XYT);
             }
 
-            if (gamepad1.right_stick_y > 0.5){ // down
-                intake.retractSlide();
+            if (gamepad1.right_stick_y > 0.5){
+//                intake.retractSlide();
             } else if (gamepad1.right_stick_y < -0.5) {
                 // extends/ejects to human player
-                intake.extendSlideHumanPlayer();
+//                intake.extendSlideHumanPlayer();
             }
 
             if (gamepad1.right_stick_x > 0.2){
 
             } else if (gamepad1.right_stick_x < -0.2) {
-                intake.ejectIntake();
+//                intake.ejectIntake();
             }
 
             if (gamepad1.right_stick_button) {
-                intake.stopIntake();
+//                intake.stopIntake();
             }
 
             if (gamepad1.touchpad){
-                intake.stopPickup(); // to neutral or transfer
+//                intake.stopPickup(); // to neutral or transfer
             }
 
             if (gamepad1.dpad_up) {
-                intake.extendSlideMax();
+//                intake.extendSlideMax();
             } else if (gamepad1.dpad_down){
-                intake.extendSlideHalf();
+//                intake.extendSlideHalf();
             }
 
 
             if(gamepad1.a){
-                outtake.openClaw();
+//                outtake.openClaw();
             }
             if (gamepad1.b) {
                 if (!bPressed) {
                     bPressed = true;
                     if (outtake.isReadyToPickUp() || outtake.isReadyForTransfer()) {
-                        outtake.closeClaw();
+//                        outtake.closeClaw();
                     } else if (outtake.isTransferDone()) {
-                        outtake.scoreSampleLow();
+//                        outtake.scoreSampleLow();
                     } else {
-                        outtake.moveToPickUpFromWall();
+//                        outtake.moveToPickUpFromWall();
                     }
                 }
             } else {
@@ -161,18 +154,18 @@ public class TeleopManualV2Red extends LinearOpMode {
 
 
             } else if (gamepad1.y){
-                outtake.score();
+//                outtake.score();
             }
 
             if (gamepad1.right_bumper) {
-                intake.pickupSampleYellow();
+//                intake.pickupSampleYellow();
                 if (!outtake.isReadyForTransfer()){
-                    outtake.moveToTransfer();
+//                    outtake.moveToTransfer();
                 }
 
             } else if (gamepad1.left_bumper){
-                intake.pickupSampleAlliance();
-                outtake.moveToPickUpFromWall();
+//                intake.pickupSampleAlliance();
+//                outtake.moveToPickUpFromWall();
             }
 
             if (gamepad1.dpad_left && !leftDown) {
@@ -190,17 +183,6 @@ public class TeleopManualV2Red extends LinearOpMode {
                 intake.pushIn();
 
             }
-
-            // Controller 2 anti-fuck up code
-
-            // Reset Vertical slides
-            if (gamepad2.a){
-
-            }
-
-            // Adjust Slides
-
-            // Reset Horizontal slides
 
             outtake.update();
             intake.update();

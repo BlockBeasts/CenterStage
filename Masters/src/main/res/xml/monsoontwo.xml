@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+
+    <LynxUsbDevice name="Magic Wizard Portal" serialNumber="(embedded)" parentModuleAddress="173">
+
+        <!--Control Hub, Dont ask why it's port 173-->
+        <LynxModule name="Control Hub" port="173">
+    
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="frontLeft" port="2" />
+            <goBILDA5202SeriesMotor name="backLeft" port="3" />
+            <goBILDA5202SeriesMotor name="vertSlideFront" port="0" />
+            <goBILDA5202SeriesMotor name="intakeExtendo" port="1" />
+
+            <!--Servos--> 
+            <ContinuousRotationServo name="hangLeft" port="5" />
+            <Servo name="pusher" port="0" />
+
+            <!--Other-->
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+
+        </LynxModule>
+
+        <!--Servo Hub, Currently empty-->
+        <ServoHub name="Servo Hub" port="3">
+
+            <!--Servos-->
+            <Servo name="claw" port="0" />
+            <Servo name="clawPosition" port="1" />
+            <Servo name="armPosition" port="2" />
+
+        </ServoHub>
+
+        <!--Expansion Hub, No witty comment here-->
+        <LynxModule name="Expansion Hub" port="2">
+
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="frontRight" port="3" />
+            <goBILDA5202SeriesMotor name="backRight" port="0" />
+            <goBILDA5202SeriesMotor name="vertSlideMiddle" port="1" />
+            <goBILDA5202SeriesMotor name="vertSlideBack" port="2" />
+
+            <!--Servos-->
+            <ContinuousRotationServo name="hangRight" port="0" />
+            <ContinuousRotationServo name="intake" port="4" />
+            <Servo name="intakeChain" port="1" />
+            <Servo name="intakeArm" port="3" />
+            <Servo name="led" port="5" />
+
+            <!--Other-->
+            <RevColorSensorV3 name="color" port="0" bus="3" />
+            <goBILDAPinpoint name="pinpoint" port="0" bus="0" />
+
+        </LynxModule>
+
+    </LynxUsbDevice>
+    
+</Robot>
