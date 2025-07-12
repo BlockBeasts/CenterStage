@@ -109,7 +109,7 @@ public class Outtake implements Component{
 
         WallToTransfer1(600), //close claw and move angle servo
          WallToTransfer2(500),//go to transfer position and open
-        CloseClawTransfer(400),
+        CloseClawTransfer(1000),
 
         Specimen_To_Wall(350),
         SpecimenToWall_MoveBack(800),
@@ -263,7 +263,7 @@ public class Outtake implements Component{
 
             setAngleServoToMiddle();
             closeClaw();
-            target = ITDCons.TransferTarget;
+            target = ITDCons.TransferTarget; //set higher
             elapsedTime = new ElapsedTime();
             status = Status.WallToTransfer1;
 
@@ -280,8 +280,8 @@ public class Outtake implements Component{
 
     public void moveToTransferTest(){
 
-            armPosition.setPosition(ITDCons.angleTransfer);
-            clawPosition.setPosition(ITDCons.angleTransfer);
+            armPosition.setPosition(ITDCons.angleTransferArm);
+            clawPosition.setPosition(ITDCons.angleTransferClaw);
             claw.setPosition(ITDCons.clawOpen);
             target=ITDCons.TransferTarget;
 
@@ -551,6 +551,7 @@ public class Outtake implements Component{
                 //put back code when position is consistent
                     if (intake.readyToTransfer()){
                         closeClaw();
+                        intake.stopIntake();
                         status= Status.CloseClawTransfer;
                         elapsedTime = new ElapsedTime();
                     }
@@ -589,8 +590,8 @@ public class Outtake implements Component{
     }
 
     private void setAngleServoToTransfer(){
-        armPosition.setPosition(ITDCons.angleTransfer);
-        clawPosition.setPosition(ITDCons.angleTransfer);
+        armPosition.setPosition(ITDCons.angleTransferArm);
+        clawPosition.setPosition(ITDCons.angleTransferClaw);
     }
 
     private void setAngleServoToMiddle(){
@@ -609,8 +610,8 @@ public class Outtake implements Component{
     }
 
     private void setAngleServoScoreSample(){
-        armPosition.setPosition(ITDCons.angleScoreSample);
-        clawPosition.setPosition(ITDCons.angleScoreSample);
+        armPosition.setPosition(ITDCons.angleWallSpecArm);
+        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
     }
 
     private void resetSlides(){

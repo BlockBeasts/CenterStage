@@ -92,7 +92,7 @@ public class TeleopManualV2Red extends LinearOpMode {
 
         waitForStart();
 
-//        intake.initStatusTeleop();
+        intake.initStatusTeleop();
         outtake.initTeleopWall();
 
 
@@ -143,7 +143,7 @@ public class TeleopManualV2Red extends LinearOpMode {
                     if (outtake.isReadyToPickUp() || outtake.isReadyForTransfer()) {
                         outtake.closeClaw();
                     } else if (outtake.isTransferDone()) {
-                        outtake.scoreSampleLow();
+                        outtake.scoreSample();
                     } else {
                         outtake.moveToPickUpFromWall();
                     }

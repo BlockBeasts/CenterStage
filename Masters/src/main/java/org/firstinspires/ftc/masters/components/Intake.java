@@ -63,6 +63,7 @@ public class Intake {
     }
 
     ElapsedTime elapsedTime = null;
+    ElapsedTime closingTime = null;
 
     public  Status status;
     Gamepad gamepad1;
@@ -199,7 +200,7 @@ public class Intake {
 
     public void transferDone(){
         status = Status.NEUTRAL;
-        servoToNeutral();
+        servoToTransfer();
     }
 
     public void extendForTransfer(){
@@ -354,10 +355,17 @@ public class Intake {
                         }
                     }
                     if (extendo.getCurrentPosition()<200){
-                        elapsedTime =null;
-                        stopIntake();
-                        status= Status.TRANSFER;
+                        if (closingTime==null){
+                            closingTime = new ElapsedTime();
+                        } else {
+                            if (closingTime.milliseconds() > 2000)
+                                elapsedTime = null;
+                                closingTime = null;
+                                status = Status.TRANSFER;
+                        }
                     }
+
+                    // if (...<200){ if (closing==null){closingTime= new elapsedTime) else {if closingTime>...){status =....
 
                     break;
 
