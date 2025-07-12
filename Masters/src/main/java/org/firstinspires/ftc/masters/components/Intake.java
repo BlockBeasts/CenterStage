@@ -354,14 +354,16 @@ public class Intake {
                             target = ITDCons.TransferExtensionIn;
                         }
                     }
+                    // https://www.youtube.com/watch?v=xGytDsqkQY8
                     if (extendo.getCurrentPosition()<200){
                         if (closingTime==null){
                             closingTime = new ElapsedTime();
                         } else {
-                            if (closingTime.milliseconds() > 2000)
+                            if (closingTime.milliseconds() > 2000){
                                 elapsedTime = null;
                                 closingTime = null;
                                 status = Status.TRANSFER;
+                            }
                         }
                     }
 
