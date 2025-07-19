@@ -77,7 +77,7 @@ public class Outtake implements Component{
     }
 
     public enum Status {
-        TransferReady(300),
+        TransferReady(0),
         TransferDone(0),
 
         ScoreSpecimen(0),
@@ -87,37 +87,37 @@ public class Outtake implements Component{
         InitAutoSpec(0),
         InitAutoSample(0),
 
-        TransferToBucket_Back(200),
+        TransferToBucket_Back(0),
         TransferToBucket_Lift(0),
-        TransferToBucket_Move(600),
+        TransferToBucket_Move(0),
         AutoLiftToBucket(0),
 //        ScoreSample(100),
 //        ScoreSampleOpenClaw(200),
-        ScoringSampleDone(300),
+        ScoringSampleDone(0),
 
-        TransferToWall_Up(200),
-        TransferToWall_Back(600),
-        TransferToWall_Final(200),
+        TransferToWall_Up(0),
+        TransferToWall_Back(0),
+        TransferToWall_Final(0),
 
 //        BucketToTransfer_Down(500),
 //        BucketToTransfer_Open(200),
-        BucketToTransfer_Final(400),
+        BucketToTransfer_Final(0),
 
-        WallToFront_lift(600),
-        WallToFront_move(450),
-        WallToFront3 (300),
+        WallToFront_lift(0),
+        WallToFront_move(0),
+        WallToFront3 (0),
 
-        WallToTransfer1(600), //close claw and move angle servo
-         WallToTransfer2(500),//go to transfer position and open
-        CloseClawTransfer(1000),
+        WallToTransfer1(0), //close claw and move angle servo
+         WallToTransfer2(0),//go to transfer position and open
+        CloseClawTransfer(0),
 
-        Specimen_To_Wall(350),
-        SpecimenToWall_MoveBack(800),
+        Specimen_To_Wall(0),
+        SpecimenToWall_MoveBack(0),
 
-        Transfer_To_Wall(500),
-        ToBucketClose(400),
+        Transfer_To_Wall(0),
+        ToBucketClose(0),
 
-        CloseClawSpec(400);
+        CloseClawSpec(0);
 
 
 
@@ -426,7 +426,7 @@ public class Outtake implements Component{
 
             case TransferToBucket_Lift:
 
-                status= Status.Bucket;
+                //status= Status.Bucket;
 //                isLiftReady = true;
                //TODO: change from time to vertical slide position
                 if (getLiftPos()>ITDCons.BucketTarget-30000){

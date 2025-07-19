@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.masters.autonomous;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.pedropathing.localization.Pose;
@@ -25,10 +26,11 @@ import org.firstinspires.ftc.masters.pedroPathing.constants.LConstants;
 
 import java.util.List;
 
+@Config
 @Autonomous(name="Sample")
 public class Sample extends LinearOpMode {
 
-    public static double p = 0.0009, i = 0, d = 0.00001;
+    public static double p = 0.0008, i = 0, d = 0.000015;
 
     Pose startPose = new Pose(10.5,109.5,0);
     Pose bucketPose = new Pose (18.75,124.25, Math.toRadians(-45));

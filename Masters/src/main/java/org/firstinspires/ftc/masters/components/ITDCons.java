@@ -17,7 +17,7 @@ public class ITDCons {
     public static double intakeInitRight = 1;
 
     //public static double intakeArmDrop =0.88; Former Axon
-    public static double intakeArmDrop = 0.9;
+    public static double intakeArmDrop = 0.92;
     public static double intakeChainDrop = 0.93;
 
     public static double intakeArmNeutral= 0.67;

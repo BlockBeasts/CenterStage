@@ -10,8 +10,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.masters.components.Init;
 
-@TeleOp(group="Hardware Values", name = "IntakeTest")
 @Config
+@TeleOp(group="Hardware Values", name = "IntakeTest")
 public class IntakeTest extends LinearOpMode {
 
     public static double intakeArmPos = 0.5;

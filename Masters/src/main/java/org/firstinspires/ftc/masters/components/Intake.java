@@ -48,7 +48,7 @@ public class Intake {
         PICKUP_ALLIANCE(0),
         INIT(0),
         EJECT(1500),
-        TO_TRANSFER(500),
+        TO_TRANSFER(0),
         TO_NEUTRAL(0),
         EXTEND_TO_HUMAN(0),
         EJECT_TO_HUMAN(800),
