@@ -74,8 +74,8 @@ public class SpecimenSafe extends LinearOpMode {
         buildPaths();
 
         PathState state = PathState.Lift;
-        outtake.initAutoSpecimen();
-        intake.retractSlide();
+//        outtake.initAutoSpecimen();
+//        intake.retractSlide();
 
         pinpoint.update();
         telemetry.addData("Pinpoint Status", pinpoint.getDeviceStatus());
@@ -96,8 +96,8 @@ public class SpecimenSafe extends LinearOpMode {
 
         waitForStart();
 
-        outtake.scoreSpecimen();
-        intake.servoToNeutral();
+//        intake.initStatusTeleop();
+//        outtake.initTeleopWall();
 
         elapsedTime = new ElapsedTime();
 
@@ -118,14 +118,14 @@ public class SpecimenSafe extends LinearOpMode {
 
                         elapsedTime = new ElapsedTime();
                         state = PathState.ToSub;
-                        driveTrain.drive(1);
+//                        driveTrain.drive(1);
 
                     }
                     break;
                 case ToSub:
                     if (elapsedTime!=null && elapsedTime.milliseconds()>0){
-                        driveTrain.drive(0);
-                        outtake.openClawAuto();
+//                        driveTrain.drive(0);
+//                        outtake.openClawAuto();
                         state = PathState.ScorePreload;
                         elapsedTime = new ElapsedTime();
                     }
@@ -133,16 +133,14 @@ public class SpecimenSafe extends LinearOpMode {
                 case ScorePreload:
                     if (elapsedTime!=null && elapsedTime.milliseconds()>100){
                         follower.followPath(pushSample1);
-                        outtake.closeClaw();
-                        outtake.moveToPickUpFromWall();
+//                        outtake.closeClaw();
+//                        outtake.moveToPickUpFromWall();
                         state = PathState.Sample1;
                         elapsedTime = null;
                     }
                     break;
                 case Sample1:
                     if (!follower.isBusy()){
-
-
                         follower.followPath(pushSample2);
                         state= PathState.Sample2;
                     }
@@ -156,7 +154,7 @@ public class SpecimenSafe extends LinearOpMode {
                     break;
                 case Sample3:
                     if (!follower.isBusy()){
-                        outtake.openClaw();
+//                        outtake.openClaw();
                         follower.followPath(pickup1);
                         state= PathState.PickUpSpec;
                         elapsedTime = null;
@@ -165,12 +163,12 @@ public class SpecimenSafe extends LinearOpMode {
                 case PickUpSpec:
                     if (!follower.isBusy()){
                         if (elapsedTime==null) {
-                            outtake.closeClaw();
+//                            outtake.closeClaw();
                             elapsedTime= new ElapsedTime();
 
                         } else if (elapsedTime.milliseconds()>500){
                             follower.followPath(score);
-                            outtake.scoreSpecimen();
+//                            outtake.scoreSpecimen();
                             elapsedTime=null;
                             if(cycleCount <= 4) {
                                 state = PathState.ScoreSpec3;
@@ -186,14 +184,14 @@ public class SpecimenSafe extends LinearOpMode {
                 case ScoreSpec3:
                     if (!follower.isBusy()){
                         if (elapsedTime==null) {
-                            outtake.openClawAuto();
+//                            outtake.openClawAuto();
                             cycleCount++;
                             elapsedTime= new ElapsedTime();
 
                         } else if (elapsedTime.milliseconds()>350){
                             follower.followPath(towall);
-                            outtake.closeClaw();
-                            outtake.moveToPickUpFromWall();
+//                            outtake.closeClaw();
+//                            outtake.moveToPickUpFromWall();
                             elapsedTime = null;
                             state = PathState.PickUpSpec;
 
@@ -201,30 +199,30 @@ public class SpecimenSafe extends LinearOpMode {
                     }
                     break;
 
-//                case Score:
-//                    if (!follower.isBusy()){
-//                        if (elapsedTime==null) {
-//                            //outtake.openClaw();
-//                            elapsedTime= new ElapsedTime();
-//
-//                        } else if (elapsedTime.milliseconds()>150){
-//                            follower.followPath(pickUp);
-//                            //outtake.moveToPickUpFromWall();
-//                            elapsedTime=null;
-//                            state= PathState.End;
-//                        }
-//                    }
-//                    break;
-//                case End:
-//                    if (!follower.isBusy()){
-//                        //outtake.setTarget(0);
-//                    }
-//                    break;
+                case Score:
+                    if (!follower.isBusy()){
+                        if (elapsedTime==null) {
+//                            outtake.openClaw();
+                            elapsedTime= new ElapsedTime();
+
+                        } else if (elapsedTime.milliseconds()>150){
+                            follower.followPath(pickUp);
+//                            outtake.moveToPickUpFromWall();
+                            elapsedTime=null;
+                            state= PathState.End;
+                        }
+                    }
+                    break;
+                case End:
+                    if (!follower.isBusy()){
+//                        outtake.setTarget(0);
+                    }
+                    break;
             }
 
 
-            outtake.update();
-            intake.update();
+//            outtake.update();
+//            intake.update();
             follower.update();
         }
     }

@@ -67,8 +67,8 @@ public class ITDCons {
     public static int wallPickupTarget = 0;
 //    public static int transferPickupTarget = 0;
 
-    public static int BucketTarget = 60000;
-    public static int LowBucketTarget = 30000;
+    public static int BucketTarget = 100000;
+    public static int LowBucketTarget = 50000;
     public static int SpecimenTarget = 61500;
 
 //    public static int TransferPickupTarget = 4800;
@@ -77,7 +77,7 @@ public class ITDCons {
     public static int intermediateTarget = 0;
     public static int WallTarget = 0;
 
-    public static int TransferTarget = 16000;
+    public static int TransferTarget = 14000;
 
     public static int MaxExtension = 28000;
     public static int halfExtension= 14000;

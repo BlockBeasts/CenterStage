@@ -71,7 +71,7 @@ public class Intake {
     private int target;
 
     public int checkColorCount=0;
-    public int MAX_COUNT=15;
+    public int MAX_COUNT=10;
     public int redTotal =0;
     public int blueTotal =0;
     public int greenTotal=0;
@@ -171,7 +171,7 @@ public class Intake {
     }
 
     public void extendSlideHalfAuto(){
-        target= ITDCons.halfExtension;
+        target= ITDCons.MaxExtension;
         multiplier=1;
     }
 
@@ -285,17 +285,17 @@ public class Intake {
                         } else if (color == ITDCons.Color.yellow) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
-//                            if (gamepad1!=null) {
-//                                gamepad1.rumble(2000);
-//                            }
+                            if (gamepad1!=null) {
+                                gamepad1.rumble(2000);
+                            }
 
                         } else if (color == allianceColor) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
 
-//                            if (gamepad1!=null) {
-//                                gamepad1.rumble(2000);
-//                            }
+                            if (gamepad1!=null) {
+                                gamepad1.rumble(2000);
+                            }
                         }
                         resetColorDetection();
 
@@ -355,7 +355,8 @@ public class Intake {
                         }
                     }
                     // https://www.youtube.com/watch?v=xGytDsqkQY8
-                    if (extendo.getCurrentPosition()<200){
+                    if (extendo.getCurrentPosition()<1000){
+                        telemetry.addData("Currect Pos: ", true);
                         if (closingTime==null){
                             closingTime = new ElapsedTime();
                         } else {

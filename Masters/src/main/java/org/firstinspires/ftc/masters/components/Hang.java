@@ -15,11 +15,12 @@ public class Hang {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     PIDController pidController;
-    public static double p = 0, i = 0, d = 0;
+    public static double p = 0.0009, i = 0, d = 0.00001;
     public static int target;
 
     Init init;
     Telemetry telemetry;
+
 
     DcMotorEx outtakeSlideFront, outtakeSlideBack, outtakeSlideMiddle;
     CRServo hangLeft, hangRight;
@@ -51,7 +52,7 @@ public class Hang {
 
     public void update(){
 
-        int rotatePos = outtakeSlideMiddle.getCurrentPosition();
+        int rotatePos = -(outtakeSlideFront.getCurrentPosition());
         double pid = pidController.calculate(rotatePos, target);
 
         outtakeSlideFront.setPower(pid);

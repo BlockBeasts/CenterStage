@@ -63,8 +63,8 @@ public class Sample extends LinearOpMode {
         Init init = new Init(hardwareMap);
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
-//        DriveTrain driveTrain = new DriveTrain(init, telemetry);
-//        outtake.setDriveTrain(driveTrain);
+        DriveTrain driveTrain = new DriveTrain(init, telemetry);
+        outtake.setDriveTrain(driveTrain);
         outtake.setIntake(intake);
         intake.setOuttake(outtake);
 
@@ -126,24 +126,24 @@ public class Sample extends LinearOpMode {
 
                     break;
                 case Sample1:
-//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-//
-//                        follower.turnTo(Math.toRadians(-45));
-//                        pathState= PathState.Score1Lift;
-//                        elapsedTime= null;
-//                        count=0;
-//
-//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-//                        intake.extendSlideHalfAuto();
-//                        intake.pickupSampleYellow();
-//
-//                        elapsedTime= new ElapsedTime();
-//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
-//                        intake.extendAutoPickup();
-//                        count++;
-//                    } else if (count==1){
-//                        intake.incrementExtends();
-//                    }
+                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+
+                        follower.turnTo(Math.toRadians(-45));
+                        pathState= PathState.Score1Lift;
+                        elapsedTime= null;
+                        count=0;
+
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+                        intake.extendSlideHalfAuto();
+                        intake.pickupSampleYellow();
+
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
+                        //intake.extendAutoPickup();
+                        count++;
+                    } else if (count==1){
+                        //intake.incrementExtends();
+                    }
                     break;
                 case Score1Lift:
                     if (!follower.isBusy()&& count==0) {
@@ -209,18 +209,18 @@ public class Sample extends LinearOpMode {
                     }
                     break;
                 case Sample3:
-//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-//                        outtake.scoreSample();
-//                        follower.followPath(scoreSample3);
-//                        intake.extendSlideHalfAuto();
-//                        pathState= PathState.Score3;
-//
-//                    }
-//                    else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-//                        intake.extendSlideMAxAuto();
-//                        elapsedTime= new ElapsedTime();
-//
-//                    }
+                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+                        outtake.scoreSample();
+                        follower.followPath(scoreSample3);
+                        intake.extendSlideHalfAuto();
+                        pathState= PathState.Score3;
+
+                    }
+                    else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+                        intake.extendSlideMAxAuto();
+                        elapsedTime= new ElapsedTime();
+
+                    }
                     break;
                 case Score3:
                     if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
@@ -266,8 +266,8 @@ public class Sample extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(sample1), new Point(midPoint)))
                 .setLinearHeadingInterpolation(sample1.getHeading(), midPoint.getHeading())
 
-//                .addPath(new BezierCurve( new Point(bucketPose.getX()+1, bucketPose.getY()),new Point(bucketPose)))
-//                .setLinearHeadingInterpolation(sample1.getHeading(), bucketPose.getHeading())
+                .addPath(new BezierCurve( new Point(bucketPose.getX()+1, bucketPose.getY()),new Point(bucketPose)))
+                .setLinearHeadingInterpolation(sample1.getHeading(), bucketPose.getHeading())
                 .build();
 
         scoreSample1_2 = follower.pathBuilder()

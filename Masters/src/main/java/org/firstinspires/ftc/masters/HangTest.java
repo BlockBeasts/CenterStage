@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.masters.components.Hang;
 import org.firstinspires.ftc.masters.components.Init;
+import org.firstinspires.ftc.masters.components.Intake;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "HangingTest")
@@ -23,10 +24,15 @@ public class HangTest extends LinearOpMode {
 
         Init init = new Init(hardwareMap);
         Hang hang = new Hang(init, telemetry);
+        Intake intake = new Intake(init, telemetry);
 
         telemetry.update();
 
         waitForStart();
+
+        intake.initStatusTeleop();
+        intake.pushIn();
+        intake.setTarget(0);
 
         while (opModeIsActive()) {
 
@@ -45,6 +51,7 @@ public class HangTest extends LinearOpMode {
             }
 
             hang.setTarget(target);
+            intake.update();
             hang.update();
 
         }

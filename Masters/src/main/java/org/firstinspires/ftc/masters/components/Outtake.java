@@ -191,8 +191,8 @@ public class Outtake implements Component{
     }
 
     public void initAutoSample(){
-        armPosition.setPosition(ITDCons.angleScoreSample);
-        clawPosition.setPosition(ITDCons.angleScoreSample);
+        armPosition.setPosition(ITDCons.angleWallSpecArm - .1);
+        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
         closeClaw();
         status= Status.InitAutoSample;
     }
@@ -363,6 +363,7 @@ public class Outtake implements Component{
 
         outtakeSlideLeft.setPower(lift);
         outtakeSlideRight.setPower(lift);
+        outtakeSlideCenter.setPower(lift);
 
     }
 
@@ -457,7 +458,7 @@ public class Outtake implements Component{
                 }
                 if ( elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime() && elapsedTime.milliseconds()<WaitTime.Open_Claw.getTime()+WaitTime.BackUp_Robot.getTime() ){
                     if (driveTrain!=null) {
-                        driveTrain.drive(0.6);
+                        //driveTrain.drive(0.6);
                         drivetrainOverride = true;
                     }
                 }
@@ -476,7 +477,8 @@ public class Outtake implements Component{
                 if (elapsedTime==null){
                     closeClaw();
                     target = ITDCons.TransferTarget;
-                    setAngleServoToMiddle();
+                    setAngleServoToMiddle(); // TODO: hit dat middle
+                    intake.setTarget(ITDCons.halfExtension);
                     elapsedTime = new ElapsedTime();
                 }
                 if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()<WaitTime.Servo_To_Transfer.getTime()+ status.getTime()){
@@ -610,7 +612,7 @@ public class Outtake implements Component{
     }
 
     private void setAngleServoScoreSample(){
-        armPosition.setPosition(ITDCons.angleWallSpecArm);
+        armPosition.setPosition(ITDCons.angleWallSpecArm - .1);
         clawPosition.setPosition(ITDCons.angleWallSpecClaw);
     }
 
