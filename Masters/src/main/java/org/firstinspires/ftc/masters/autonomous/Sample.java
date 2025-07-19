@@ -28,6 +28,7 @@ import java.util.List;
 @Autonomous(name="Sample")
 public class Sample extends LinearOpMode {
 
+    public static double p = 0.0009, i = 0, d = 0.00001;
 
     Pose startPose = new Pose(10.5,109.5,0);
     Pose bucketPose = new Pose (18.75,124.25, Math.toRadians(-45));
@@ -67,6 +68,7 @@ public class Sample extends LinearOpMode {
         outtake.setDriveTrain(driveTrain);
         outtake.setIntake(intake);
         intake.setOuttake(outtake);
+        outtake.initializeHardware(p,i,d);
 
         pinpoint = init.getPinpoint();
         led = init.getLed();
@@ -97,6 +99,8 @@ public class Sample extends LinearOpMode {
         int count =0;
 
         waitForStart();
+
+        intake.pushIn();
 
         elapsedTime = null;
         ElapsedTime  elapsedTimeFollow =null;
@@ -139,10 +143,10 @@ public class Sample extends LinearOpMode {
 
                         elapsedTime= new ElapsedTime();
                     } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
-                        //intake.extendAutoPickup();
+//                        intake.extendAutoPickup();
                         count++;
                     } else if (count==1){
-                        //intake.incrementExtends();
+//                        intake.incrementExtends();
                     }
                     break;
                 case Score1Lift:
@@ -190,7 +194,7 @@ public class Sample extends LinearOpMode {
                         intake.extendAutoPickup();
                         count++;
                     } else if (count==1){
-                        intake.incrementExtends();
+//                        intake.incrementExtends();
                     }
                     break;
                 case Score2:

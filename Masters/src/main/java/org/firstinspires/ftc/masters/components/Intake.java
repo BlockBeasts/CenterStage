@@ -360,7 +360,7 @@ public class Intake {
                         if (closingTime==null){
                             closingTime = new ElapsedTime();
                         } else {
-                            if (closingTime.milliseconds() > 2000){
+                            if (closingTime.milliseconds() > 1000){
                                 elapsedTime = null;
                                 closingTime = null;
                                 status = Status.TRANSFER;

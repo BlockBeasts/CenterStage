@@ -147,7 +147,7 @@ public class Outtake implements Component{
         clawPosition = init.getClawPosition();
         led = init.getLed();
 
-        initializeHardware();
+        initializeHardware(p, i, d);
         status= Status.InitWall;
 
     }
@@ -165,7 +165,7 @@ public class Outtake implements Component{
     }
 
 
-    public void initializeHardware() {
+    public void initializeHardware(double p, double i, double d) {
 
         controller = new PIDController(p, i, d);
         controller.setPID(p, i, d);

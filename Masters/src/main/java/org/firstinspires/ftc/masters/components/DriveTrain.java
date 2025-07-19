@@ -46,7 +46,7 @@ public class DriveTrain implements Component{
     Init init;
 
     @Override
-    public void initializeHardware() {
+    public void initializeHardware(double p, double i, double d) {
 
     }
 

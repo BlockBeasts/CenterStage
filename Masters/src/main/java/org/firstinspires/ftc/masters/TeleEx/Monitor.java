@@ -67,12 +67,12 @@ public class Monitor implements Component {
 
 //        gp1 = init.getGp1();
 
-        initializeHardware();
+        initializeHardware(0,0,0);
 
     }
 
     @Override
-    public void initializeHardware()  {
+    public void initializeHardware(double p, double i, double d)  {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
