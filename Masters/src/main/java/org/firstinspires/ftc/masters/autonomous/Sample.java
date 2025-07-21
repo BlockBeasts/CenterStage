@@ -30,12 +30,12 @@ import java.util.List;
 @Autonomous(name="Sample")
 public class Sample extends LinearOpMode {
 
-    public static double p = 0.0008, i = 0, d = 0.000015;
+    public static double p = 0.00055, i = 0, d = 0.00001;
 
     Pose startPose = new Pose(10.5,109.5,0);
-    Pose bucketPose = new Pose (18.75,124.25, Math.toRadians(-45));
+    Pose bucketPose = new Pose (21.5,122.5, Math.toRadians(-45));
 
-    Pose bucketPose1 = new Pose (22.5,122.5, Math.toRadians(-45));
+    Pose bucketPose1 = new Pose (21.5,122.5, Math.toRadians(-45));
     Pose sample1 = new Pose(20.5,121.25,Math.toRadians(0));
 
     Pose midPoint = new Pose(21,120, Math.toRadians(-45));
@@ -47,8 +47,6 @@ public class Sample extends LinearOpMode {
     Follower follower;
     GoBildaPinpointDriver pinpoint;
     Servo led;
-
-
 
     enum PathState {ToBucket, Sample1, Sample2, Sample3, Score1, Score2, Score3, Score1Lift }
 
@@ -80,6 +78,7 @@ public class Sample extends LinearOpMode {
         buildPaths();
 
         outtake.initAutoSample();
+        intake.initStatusTeleop();
 
         pinpoint.update();
         telemetry.addData("Pinpoint Status", pinpoint.getDeviceStatus());
@@ -165,7 +164,7 @@ public class Sample extends LinearOpMode {
                     break;
                 case Score1:
                     if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>6000 && follower.isBusy()){
-                        follower.breakFollowing();
+                        //follower.breakFollowing();
                         elapsedTimeFollow=null;
                     }
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
@@ -201,7 +200,7 @@ public class Sample extends LinearOpMode {
                     break;
                 case Score2:
                     if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
-                        follower.breakFollowing();
+                        //follower.breakFollowing();
                         elapsedTimeFollow=null;
                     }
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
@@ -230,7 +229,7 @@ public class Sample extends LinearOpMode {
                     break;
                 case Score3:
                     if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
-                        follower.breakFollowing();
+                        //follower.breakFollowing();
                         elapsedTimeFollow=null;
                     }
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){

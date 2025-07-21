@@ -18,7 +18,7 @@ public class Outtake implements Component{
     private PIDController controller;
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double p = 0.0009, i = 0, d = 0.00001;
+    public static double p = 0.0007, i = 0, d = 0.00001;
 
     public static int target = 0;
 
@@ -429,7 +429,7 @@ public class Outtake implements Component{
                 //status= Status.Bucket;
 //                isLiftReady = true;
                //TODO: change from time to vertical slide position
-                if (getLiftPos()>ITDCons.BucketTarget-30000){
+                if (getLiftPos()>ITDCons.BucketTarget-3000){
                     elapsedTime = new ElapsedTime();
                     status = Status.Bucket;
                     isLiftReady = true;

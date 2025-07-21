@@ -51,18 +51,18 @@ public class ITDCons {
 
     public static double angleBack = 0.07;
     public static double angleTransferArm = 0.1;
-    public static double angleTransferClaw = 0.7;
+    public static double angleTransferClaw = 0.75;
 
     public static double angleMiddle = 0.55;
     public static double angleScoreSpecArm = .47 ;
-    public static double angleScoreSpecClaw = 0.9;
+    public static double angleScoreSpecClaw = 0.95;
     public static double angleScoreSample = 0.18;
 
     public static double angleWallSpecArm = .95;
-    public static double angleWallSpecClaw = 0.15;
+    public static double angleWallSpecClaw = 0.2;
 
     public static double angleMiddleArm = .6;
-    public static double angleMiddleClaw = 0.55;
+    public static double angleMiddleClaw = 0.6;
 
     public static int wallPickupTarget = 0;
 //    public static int transferPickupTarget = 0;
@@ -77,7 +77,7 @@ public class ITDCons {
     public static int intermediateTarget = 0;
     public static int WallTarget = 0;
 
-    public static int TransferTarget = 14000;
+    public static int TransferTarget = 18000;
 
     public static int MaxExtension = 28000;
     public static int halfExtension= 14000;
