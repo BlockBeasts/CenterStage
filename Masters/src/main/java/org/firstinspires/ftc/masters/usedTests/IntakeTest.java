@@ -16,7 +16,7 @@ public class IntakeTest extends LinearOpMode {
 
     public static double intakeArmPos = 0.5;
     public static double intakeChainPos = 0.5;
-    public static double intakePower = 0;
+    public static double intakePower = 1;
 
     public void runOpMode() throws InterruptedException {
 

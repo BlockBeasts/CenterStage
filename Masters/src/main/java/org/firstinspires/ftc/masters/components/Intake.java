@@ -71,7 +71,7 @@ public class Intake {
     private int target;
 
     public int checkColorCount=0;
-    public int MAX_COUNT=10;
+    public int MAX_COUNT=5;
     public int redTotal =0;
     public int blueTotal =0;
     public int greenTotal=0;
@@ -286,17 +286,17 @@ public class Intake {
                         } else if (color == ITDCons.Color.yellow) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
-                            if (gamepad1!=null) {
-                                gamepad1.rumble(2000);
-                            }
+//                            if (gamepad1!=null) {
+//                                gamepad1.rumble(2000);
+//                            }
 
                         } else if (color == allianceColor) {
                             status = Status.TO_TRANSFER;
                             elapsedTime = null;
-
-                            if (gamepad1!=null) {
-                                gamepad1.rumble(2000);
-                            }
+//
+//                            if (gamepad1!=null) {
+//                                gamepad1.rumble(2000);
+//                            }
                         }
                         resetColorDetection();
 
@@ -344,6 +344,9 @@ public class Intake {
                             if (target==ITDCons.MaxExtension){
                                 target= ITDCons.TransferExtensionIn;
                             }
+                            if (target==ITDCons.halfExtension){
+                                target= ITDCons.TransferExtensionIn;
+                            }
                         }
                         elapsedTime = new ElapsedTime();
                     }
@@ -361,7 +364,7 @@ public class Intake {
                         if (closingTime==null){
                             closingTime = new ElapsedTime();
                         } else {
-                            if (closingTime.milliseconds() > 700){
+                            if (closingTime.milliseconds() > 300){
                                 elapsedTime = null;
                                 closingTime = null;
                                 status = Status.TRANSFER;

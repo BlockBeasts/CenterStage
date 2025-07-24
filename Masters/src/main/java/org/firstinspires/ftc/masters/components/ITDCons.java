@@ -80,7 +80,7 @@ public class ITDCons {
     public static int TransferTarget = 18000;
 
     public static int MaxExtension = 28000;
-    public static int halfExtension= 14000;
+    public static int halfExtension= 21000;
 
     public static int TransferExtensionIn = 0;
     public static int TransferExtensionOut = 0;

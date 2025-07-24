@@ -539,13 +539,13 @@ public class Outtake implements Component{
 
             case Transfer_To_Wall:
                 if (elapsedTime == null){
-                    target = ITDCons.WallTarget;
+                    setAngleServoToMiddle();
                     closeClaw();
                     elapsedTime = new ElapsedTime();
 
                 }
                 if (elapsedTime.milliseconds()>WaitTime.CLose_Claw.getTime()){
-                    setAngleServoToMiddle();
+                    target = ITDCons.WallTarget;
                     status = Status.SpecimenToWall_MoveBack;
                     elapsedTime = new ElapsedTime();
                 }
@@ -562,7 +562,7 @@ public class Outtake implements Component{
 
                 break;
             case CloseClawTransfer:
-                if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()  && elapsedTime.milliseconds()<status.getTime()+300){
+                if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()){ //&& elapsedTime.milliseconds()<status.getTime()+300
                     intake.extendForTransfer();
                     setOuttakeBack();
                   //  intake.stopIntake();
@@ -570,10 +570,11 @@ public class Outtake implements Component{
 
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()+300){
                     status= Status.TransferDone;
-                    if (gamepad1!=null) {
-                        gamepad1.rumble(1500);
-                    }
+//                    if (gamepad1!=null) {
+//                        gamepad1.rumble(1500);
+//                    }
                     intake.transferDone();
+                    scoreSample();
                 }
                 break;
 

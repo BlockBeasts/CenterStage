@@ -146,6 +146,8 @@ public class TeleopManualV2Red extends LinearOpMode {
                         outtake.closeClaw();
                     } else if (outtake.isTransferDone()) {
                         outtake.scoreSample();
+                    } else if (outtake.getTarget() == ITDCons.LowBucketTarget){
+                        outtake.setTarget(ITDCons.BucketTarget);
                     } else {
                         outtake.moveToPickUpFromWall();
                     }
@@ -166,6 +168,8 @@ public class TeleopManualV2Red extends LinearOpMode {
                         outtake.closeClaw();
                     } else if (outtake.isTransferDone()) {
                         outtake.scoreSampleLow();
+                    } else if (outtake.getTarget() == ITDCons.BucketTarget){
+                            outtake.setTarget(ITDCons.LowBucketTarget);
                     } else {
                         outtake.moveToPickUpFromWall();
                     }
