@@ -64,6 +64,9 @@ public class ITDCons {
     public static double angleMiddleArm = .6;
     public static double angleMiddleClaw = 0.6;
 
+    public static double angleAutoArm = .95;
+    public static double angleAutoClaw = 0.5;
+
     public static int wallPickupTarget = 0;
 //    public static int transferPickupTarget = 0;
 
