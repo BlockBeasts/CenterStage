@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.masters.components.DriveTrain;
+import org.firstinspires.ftc.masters.components.Hang;
 import org.firstinspires.ftc.masters.components.ITDCons;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
@@ -65,7 +66,7 @@ public class TeleopManualV2Red extends LinearOpMode {
         DriveTrain driveTrain = new DriveTrain(init, telemetry);
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
-        Monitor monitor = new Monitor(init, telemetry);
+        Hang hang = new Hang( init, telemetry);
 
 
         outtake.setIntake(intake);
@@ -75,16 +76,13 @@ public class TeleopManualV2Red extends LinearOpMode {
 
         intake.setGamepad1(gamepad1);
         outtake.setGamepad(gamepad1);
-        int target=0;
 
-        int dpadUpPressed = 0;
-        int dpadDownPressed = 0;
 
         boolean leftDown = false, leftPressed = false;
 
-
         boolean bPressed = false;
         boolean xPressed = false;
+        boolean touchpadPressed = false;
         boolean relased = true;
 
         telemetry.addData("Before", outtake.outtakeSlideEncoder.getCurrentPosition());
@@ -207,6 +205,13 @@ public class TeleopManualV2Red extends LinearOpMode {
 
             }
 
+            if (gamepad1.touchpad) {
+                if (!touchpadPressed) {
+                    touchpadPressed = true;
+                    hang.startHang();
+                    }
+                }
+
             // Controller 2 anti-fuck up code
 
             // Reset Vertical slides
@@ -218,6 +223,7 @@ public class TeleopManualV2Red extends LinearOpMode {
 
             // Reset Horizontal slides
 
+            hang.update();
             outtake.update();
             intake.update();
 

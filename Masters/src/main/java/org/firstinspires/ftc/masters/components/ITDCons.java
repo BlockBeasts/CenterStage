@@ -9,12 +9,12 @@ public class ITDCons {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public enum Color {red, blue, yellow, unknown}
-
-    public static double zero = 0;
-
-    public static double intakeInit = 0.5;
-    public static double intakeInitLeft = 0;
-    public static double intakeInitRight = 1;
+//
+//    public static double zero = 0;
+//
+//    public static double intakeInit = 0.5;
+//    public static double intakeInitLeft = 0;
+//    public static double intakeInitRight = 1;
 
     //public static double intakeArmDrop =0.88; Former Axon
     public static double intakeArmDrop = 0.92;
@@ -23,8 +23,8 @@ public class ITDCons {
     public static double intakeArmNeutral= 0.67;
     public static double intakeChainNeutral=0.93;
 
-    public static double intakeArmShoot= 0.4;
-    public static double intakeChainShoot=0.2;
+//    public static double intakeArmShoot= 0.4;
+//    public static double intakeChainShoot=0.2;
 
     //public static double intakeArmTransfer=0.33; Former Axon
     public static double intakeArmTransfer=0.55;
@@ -35,7 +35,7 @@ public class ITDCons {
     public static double pushIn=0.35;
     public static double pushOut=0.575;
 
-    public static double clawOpenTransfer =0.3;
+//    public static double clawOpenTransfer =0.3;
     public static double clawOpen = 0.3;
     public static double clawClose = 0.58;
 
@@ -45,18 +45,18 @@ public class ITDCons {
     public static double wristBack = 0.75;
 
     public static double positionBack = 0.09;
-    public static double positionInitSpec=0.4;
-    public static double positionTransfer = 0.36;
+//    public static double positionInitSpec=0.4;
+//    public static double positionTransfer = 0.36;
     public static double positionFront =1;
 
-    public static double angleBack = 0.07;
+//    public static double angleBack = 0.07;
     public static double angleTransferArm = 0.1;
     public static double angleTransferClaw = 0.75;
 
-    public static double angleMiddle = 0.55;
+//    public static double angleMiddle = 0.55;
     public static double angleScoreSpecArm = .47 ;
     public static double angleScoreSpecClaw = 0.95;
-    public static double angleScoreSample = 0.18;
+//    public static double angleScoreSample = 0.18;
 
     public static double angleWallSpecArm = .95;
     public static double angleWallSpecClaw = 0.2;

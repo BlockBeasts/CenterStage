@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -14,25 +15,36 @@ public class Hang {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    PIDController pidController;
-    public static double p = 0.0009, i = 0, d = 0.00001;
-    public static int target;
-
     Init init;
     Telemetry telemetry;
+    public Outtake outtake;
 
-
-    DcMotorEx outtakeSlideFront, outtakeSlideBack, outtakeSlideMiddle;
     CRServo hangLeft, hangRight;
+
+    private ElapsedTime elapsedTime = null;
+
+    private Status status;
+
+    public enum Status {
+        Phase1(0),
+        Phase2(1000),
+        Phase3(1000);
+
+        private final long time;
+
+        Status (long time){
+            this.time= time;
+        }
+
+        public long getTime() {
+            return time;
+        }
+    }
 
     public Hang(Init init, Telemetry telemetry){
 
         this.telemetry = telemetry;
         this.init = init;
-
-        outtakeSlideFront = init.getOuttakeSlideFront();
-        outtakeSlideMiddle = init.getOuttakeSlideMiddle();
-        outtakeSlideBack = init.getOuttakeSlideBack();
 
         hangLeft = init.getHangLeft();
         hangRight = init.getHangRight();
@@ -45,25 +57,42 @@ public class Hang {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        pidController = new PIDController(p, i, d);
-        pidController.setPID(p, i, d);
-
     }
 
     public void update(){
 
-        int rotatePos = -(outtakeSlideFront.getCurrentPosition());
-        double pid = pidController.calculate(rotatePos, target);
+        switch (status){
+            case Phase1:
+                if (elapsedTime == null) {
+                    setTarget(ITDCons.BucketTarget);
+                    servoEnable();
+                    elapsedTime = new ElapsedTime();
+                    status = Status.Phase2;
+                }
+                break;
 
-        outtakeSlideFront.setPower(pid);
-        outtakeSlideBack.setPower(pid);
-        outtakeSlideMiddle.setPower(pid);
+            case Phase2:
+                if (elapsedTime.milliseconds() > status.getTime()) {
+                    servoReverse();
+                    status = Status.Phase3;
+                    elapsedTime = new ElapsedTime();
+                }
+                break;
+
+            case Phase3:
+                if (elapsedTime.milliseconds() > status.getTime()) {
+                    setTarget(0);
+                }
+
+        }
+
+        outtake.moveSlide();
 
     }
 
     public void setTarget(int target){
 
-        this.target = target;
+        outtake.setTarget(target);
 
     }
 
@@ -86,6 +115,10 @@ public class Hang {
         hangLeft.setPower(0);
         hangRight.setPower(0);
 
+    }
+
+    public void startHang() {
+        status = Status.Phase1;
     }
 
 }

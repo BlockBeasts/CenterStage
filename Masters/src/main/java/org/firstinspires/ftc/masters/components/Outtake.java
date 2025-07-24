@@ -353,7 +353,7 @@ public class Outtake implements Component{
     }
 
 
-    protected void moveSlide() {
+    public void moveSlide() {
 
 //frontRight
         int rotatePos = -(outtakeSlideEncoder.getCurrentPosition());
