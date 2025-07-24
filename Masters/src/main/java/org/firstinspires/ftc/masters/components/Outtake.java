@@ -432,7 +432,7 @@ public class Outtake implements Component{
                 //status= Status.Bucket;
 //                isLiftReady = true;
                //TODO: change from time to vertical slide position
-                if (getLiftPos()>ITDCons.BucketTarget-3000){
+                if (getLiftPos()>target-3000){
                     elapsedTime = new ElapsedTime();
                     status = Status.Bucket;
                     isLiftReady = true;
@@ -447,7 +447,7 @@ public class Outtake implements Component{
 
             case AutoLiftToBucket:
 
-                if (getLiftPos()>ITDCons.BucketTarget-500) {
+                if (getLiftPos()>target-500) {
                     isLiftReady = true;
                     status=Status.Bucket;
                 }
