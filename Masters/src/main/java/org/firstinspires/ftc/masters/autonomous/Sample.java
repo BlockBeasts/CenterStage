@@ -131,6 +131,8 @@ public class Sample extends LinearOpMode {
 
                     break;
                 case Sample1:
+                    telemetry.addData("transfer done: ", outtake.isTransferDone());
+                    telemetry.addData("scoring done: ", outtake.isScoringDone());
                     if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
 
                         follower.turnTo(Math.toRadians(-45));
