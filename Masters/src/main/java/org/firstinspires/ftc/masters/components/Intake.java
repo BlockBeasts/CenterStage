@@ -200,6 +200,7 @@ public class Intake {
 
     public void transferDone(){
         status = Status.NEUTRAL;
+        stopIntake();
         servoToTransfer();
     }
 
@@ -374,7 +375,7 @@ public class Intake {
 
                 case TO_NEUTRAL:
                     if (elapsedTime==null){
-                        stopIntake();
+//                        stopIntake();
                         servoToNeutral();
                         if (target == ITDCons.MaxExtension){
                             target = ITDCons.halfExtension;
