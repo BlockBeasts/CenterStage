@@ -565,7 +565,7 @@ public class Outtake implements Component{
                 if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()  && elapsedTime.milliseconds()<status.getTime()+300){
                     intake.extendForTransfer();
                     setOuttakeBack();
-                    intake.stopIntake();
+                  //  intake.stopIntake();
                 }
 
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()+300){
