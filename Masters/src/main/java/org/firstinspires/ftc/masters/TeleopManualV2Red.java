@@ -72,17 +72,20 @@ public class TeleopManualV2Red extends LinearOpMode {
         outtake.setIntake(intake);
         outtake.setDriveTrain(driveTrain);
         intake.setOuttake(outtake);
+        hang.setOuttake(outtake);
         intake.setAllianceColor(ITDCons.Color.red);
 
         intake.setGamepad1(gamepad1);
         outtake.setGamepad(gamepad1);
 
+        int phase = 0;
 
         boolean leftDown = false, leftPressed = false;
 
         boolean bPressed = false;
         boolean xPressed = false;
         boolean touchpadPressed = false;
+        boolean hangMode = false;
         boolean relased = true;
 
         telemetry.addData("Before", outtake.outtakeSlideEncoder.getCurrentPosition());
@@ -173,7 +176,6 @@ public class TeleopManualV2Red extends LinearOpMode {
 
 
 
-
             if (gamepad1.y){
                 outtake.score();
             }
@@ -208,9 +210,22 @@ public class TeleopManualV2Red extends LinearOpMode {
             if (gamepad1.touchpad) {
                 if (!touchpadPressed) {
                     touchpadPressed = true;
-                    hang.startHang();
+
+                    phase += 1;
+
+                    if(phase == 1){
+                        hang.startHang();
+                        hangMode = true;
+                    } else if (phase == 2) {
+                        hang.finishHang();
+                    } else if (phase > 2) {
+                        phase = 0;
                     }
-                }
+                    }
+                } else {
+                touchpadPressed = false;
+            }
+
 
             // Controller 2 anti-fuck up code
 
@@ -224,7 +239,9 @@ public class TeleopManualV2Red extends LinearOpMode {
             // Reset Horizontal slides
 
             hang.update();
-            outtake.update();
+            if(!hangMode) {
+                outtake.update();
+            }
             intake.update();
 
 

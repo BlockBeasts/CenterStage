@@ -22,13 +22,15 @@ public class Hang {
     CRServo hangLeft, hangRight;
 
     private ElapsedTime elapsedTime = null;
+    private ElapsedTime elapsedTimeOne = null;
 
-    private Status status;
+    private Status status = Status.Nothing;
 
     public enum Status {
-        Phase1(0),
+        Nothing(0),
+        Phase1(3000),
         Phase2(1000),
-        Phase3(1000);
+        Phase3(3000);
 
         private final long time;
 
@@ -53,6 +55,10 @@ public class Hang {
 
     }
 
+    public void setOuttake(Outtake outtake){
+        this.outtake = outtake;
+    }
+
     public void initializeHardware() {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -62,33 +68,45 @@ public class Hang {
     public void update(){
 
         switch (status){
+
+            case Nothing:
+
+                break;
+
             case Phase1:
-                if (elapsedTime == null) {
                     setTarget(ITDCons.BucketTarget);
-                    servoEnable();
-                    elapsedTime = new ElapsedTime();
-                    status = Status.Phase2;
-                }
+                    servoReverse();
+                    if (elapsedTime==null) {
+                        elapsedTime = new ElapsedTime();
+                    }
+                    if (elapsedTime.milliseconds() > status.getTime()){
+                        servoDisable();
+                        status = Status.Nothing;
+                    }
                 break;
 
             case Phase2:
-                if (elapsedTime.milliseconds() > status.getTime()) {
-                    servoReverse();
+                    servoEnable();
+                    if (elapsedTimeOne == null){
+                        elapsedTimeOne = new ElapsedTime();
+                    }
                     status = Status.Phase3;
-                    elapsedTime = new ElapsedTime();
-                }
                 break;
 
             case Phase3:
-                if (elapsedTime.milliseconds() > status.getTime()) {
+                if (elapsedTimeOne.milliseconds() > status.getTime()) {
+                    servoDisable();
                     setTarget(0);
                 }
+                break;
 
         }
 
         outtake.moveSlide();
 
     }
+
+
 
     public void setTarget(int target){
 
@@ -119,6 +137,10 @@ public class Hang {
 
     public void startHang() {
         status = Status.Phase1;
+    }
+
+    public void finishHang(){
+        status = Status.Phase2;
     }
 
 }
