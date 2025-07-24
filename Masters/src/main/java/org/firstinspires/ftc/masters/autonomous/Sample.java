@@ -305,11 +305,5 @@ public class Sample extends LinearOpMode {
                 .addPath(new BezierLine(new Point(sample3), new Point(bucketPose)))
                 .setLinearHeadingInterpolation(sample3.getHeading(), bucketPose.getHeading())
                 .build();
-
-
-
-
-
-
     }
 }
