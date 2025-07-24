@@ -84,6 +84,7 @@ public class TeleopManualV2Red extends LinearOpMode {
 
 
         boolean bPressed = false;
+        boolean xPressed = false;
         boolean relased = true;
 
         telemetry.addData("Before", outtake.outtakeSlideEncoder.getCurrentPosition());
@@ -157,10 +158,25 @@ public class TeleopManualV2Red extends LinearOpMode {
             //outtake.moveToTransfer();
             //intake.toNeutral();
 
-            if (gamepad1.x){
+            if (gamepad1.x) {
+                if (!xPressed) {
+                    xPressed = true;
+                    if (outtake.isReadyToPickUp() || outtake.isReadyForTransfer()) {
+                        outtake.closeClaw();
+                    } else if (outtake.isTransferDone()) {
+                        outtake.scoreSampleLow();
+                    } else {
+                        outtake.moveToPickUpFromWall();
+                    }
+                }
+            } else {
+                xPressed = false;
+            }
 
 
-            } else if (gamepad1.y){
+
+
+            if (gamepad1.y){
                 outtake.score();
             }
 

@@ -209,6 +209,9 @@ public class Outtake implements Component{
             status = Status.ScoringSampleDone;
         } else {
            claw.setPosition(ITDCons.clawOpen);
+           if (status == Status.TransferDone){
+               status= Status.TransferReady;
+           }
         }
     }
 
