@@ -556,7 +556,6 @@ public class Outtake implements Component{
                 //put back code when position is consistent
                     if (intake.readyToTransfer()){
                         closeClaw();
-                        intake.stopIntake();
                         status= Status.CloseClawTransfer;
                         elapsedTime = new ElapsedTime();
                     }
@@ -566,6 +565,7 @@ public class Outtake implements Component{
                 if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()  && elapsedTime.milliseconds()<status.getTime()+300){
                     intake.extendForTransfer();
                     setOuttakeBack();
+                    intake.stopIntake();
                 }
 
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()+300){
