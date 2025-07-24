@@ -348,6 +348,9 @@ public class Intake {
                             if (target==ITDCons.halfExtension){
                                 target= ITDCons.TransferExtensionIn;
                             }
+                            if (target==14000){
+                                target= ITDCons.TransferExtensionIn;
+                            }
                         }
                         elapsedTime = new ElapsedTime();
                     }

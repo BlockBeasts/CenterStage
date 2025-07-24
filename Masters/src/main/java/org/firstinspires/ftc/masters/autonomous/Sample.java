@@ -32,7 +32,7 @@ public class Sample extends LinearOpMode {
 
     public static double p = 0.00055, i = 0, d = 0.00001;
 
-    Pose startPose = new Pose(10.5,109.5,0);
+    Pose startPose = new Pose(10.5,109.5,-90);
     Pose bucketPose = new Pose (21.5,122.5, Math.toRadians(-45));
 
     Pose bucketPose1 = new Pose (21.5,122.5, Math.toRadians(-45));

@@ -74,6 +74,7 @@ public class Hang {
                 break;
 
             case Phase1:
+                    outtake.setAngleServoToBack();
                     setTarget(ITDCons.BucketTarget);
                     servoReverse();
                     if (elapsedTime==null) {

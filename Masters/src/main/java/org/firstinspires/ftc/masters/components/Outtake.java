@@ -423,7 +423,7 @@ public class Outtake implements Component{
                     elapsedTime= new ElapsedTime();
                     status = Status.TransferToBucket_Lift;
                     isScoringDone= false;
-                    isLiftReady = false;
+                    isLiftReady = true;
                 }
                 break;
 
@@ -432,7 +432,7 @@ public class Outtake implements Component{
                 //status= Status.Bucket;
 //                isLiftReady = true;
                //TODO: change from time to vertical slide position
-                if (getLiftPos()>target-3000){
+                if (getLiftPos()>ITDCons.BucketTarget-3000){
                     elapsedTime = new ElapsedTime();
                     status = Status.Bucket;
                     isLiftReady = true;
@@ -447,7 +447,7 @@ public class Outtake implements Component{
 
             case AutoLiftToBucket:
 
-                if (getLiftPos()>target-500) {
+                if (getLiftPos()>ITDCons.BucketTarget-3000) {
                     isLiftReady = true;
                     status=Status.Bucket;
                 }
@@ -462,13 +462,13 @@ public class Outtake implements Component{
                 if ( elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime() && elapsedTime.milliseconds()<WaitTime.Open_Claw.getTime()+WaitTime.BackUp_Robot.getTime() ){
                     if (driveTrain!=null) {
                         //driveTrain.drive(0.6);
-                        drivetrainOverride = true;
+                        //drivetrainOverride = true;
                     }
                 }
                 if (elapsedTime.milliseconds()>WaitTime.Open_Claw.getTime()+WaitTime.BackUp_Robot.getTime()){
                     if (driveTrain!=null) {
-                        drivetrainOverride = false;
-                        driveTrain.drive(0);
+                        //drivetrainOverride = false;
+                        //driveTrain.drive(0);
                     }
                     status= Status.BucketToTransfer_Final;
                     elapsedTime = null;

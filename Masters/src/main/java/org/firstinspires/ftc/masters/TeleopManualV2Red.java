@@ -70,7 +70,7 @@ public class TeleopManualV2Red extends LinearOpMode {
 
 
         outtake.setIntake(intake);
-        outtake.setDriveTrain(driveTrain);
+        //outtake.setDriveTrain(driveTrain);
         intake.setOuttake(outtake);
         hang.setOuttake(outtake);
         intake.setAllianceColor(ITDCons.Color.red);
@@ -204,6 +204,7 @@ public class TeleopManualV2Red extends LinearOpMode {
             if (leftPressed) {
 
                 intake.pushOut();
+                intake.setTarget(14000);
 
             } else {
 
