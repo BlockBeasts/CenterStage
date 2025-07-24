@@ -622,6 +622,11 @@ public class Outtake implements Component{
         clawPosition.setPosition(ITDCons.angleWallSpecClaw);
     }
 
+    public void setAngleServoAutoInit(){
+        armPosition.setPosition(ITDCons.angleAutoArm);
+        clawPosition.setPosition(ITDCons.angleAutoClaw);
+    }
+
     private void resetSlides(){
         if (!slideFixed) {
             slideIncrement = slideIncrement - 100;

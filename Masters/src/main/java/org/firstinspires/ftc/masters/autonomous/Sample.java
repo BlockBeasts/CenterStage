@@ -33,10 +33,10 @@ public class Sample extends LinearOpMode {
     public static double p = 0.00055, i = 0, d = 0.00001;
 
     Pose startPose = new Pose(10.5,109.5,-90);
-    Pose bucketPose = new Pose (21.5,122.5, Math.toRadians(-45));
+    Pose bucketPose = new Pose (25.5,137.5, Math.toRadians(-45));
 
     Pose bucketPose1 = new Pose (21.5,122.5, Math.toRadians(-45));
-    Pose sample1 = new Pose(20.5,121.25,Math.toRadians(0));
+    Pose sample1 = new Pose(23.5,137.5,Math.toRadians(0));
 
     Pose midPoint = new Pose(21,120, Math.toRadians(-45));
     Pose sample2 = new Pose(20.5,131.5,Math.toRadians(0));
@@ -48,7 +48,7 @@ public class Sample extends LinearOpMode {
     GoBildaPinpointDriver pinpoint;
     Servo led;
 
-    enum PathState {ToBucket, Sample1, Sample2, Sample3, Score1, Score2, Score3, Score1Lift }
+    enum PathState {ToBucket, Sample1, Sample2, Sample3, Score1, Score2, Score3, Score1Lift, StartLift }
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -78,7 +78,7 @@ public class Sample extends LinearOpMode {
         buildPaths();
 
         outtake.initAutoSample();
-        intake.initStatusTeleop();
+        outtake.setAngleServoAutoInit();
 
         pinpoint.update();
         telemetry.addData("Pinpoint Status", pinpoint.getDeviceStatus());
@@ -103,10 +103,9 @@ public class Sample extends LinearOpMode {
 
         intake.pushIn();
 
-        elapsedTime = null;
+        elapsedTime = new ElapsedTime();
         ElapsedTime  elapsedTimeFollow =null;
-        PathState pathState =PathState.ToBucket;
-        follower.followPath(scorePreload);
+        PathState pathState =PathState.StartLift;
         outtake.scoreSample();
 
 
@@ -117,6 +116,13 @@ public class Sample extends LinearOpMode {
             }
 
             switch (pathState){
+                case StartLift:
+                    if (elapsedTime.milliseconds() > 500){
+                        follower.followPath(scorePreload);
+                        elapsedTime = null;
+                        pathState = PathState.ToBucket;
+                    }
+                    break;
                 case ToBucket:
                     //telemetry.addData("ready?", outtake.isLiftReady());
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
@@ -130,118 +136,118 @@ public class Sample extends LinearOpMode {
                     }
 
                     break;
-                case Sample1:
-
-                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-
-                        follower.turnTo(Math.toRadians(-45));
-                        pathState= PathState.Score1Lift;
-                        elapsedTime= null;
-                        count=0;
-
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-                        intake.extendSlideHalfAuto();
-                        intake.pickupSampleYellow();
-
-                        elapsedTime= new ElapsedTime();
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
+//                case Sample1:
+//
+//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+//
+//                        follower.turnTo(Math.toRadians(-45));
+//                        pathState= PathState.Score1Lift;
+//                        elapsedTime= null;
+//                        count=0;
+//
+//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+//                        intake.extendSlideHalfAuto();
+//                        intake.pickupSampleYellow();
+//
+//                        elapsedTime= new ElapsedTime();
+//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
+////                        intake.extendAutoPickup();
+//                        count++;
+//                    } else if (count==1){
+////                        intake.incrementExtends();
+//                    }
+//                    break;
+//                case Score1Lift:
+//                    if (!follower.isBusy()&& count==0) {
+//                        outtake.scoreSample();
+//                        count++;
+//                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+//                        pathState= PathState.Score1;
+//                        follower.followPath(scoreSample1_2);
+//                        elapsedTimeFollow = new ElapsedTime();
+//                        elapsedTime = null;
+//                    }
+//
+//                    break;
+//                case Score1:
+//                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>6000 && follower.isBusy()){
+//                        //follower.breakFollowing();
+//                        elapsedTimeFollow=null;
+//                    }
+//                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
+//                        outtake.openClaw();
+//                        elapsedTime = new ElapsedTime();
+//                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
+//
+//                        follower.followPath(pickupSample2, true);
+//                        pathState = PathState.Sample2;
+//                        elapsedTime =null;
+//                    }
+//                    break;
+//                case Sample2:
+//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+//
+//                        follower.followPath(scoreSample2);
+//
+//                        pathState= PathState.Score1Lift;
+//                        elapsedTime= null;
+//                        count=0;
+//
+//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+//                        intake.extendSlideHalfAuto();
+//                        intake.pickupSampleYellow();
+//
+//                        elapsedTime= new ElapsedTime();
+//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
 //                        intake.extendAutoPickup();
-                        count++;
-                    } else if (count==1){
-//                        intake.incrementExtends();
-                    }
-                    break;
-                case Score1Lift:
-                    if (!follower.isBusy()&& count==0) {
-                        outtake.scoreSample();
-                        count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
-                        pathState= PathState.Score1;
-                        follower.followPath(scoreSample1_2);
-                        elapsedTimeFollow = new ElapsedTime();
-                        elapsedTime = null;
-                    }
-
-                    break;
-                case Score1:
-                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>6000 && follower.isBusy()){
-                        //follower.breakFollowing();
-                        elapsedTimeFollow=null;
-                    }
-                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
-                        outtake.openClaw();
-                        elapsedTime = new ElapsedTime();
-                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
-
-                        follower.followPath(pickupSample2, true);
-                        pathState = PathState.Sample2;
-                        elapsedTime =null;
-                    }
-                    break;
-                case Sample2:
-                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-
-                        follower.followPath(scoreSample2);
-
-                        pathState= PathState.Score1Lift;
-                        elapsedTime= null;
-                        count=0;
-
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-                        intake.extendSlideHalfAuto();
-                        intake.pickupSampleYellow();
-
-                        elapsedTime= new ElapsedTime();
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
-                        intake.extendAutoPickup();
-                        count++;
-                    } else if (count==1){
-//                        intake.incrementExtends();
-                    }
-                    break;
-                case Score2:
-                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
-                        //follower.breakFollowing();
-                        elapsedTimeFollow=null;
-                    }
-                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
-                        outtake.openClaw();
-                        elapsedTime = new ElapsedTime();
-                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
-
-                        follower.followPath(pickupSample3, true);
-                        pathState = PathState.Sample3;
-                        elapsedTime =null;
-                    }
-                    break;
-                case Sample3:
-                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-                        outtake.scoreSample();
-                        follower.followPath(scoreSample3);
-                        intake.extendSlideHalfAuto();
-                        pathState= PathState.Score3;
-
-                    }
-                    else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-                        intake.extendSlideMAxAuto();
-                        elapsedTime= new ElapsedTime();
-
-                    }
-                    break;
-                case Score3:
-                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
-                        //follower.breakFollowing();
-                        elapsedTimeFollow=null;
-                    }
-                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
-                        outtake.openClaw();
-                        elapsedTime = new ElapsedTime();
-                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
-
-                        follower.followPath(pickupSample2, true);
-                        elapsedTime =null;
-                    }
-                    break;
+//                        count++;
+//                    } else if (count==1){
+////                        intake.incrementExtends();
+//                    }
+//                    break;
+//                case Score2:
+//                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
+//                        //follower.breakFollowing();
+//                        elapsedTimeFollow=null;
+//                    }
+//                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
+//                        outtake.openClaw();
+//                        elapsedTime = new ElapsedTime();
+//                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
+//
+//                        follower.followPath(pickupSample3, true);
+//                        pathState = PathState.Sample3;
+//                        elapsedTime =null;
+//                    }
+//                    break;
+//                case Sample3:
+//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+//                        outtake.scoreSample();
+//                        follower.followPath(scoreSample3);
+//                        intake.extendSlideHalfAuto();
+//                        pathState= PathState.Score3;
+//
+//                    }
+//                    else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+//                        intake.extendSlideMAxAuto();
+//                        elapsedTime= new ElapsedTime();
+//
+//                    }
+//                    break;
+//                case Score3:
+//                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
+//                        //follower.breakFollowing();
+//                        elapsedTimeFollow=null;
+//                    }
+//                    if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
+//                        outtake.openClaw();
+//                        elapsedTime = new ElapsedTime();
+//                    } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
+//
+//                        follower.followPath(pickupSample2, true);
+//                        elapsedTime =null;
+//                    }
+//                    break;
             }
 
 
