@@ -47,6 +47,7 @@ public class Outtake implements Component{
 
     public Intake intake;
     public DriveTrain driveTrain;
+    public boolean transferDone= false;
 
 
     Telemetry telemetry;
@@ -199,6 +200,7 @@ public class Outtake implements Component{
 
     public void openClaw() {
 
+        transferDone = false;
         if (status==Status.ScoreSpecimen){
             status= Status.Specimen_To_Wall;
             elapsedTime = null;
@@ -322,7 +324,7 @@ public class Outtake implements Component{
 
     public void scoreSample(){
         if (status == Status.InitAutoSample){
-            setOuttakeBack();
+
             setAngleServoScoreSample();
             status = Status.AutoLiftToBucket;
         } else{
@@ -338,7 +340,7 @@ public class Outtake implements Component{
 
     public void scoreSampleLow(){
         if (status == Status.InitAutoSample){
-            setOuttakeBack();
+
             setAngleServoScoreSample();
             status = Status.AutoLiftToBucket;
         } else{
@@ -432,7 +434,7 @@ public class Outtake implements Component{
                 //status= Status.Bucket;
 //                isLiftReady = true;
                //TODO: change from time to vertical slide position
-                if (getLiftPos()>ITDCons.BucketTarget-3000){
+                if (getLiftPos()>target-3000){
                     elapsedTime = new ElapsedTime();
                     status = Status.Bucket;
                     isLiftReady = true;
@@ -564,12 +566,12 @@ public class Outtake implements Component{
             case CloseClawTransfer:
                 if (elapsedTime!=null && elapsedTime.milliseconds()> status.getTime()){ //&& elapsedTime.milliseconds()<status.getTime()+300
                     intake.extendForTransfer();
-                    setOuttakeBack();
-                  //  intake.stopIntake();
+
                 }
 
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()+300){
                     status= Status.TransferDone;
+                    transferDone= true;
 //                    if (gamepad1!=null) {
 //                        gamepad1.rumble(1500);
 //                    }
@@ -586,7 +588,7 @@ public class Outtake implements Component{
 
             case ToBucketClose:
                 if (elapsedTime!=null && elapsedTime.milliseconds()>status.getTime()){
-                        setOuttakeBack();
+
                     status = Status.TransferToBucket_Back;
                     elapsedTime= new ElapsedTime();
                 }
@@ -637,13 +639,11 @@ public class Outtake implements Component{
         }
     }
 
-    private void setOuttakeBack(){
-
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+//
+//
+//    public void setStatus(Status status) {
+//        this.status = status;
+//    }
 
     public boolean isLiftReady(){
         return isLiftReady;
@@ -670,7 +670,8 @@ public class Outtake implements Component{
     }
 
     public  boolean isTransferDone() {
-        return status == Status.TransferDone;
+        return  transferDone;
+
     }
 
 }
