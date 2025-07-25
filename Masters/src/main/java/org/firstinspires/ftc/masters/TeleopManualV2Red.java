@@ -6,6 +6,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.Hang;
@@ -68,6 +70,8 @@ public class TeleopManualV2Red extends LinearOpMode {
         Intake intake = new Intake(init, telemetry);
         Hang hang = new Hang( init, telemetry);
 
+        DcMotorEx outtakeSlideFront = init.getOuttakeSlideFront();
+        DcMotorEx outtakeSlideBack = init.getOuttakeSlideBack();
 
         outtake.setIntake(intake);
         //outtake.setDriveTrain(driveTrain);
@@ -87,6 +91,8 @@ public class TeleopManualV2Red extends LinearOpMode {
         boolean touchpadPressed = false;
         boolean hangMode = false;
         boolean relased = true;
+        boolean isReseting = false;
+        boolean triggerPressed = false;
 
         telemetry.addData("Before", outtake.outtakeSlideEncoder.getCurrentPosition());
 
@@ -235,16 +241,33 @@ public class TeleopManualV2Red extends LinearOpMode {
             // Controller 2 anti-fuck up code
 
             // Reset Vertical slides
-            if (gamepad2.a){
-
+            if (gamepad1.left_stick_button && gamepad1.right_stick_button){
+                if (!triggerPressed) {
+                    isReseting = true;
+                    outtakeSlideFront.setPower(-1);
+                    outtakeSlideBack.setPower(-1);
+                    triggerPressed = true;
+                }
+            } else {
+                triggerPressed = false;
             }
+
+            if (isReseting){
+                outtakeSlideFront.setPower(0);
+                outtakeSlideBack.setPower(0);
+                outtakeSlideFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                outtakeSlideFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                isReseting = false;
+            }
+
+
 
             // Adjust Slides
 
             // Reset Horizontal slides
 
             hang.update();
-            if(!hangMode) {
+            if(!hangMode || !isReseting) {
                 outtake.update();
             }
             intake.update();

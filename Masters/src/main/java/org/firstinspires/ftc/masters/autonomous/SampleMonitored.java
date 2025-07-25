@@ -6,16 +6,16 @@ import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
-import com.pedropathing.util.Constants;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.masters.TeleEx.Monitor;
+import org.firstinspires.ftc.masters.TeleEx.TelemetryEx;
 import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.Hang;
 import org.firstinspires.ftc.masters.components.ITDCons;
@@ -25,11 +25,13 @@ import org.firstinspires.ftc.masters.components.Outtake;
 import org.firstinspires.ftc.masters.pedroPathing.constants.FConstants;
 import org.firstinspires.ftc.masters.pedroPathing.constants.LConstants;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Config
-@Autonomous(name="Sample")
-public class Sample extends LinearOpMode {
+@Autonomous(name="SampleMonitored")
+public class SampleMonitored extends LinearOpMode {
 
     public static double p = 0.0003, i = 0, d =.0000001;
 
@@ -69,6 +71,7 @@ public class Sample extends LinearOpMode {
         Intake intake = new Intake(init, telemetry);
         DriveTrain driveTrain = new DriveTrain(init, telemetry);
         Hang hang = new Hang(init, telemetry);
+        TelemetryEx telemetryEx = new TelemetryEx(this,telemetry);
         outtake.setDriveTrain(driveTrain);
         outtake.setIntake(intake);
         intake.setOuttake(outtake);
@@ -104,6 +107,11 @@ public class Sample extends LinearOpMode {
 
         int count =0;
 
+        List<String> headers = new ArrayList<>();
+        headers.add("State");
+
+        telemetryEx.setHeader(headers);
+
         waitForStart();
 
         intake.pushIn();
@@ -111,7 +119,7 @@ public class Sample extends LinearOpMode {
 
         elapsedTime = new ElapsedTime();
         ElapsedTime  elapsedTimeFollow =null;
-        PathState pathState =PathState.StartLift;
+        PathState pathState = PathState.StartLift;
         outtake.scoreSample();
 
 
@@ -275,8 +283,6 @@ public class Sample extends LinearOpMode {
                     }
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
                         outtake.openClaw();
-                        follower.followPath(parker);
-                        outtake.initTeleopWall();
                         elapsedTime = new ElapsedTime();
                     } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
                        pathState= PathState.Park;
@@ -285,11 +291,13 @@ public class Sample extends LinearOpMode {
                     break;
 
                 case Park:
-
-                    outtake.setTarget(0);
-                    intake.setTarget(0);
-                    intake.initStatusTeleop();
-
+                    follower.followPath(parker);
+                    hang.servoReverse();
+                    if(elapsedTime == null){
+                        elapsedTime = new ElapsedTime();
+                    } else if (elapsedTime.milliseconds() > 1000){
+                        hang.servoDisable();
+                    }
                     break;
             }
 
@@ -299,6 +307,8 @@ public class Sample extends LinearOpMode {
             follower.update();
             telemetry.addData("State", pathState);
             telemetry.addData("Outtake", outtake.getStatus());
+            telemetryEx.addData("State", pathState);
+            telemetryEx.update();
             telemetry.update();
         }
 
@@ -356,7 +366,7 @@ public class Sample extends LinearOpMode {
                 .build();
 
         parker = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(bucketPose), new Point(sample3)))
+                .addPath(new BezierLine(new Point(bucketPose), new Point(park)))
                 .setConstantHeadingInterpolation(Math.toRadians(-50))
                 .build();
     }
