@@ -252,7 +252,7 @@ public class TeleopManualV2Red extends LinearOpMode {
                 triggerPressed = false;
             }
 
-            if (isReseting){
+            if (isReseting && !triggerPressed){
                 outtakeSlideFront.setPower(0);
                 outtakeSlideBack.setPower(0);
                 outtakeSlideFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.masters.components.DriveTrain;
 import org.firstinspires.ftc.masters.components.Hang;
@@ -87,6 +88,8 @@ public class TeleopManualV2Blue extends LinearOpMode {
         boolean touchpadPressed = false;
         boolean hangMode = false;
         boolean relased = true;
+        boolean isReseting = false;
+        boolean triggerPressed = false;
 
         telemetry.addData("Before", outtake.outtakeSlideEncoder.getCurrentPosition());
 
@@ -239,9 +242,30 @@ public class TeleopManualV2Blue extends LinearOpMode {
 
             }
 
+            if (gamepad1.left_stick_button && gamepad1.right_stick_button){
+                if (!triggerPressed) {
+                    isReseting = true;
+                    init.getOuttakeSlideFront().setPower(-1);
+                    init.getOuttakeSlideBack().setPower(-1);
+                    triggerPressed = true;
+                }
+            } else {
+                triggerPressed = false;
+            }
+
+            if (isReseting && !triggerPressed){
+                init.getOuttakeSlideFront().setPower(0);
+                init.getOuttakeSlideBack().setPower(0);
+                init.getOuttakeSlideBack().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                init.getOuttakeSlideFront().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                isReseting = false;
+            }
+
             // Adjust Slides
 
             // Reset Horizontal slides
+
+
 
             hang.update();
             if(!hangMode) {
