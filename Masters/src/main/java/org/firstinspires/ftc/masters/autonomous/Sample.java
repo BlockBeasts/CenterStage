@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.masters.components.DriveTrain;
+import org.firstinspires.ftc.masters.components.Hang;
 import org.firstinspires.ftc.masters.components.ITDCons;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
@@ -42,13 +43,15 @@ public class Sample extends LinearOpMode {
     Pose sample2 = new Pose(19.5,133.5,Math.toRadians(-12));
     Pose sample3 = new Pose(16, 121.5, Math.toRadians(30));
 
-    PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1_1, scoreSample1_2, scoreSample2, scoreSample3;
+    Pose park = new Pose(85, 50, Math.toRadians(0));
+
+    PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1_1, scoreSample1_2, scoreSample2, scoreSample3, parker;
 
     Follower follower;
     GoBildaPinpointDriver pinpoint;
     Servo led;
 
-    enum PathState {ToBucket, Sample1, Sample2, Sample3, Score1, Score2, Score3, Score1Lift, Score2Lift, Score3LIft,StartLift }
+    enum PathState {ToBucket, Sample1, Sample2, Sample3, Score1, Score2, Score3, Score1Lift, Score2Lift, Score3LIft,StartLift, Park}
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -65,6 +68,7 @@ public class Sample extends LinearOpMode {
         Outtake outtake = new Outtake(init, telemetry);
         Intake intake = new Intake(init, telemetry);
         DriveTrain driveTrain = new DriveTrain(init, telemetry);
+        Hang hang = new Hang(init, telemetry);
         outtake.setDriveTrain(driveTrain);
         outtake.setIntake(intake);
         intake.setOuttake(outtake);
@@ -273,9 +277,18 @@ public class Sample extends LinearOpMode {
                         outtake.openClaw();
                         elapsedTime = new ElapsedTime();
                     } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
+                       pathState= PathState.Park;
+                       elapsedTime = null;
+                    }
+                    break;
 
-
-                       // elapsedTime =null;
+                case Park:
+                    follower.followPath(parker);
+                    hang.servoReverse();
+                    if(elapsedTime == null){
+                        elapsedTime = new ElapsedTime();
+                    } else if (elapsedTime.milliseconds() > 1000){
+                        hang.servoDisable();
                     }
                     break;
             }
@@ -340,6 +353,11 @@ public class Sample extends LinearOpMode {
         scoreSample3 = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(sample3), new Point(bucketPose)))
                 .setLinearHeadingInterpolation(sample3.getHeading(), bucketPose.getHeading())
+                .build();
+
+        parker = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(bucketPose), new Point(park)))
+                .setConstantHeadingInterpolation(Math.toRadians(-50))
                 .build();
     }
 }
