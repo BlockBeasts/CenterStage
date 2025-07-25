@@ -177,7 +177,7 @@ public class Intake {
     }
 
     public void extendAutoPickup(){
-        target = ITDCons.halfExtension+2000;
+        target = ITDCons.halfExtension+8000;
         multiplier=0.2;
     }
 
@@ -344,11 +344,13 @@ public class Intake {
                             servoToTransfer();
                             if (target==ITDCons.MaxExtension){
                                 target= ITDCons.TransferExtensionIn;
-                            }
+                            } else
                             if (target==ITDCons.halfExtension){
                                 target= ITDCons.TransferExtensionIn;
-                            }
+                            } else
                             if (target==14000){
+                                target= ITDCons.TransferExtensionIn;
+                            } else {
                                 target= ITDCons.TransferExtensionIn;
                             }
                         }

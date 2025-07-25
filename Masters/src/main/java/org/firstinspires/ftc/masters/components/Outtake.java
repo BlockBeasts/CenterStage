@@ -43,6 +43,8 @@ public class Outtake implements Component{
     protected boolean isLiftReady = false;
     protected boolean isScoringDone = false;
 
+    protected boolean isAuto = false;
+
     public boolean drivetrainOverride = false;
 
     public Intake intake;
@@ -483,7 +485,11 @@ public class Outtake implements Component{
                     closeClaw();
                     target = ITDCons.TransferTarget;
                     setAngleServoToMiddle(); // TODO: hit dat middle
-                    intake.setTarget(ITDCons.halfExtension);
+                    if (!isAuto) {
+                        intake.setTarget(ITDCons.halfExtension);
+                    } else {
+                        intake.setTarget(ITDCons.halfExtension/2);
+                    }
                     elapsedTime = new ElapsedTime();
                 }
                 if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()<WaitTime.Servo_To_Transfer.getTime()+ status.getTime()){
@@ -677,6 +683,10 @@ public class Outtake implements Component{
     public  boolean isTransferDone() {
         return  transferDone;
 
+    }
+
+    public void setIsAuto(boolean auto){
+        this.isAuto = auto;
     }
 
 }

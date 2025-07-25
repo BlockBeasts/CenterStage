@@ -30,13 +30,13 @@ import java.util.List;
 @Autonomous(name="Sample")
 public class Sample extends LinearOpMode {
 
-    public static double p = 0.00055, i = 0, d = 0.00001;
+    public static double p = 0.0003, i = 0, d =.0000001;
 
     Pose startPose = new Pose(10.5,109.5,-90);
-    Pose bucketPose = new Pose (25.5,137.5, Math.toRadians(-45));
+    Pose bucketPose = new Pose (25.5,136.5, Math.toRadians(-50));
 
     Pose bucketPose1 = new Pose (21.5,122.5, Math.toRadians(-45));
-    Pose sample1 = new Pose(23.5,137.5,Math.toRadians(0));
+    Pose sample1 = new Pose(28.5,133.5,Math.toRadians(-50));
 
     Pose midPoint = new Pose(21,120, Math.toRadians(-45));
     Pose sample2 = new Pose(20.5,131.5,Math.toRadians(0));
@@ -69,6 +69,7 @@ public class Sample extends LinearOpMode {
         outtake.setIntake(intake);
         intake.setOuttake(outtake);
         outtake.initializeHardware(p,i,d);
+        outtake.setIsAuto(true);
 
         pinpoint = init.getPinpoint();
         led = init.getLed();
@@ -136,27 +137,27 @@ public class Sample extends LinearOpMode {
                     }
 
                     break;
-//                case Sample1:
-//
-//                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
-//
-//                        follower.turnTo(Math.toRadians(-45));
-//                        pathState= PathState.Score1Lift;
-//                        elapsedTime= null;
-//                        count=0;
-//
-//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
-//                        intake.extendSlideHalfAuto();
-//                        intake.pickupSampleYellow();
-//
-//                        elapsedTime= new ElapsedTime();
-//                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
-////                        intake.extendAutoPickup();
-//                        count++;
-//                    } else if (count==1){
-////                        intake.incrementExtends();
-//                    }
-//                    break;
+                case Sample1:
+
+                    if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
+
+                        follower.turnTo(Math.toRadians(90));
+                        pathState= PathState.Score1Lift;
+                        elapsedTime= null;
+                        count=0;
+
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
+                        intake.pickupSampleYellow();
+                      //  intake.extendAutoPickup();
+
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>500 && count==0 ) {
+                        intake.extendAutoPickup();
+                        count++;
+                    } else if (count==1){
+//                        intake.incrementExtends();
+                    }
+                    break;
 //                case Score1Lift:
 //                    if (!follower.isBusy()&& count==0) {
 //                        outtake.scoreSample();
@@ -254,8 +255,8 @@ public class Sample extends LinearOpMode {
             outtake.update();
             intake.update();
             follower.update();
-            telemetry.addData("State", pathState);
-            telemetry.addData("Outtake", outtake.getStatus());
+           // telemetry.addData("State", pathState);
+            //telemetry.addData("Outtake", outtake.getStatus());
             telemetry.update();
         }
 
@@ -274,42 +275,42 @@ public class Sample extends LinearOpMode {
                 .build();
 
 
-        scoreSample1_1 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(sample1), new Point(midPoint)))
-                .setLinearHeadingInterpolation(sample1.getHeading(), midPoint.getHeading())
-
-                .addPath(new BezierCurve( new Point(bucketPose.getX()+1, bucketPose.getY()),new Point(bucketPose)))
-                .setLinearHeadingInterpolation(sample1.getHeading(), bucketPose.getHeading())
-                .build();
-
-        scoreSample1_2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(sample1),  new Point(bucketPose1)))
-                .setConstantHeadingInterpolation(Math.toRadians(-45))
-                .build();
-
-
-        pickupSample2 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(bucketPose1), new Point(sample2)))
-                .setLinearHeadingInterpolation(bucketPose1.getHeading(), sample2.getHeading())
-                .build();
-
-
-        scoreSample2 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(sample2), new Point(midPoint)))
-                .setLinearHeadingInterpolation(sample2.getHeading(), midPoint.getHeading())
-                .addPath(new BezierLine(new Point(midPoint),  new Point(bucketPose1)))
-                .setConstantHeadingInterpolation(Math.toRadians(-45))
-                .build();
-
-        pickupSample3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(bucketPose), new Point(sample3)))
-                .setLinearHeadingInterpolation(bucketPose.getHeading(), sample3.getHeading())
-                .build();
-
-
-        scoreSample3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(sample3), new Point(bucketPose)))
-                .setLinearHeadingInterpolation(sample3.getHeading(), bucketPose.getHeading())
-                .build();
+//        scoreSample1_1 = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(sample1), new Point(midPoint)))
+//                .setLinearHeadingInterpolation(sample1.getHeading(), midPoint.getHeading())
+//
+//                .addPath(new BezierCurve( new Point(bucketPose.getX()+1, bucketPose.getY()),new Point(bucketPose)))
+//                .setLinearHeadingInterpolation(sample1.getHeading(), bucketPose.getHeading())
+//                .build();
+//
+//        scoreSample1_2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(sample1),  new Point(bucketPose1)))
+//                .setConstantHeadingInterpolation(Math.toRadians(-45))
+//                .build();
+//
+//
+//        pickupSample2 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(bucketPose1), new Point(sample2)))
+//                .setLinearHeadingInterpolation(bucketPose1.getHeading(), sample2.getHeading())
+//                .build();
+//
+//
+//        scoreSample2 = follower.pathBuilder()
+//                .addPath(new BezierCurve(new Point(sample2), new Point(midPoint)))
+//                .setLinearHeadingInterpolation(sample2.getHeading(), midPoint.getHeading())
+//                .addPath(new BezierLine(new Point(midPoint),  new Point(bucketPose1)))
+//                .setConstantHeadingInterpolation(Math.toRadians(-45))
+//                .build();
+//
+//        pickupSample3 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(bucketPose), new Point(sample3)))
+//                .setLinearHeadingInterpolation(bucketPose.getHeading(), sample3.getHeading())
+//                .build();
+//
+//
+//        scoreSample3 = follower.pathBuilder()
+//                .addPath(new BezierLine(new Point(sample3), new Point(bucketPose)))
+//                .setLinearHeadingInterpolation(sample3.getHeading(), bucketPose.getHeading())
+//                .build();
     }
 }
