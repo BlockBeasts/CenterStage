@@ -336,27 +336,19 @@ public class Intake {
                     break;
 
                 case TO_TRANSFER:
+                    telemetry.addData("elapsedTime",elapsedTime==null? "null": elapsedTime.milliseconds());
+                    telemetry.addData("target", target);
                     if (elapsedTime ==null){
 
                         if (target==0){
                             target = ITDCons.TransferExtensionOut;
                         } else {
                             servoToTransfer();
-                            if (target==ITDCons.MaxExtension){
-                                target= ITDCons.TransferExtensionIn;
-                            } else
-                            if (target==ITDCons.halfExtension){
-                                target= ITDCons.TransferExtensionIn;
-                            } else
-                            if (target==14000){
-                                target= ITDCons.TransferExtensionIn;
-                            } else {
-                                target= ITDCons.TransferExtensionIn;
-                            }
+                            target =0;
                         }
                         elapsedTime = new ElapsedTime();
                     }
-                    if (elapsedTime.milliseconds()>status.getTime() && elapsedTime.milliseconds()< status.getTime()*2){
+                    if (elapsedTime.milliseconds()>0){
                         if (target == ITDCons.TransferExtensionOut){
                             servoToTransfer();
                         }
@@ -365,7 +357,7 @@ public class Intake {
                         }
                     }
                     // https://www.youtube.com/watch?v=xGytDsqkQY8
-                    if (extendo.getCurrentPosition()<1000){
+                    if (extendo.getCurrentPosition()<1100){
                         telemetry.addData("Currect Pos: ", true);
                         if (closingTime==null){
                             closingTime = new ElapsedTime();

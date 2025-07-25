@@ -36,11 +36,11 @@ public class Sample extends LinearOpMode {
     Pose bucketPose = new Pose (25.5,136.5, Math.toRadians(-50));
 
     Pose bucketPose1 = new Pose (25.5,139.5, Math.toRadians(-50));
-    Pose sample1 = new Pose(28.5,133.5,Math.toRadians(-50));
+    Pose sample1 = new Pose(29.5,133.5,Math.toRadians(-50));
 
     Pose midPoint = new Pose(21,120, Math.toRadians(-45));
-    Pose sample2 = new Pose(18.5,133.5,Math.toRadians(-12));
-    Pose sample3 = new Pose(24.5, 129.5, Math.toRadians(40));
+    Pose sample2 = new Pose(19.5,133.5,Math.toRadians(-12));
+    Pose sample3 = new Pose(16, 121.5, Math.toRadians(30));
 
     PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1_1, scoreSample1_2, scoreSample2, scoreSample3;
 
@@ -148,7 +148,6 @@ public class Sample extends LinearOpMode {
 
                     } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
                         intake.pickupSampleYellow();
-                      //  intake.extendAutoPickup();
 
                         elapsedTime= new ElapsedTime();
                     } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>500 && count==0 ) {
@@ -182,6 +181,7 @@ public class Sample extends LinearOpMode {
 
                         follower.followPath(pickupSample2, true);
                         pathState = PathState.Sample2;
+                        count=0;
                         elapsedTime =null;
                     }
                     break;
@@ -189,20 +189,22 @@ public class Sample extends LinearOpMode {
                     if (!follower.isBusy() && outtake.isTransferDone() && !outtake.isScoringDone()){
 
                      //   follower.followPath(scoreSample2);
-
+                        count=0;
                         pathState= PathState.Score2Lift;
                         elapsedTime= null;
-                        count=0;
 
                     } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime==null){
 
                         intake.pickupSampleYellow();
 
                         elapsedTime= new ElapsedTime();
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0 ) {
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>800 && count==0) {
                         intake.extendAutoPickup();
                         count++;
                     }
+
+
+
                     break;
                 case Score2Lift:
                     if (!follower.isBusy()&& count==0) {
@@ -212,7 +214,6 @@ public class Sample extends LinearOpMode {
                         pathState= PathState.Score2;
                         follower.followPath(scoreSample2);
                         elapsedTimeFollow = new ElapsedTime();
-                        elapsedTime = null;
                     }
 
                     break;
@@ -229,6 +230,7 @@ public class Sample extends LinearOpMode {
                         follower.followPath(pickupSample3, true);
                         pathState = PathState.Sample3;
                         elapsedTime =null;
+                        count =0;
                     }
                     break;
                 case Sample3:
@@ -272,8 +274,8 @@ public class Sample extends LinearOpMode {
                         elapsedTime = new ElapsedTime();
                     } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
 
-                        follower.followPath(pickupSample2, true);
-                        elapsedTime =null;
+
+                       // elapsedTime =null;
                     }
                     break;
             }
@@ -282,8 +284,8 @@ public class Sample extends LinearOpMode {
             outtake.update();
             intake.update();
             follower.update();
-           // telemetry.addData("State", pathState);
-            //telemetry.addData("Outtake", outtake.getStatus());
+            telemetry.addData("State", pathState);
+            telemetry.addData("Outtake", outtake.getStatus());
             telemetry.update();
         }
 
@@ -330,8 +332,8 @@ public class Sample extends LinearOpMode {
                 .build();
 
         pickupSample3 = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(bucketPose), new Point(sample3)))
-                .setLinearHeadingInterpolation(bucketPose.getHeading(), sample3.getHeading())
+                .addPath(new BezierLine(new Point(bucketPose1), new Point(sample3)))
+                .setLinearHeadingInterpolation(bucketPose1.getHeading(), sample3.getHeading())
                 .build();
 
 
