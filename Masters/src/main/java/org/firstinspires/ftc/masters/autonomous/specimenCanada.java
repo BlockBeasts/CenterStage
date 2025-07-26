@@ -41,9 +41,9 @@ public class specimenCanada extends LinearOpMode {
     Pose midPoint2 = new Pose(60,36,0);
 
     Pose pickupPose1 = new Pose(17, 35, 0);
-    Pose pickupPose2 = new Pose(17, 32, 0);
-    Pose pickupPose3 = new Pose(17, 32, 0);
-    Pose pickupPose4 = new Pose(17, 32, 0);
+    Pose pickupPose2 = new Pose(17.5, 34, 0);
+    Pose pickupPose3 = new Pose(17.75, 35, 0);
+    Pose pickupPose4 = new Pose(17.75, 35, 0);
     Pose pickupPose = new Pose (17.5,38, 0);
     Pose pushPose1 = new Pose(60,28,0);
     Pose endPushPose1 = new Pose (35,28,0);
@@ -306,13 +306,16 @@ public class specimenCanada extends LinearOpMode {
                             outtake.closeClaw();
                         }
                         if (elapsedTime.milliseconds()>350){
-                            follower.followPath(score);
-                            outtake.scoreSpecimen();
-                            elapsedTime=null;
-                            if(cycleCount <= 5) {
+                            if (cycleCount<5) {
+                                follower.followPath(score);
+                                outtake.scoreSpecimen();
+                                elapsedTime = null;
+                            }
+
+                            if(cycleCount < 5) {
                                 state = PathState.ScoreSpec6;
                             }
-                            if(cycleCount > 5) {
+                            if(cycleCount > 4) {
                                 state = PathState.Score;
                             }
                         }
