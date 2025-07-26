@@ -81,7 +81,6 @@ public class Init {
 
         intake = hardwareMap.get(CRServo.class, "intake");
         intakeExtendo = hardwareMap.get(DcMotorEx.class, "intakeExtendo");
-        intakeExtendo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeExtendo.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         intakeArm = hardwareMap.servo.get("intakeArm");
@@ -92,8 +91,7 @@ public class Init {
         outtakeSlideBack = hardwareMap.get(DcMotorEx.class, "vertSlideBack");
         outtakeSlideFront.setDirection(DcMotorSimple.Direction.REVERSE);
         outtakeSlideBack.setDirection(DcMotorSimple.Direction.REVERSE);
-        outtakeSlideFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        outtakeSlideFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+       outtakeSlideFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         color = hardwareMap.get(RevColorSensorV3.class, "color");
         pusherServo = hardwareMap.servo.get("pusher");

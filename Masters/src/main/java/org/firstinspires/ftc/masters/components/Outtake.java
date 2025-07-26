@@ -188,7 +188,7 @@ public class Outtake implements Component{
 
     public void initAutoSpecimen(){
         //position.setPosition(ITDCons.positionInitSpec);
-        setAngleServoScore();
+        setAngleServoAutoInit();
         closeClaw();
         status= Status.InitAutoSpec;
     }
@@ -623,6 +623,10 @@ public class Outtake implements Component{
         clawPosition.setPosition(ITDCons.angleScoreSpecClaw);
     }
 
+//    private void setAutoSpecInit(){
+//        armPosition.setPosition(ITDCons);
+//    }
+
     private void setAngleServoScoreSample(){
         armPosition.setPosition(ITDCons.angleWallSpecArm - .1);
         clawPosition.setPosition(ITDCons.angleWallSpecClaw);
@@ -631,6 +635,11 @@ public class Outtake implements Component{
     public void setAngleServoAutoInit(){
         armPosition.setPosition(ITDCons.angleAutoArm);
         clawPosition.setPosition(ITDCons.angleAutoClaw);
+    }
+
+    public void setSpecAutoInit(){
+        armPosition.setPosition(ITDCons.autoInitSpecArm);
+        clawPosition.setPosition(ITDCons.autoInitSpecClaw);
     }
 
     private void resetSlides(){

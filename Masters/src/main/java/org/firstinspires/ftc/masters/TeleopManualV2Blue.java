@@ -100,6 +100,7 @@ public class TeleopManualV2Blue extends LinearOpMode {
         intake.initStatusTeleop();
         outtake.initTeleopWall();
 
+        sleep(500);
 
         while (opModeIsActive()) {
 
@@ -243,21 +244,31 @@ public class TeleopManualV2Blue extends LinearOpMode {
             }
 
             if (gamepad1.left_stick_button && gamepad1.right_stick_button){
+
                 if (!triggerPressed) {
                     isReseting = true;
                     init.getOuttakeSlideFront().setPower(-1);
                     init.getOuttakeSlideBack().setPower(-1);
+                    init.getOuttakeSlideMiddle().setPower(-1);
                     triggerPressed = true;
                 }
             } else {
                 triggerPressed = false;
             }
 
+            telemetry.addData("triggerPressed", triggerPressed);
+            telemetry.addData("resetting", isReseting);
+
             if (isReseting && !triggerPressed){
                 init.getOuttakeSlideFront().setPower(0);
                 init.getOuttakeSlideBack().setPower(0);
+                init.getOuttakeSlideMiddle().setPower(0);
                 init.getOuttakeSlideBack().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                init.getOuttakeSlideBack().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                init.getOuttakeSlideFront().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 init.getOuttakeSlideFront().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                init.getOuttakeSlideMiddle().setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                init.getOuttakeSlideMiddle().setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 isReseting = false;
             }
 
@@ -268,7 +279,8 @@ public class TeleopManualV2Blue extends LinearOpMode {
 
 
             hang.update();
-            if(!hangMode) {
+            if(!hangMode && !isReseting) {
+                telemetry.addData("outtake update",true);
                 outtake.update();
             }
             intake.update();
