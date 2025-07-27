@@ -41,7 +41,7 @@ public class Sample5 extends LinearOpMode {
     Pose sample2 = new Pose(19.5,133.5,Math.toRadians(-12));
     Pose sample3 = new Pose(16, 121.5, Math.toRadians(30));
 
-    Pose park = new Pose(60, 130, Math.toRadians(0));
+    Pose park = new Pose(15, 85, Math.toRadians(-45));
 
     PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1_1, scoreSample1_2, scoreSample2, scoreSample3, parker;
 
@@ -164,7 +164,8 @@ public class Sample5 extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score1;
                         follower.followPath(scoreSample1_2);
                         elapsedTimeFollow = new ElapsedTime();
@@ -213,10 +214,12 @@ public class Sample5 extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime = new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score2;
                         follower.followPath(scoreSample2);
                         elapsedTimeFollow = new ElapsedTime();
+                        elapsedTime = null;
                     }
 
                     break;
@@ -259,7 +262,8 @@ public class Sample5 extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime = new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score3;
                         follower.followPath(scoreSample3);
                         elapsedTimeFollow = new ElapsedTime();
@@ -354,7 +358,7 @@ public class Sample5 extends LinearOpMode {
 
         parker = follower.pathBuilder()
                 .addPath(new BezierLine(new Point(bucketPose), new Point(park)))
-                .setConstantHeadingInterpolation(Math.toRadians(-50))
+                .setLinearHeadingInterpolation(bucketPose.getHeading(), park.getHeading())
                 .build();
     }
 }
