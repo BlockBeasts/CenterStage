@@ -166,7 +166,8 @@ public class Sample extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score1;
                         follower.followPath(scoreSample1_2);
                         elapsedTimeFollow = new ElapsedTime();
@@ -215,7 +216,8 @@ public class Sample extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score2;
                         follower.followPath(scoreSample2);
                         elapsedTimeFollow = new ElapsedTime();
@@ -261,7 +263,8 @@ public class Sample extends LinearOpMode {
                     if (!follower.isBusy()&& count==0) {
                         outtake.scoreSample();
                         count++;
-                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1){
+                        elapsedTime= new ElapsedTime();
+                    } else if (!follower.isBusy() && outtake.isLiftReady() && count==1 && elapsedTime.milliseconds()>500){
                         pathState= PathState.Score3;
                         follower.followPath(scoreSample3);
                         elapsedTimeFollow = new ElapsedTime();
