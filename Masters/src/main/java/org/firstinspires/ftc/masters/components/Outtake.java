@@ -180,10 +180,12 @@ public class Outtake implements Component{
     }
 
     public void initTeleopWall(){
-        armPosition.setPosition(ITDCons.angleWallSpecArm);
-        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
+        armPosition.setPosition(ITDCons.angleMiddleArm);
+        clawPosition.setPosition(ITDCons.angleMiddleClaw);
         claw.setPosition(ITDCons.clawOpen);
         status= Status.InitWall;
+        armPosition.setPosition(ITDCons.angleWallSpecArm);
+        clawPosition.setPosition(ITDCons.angleWallSpecClaw);
     }
 
     public void initAutoSpecimen(){

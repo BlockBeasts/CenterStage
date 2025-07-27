@@ -40,11 +40,11 @@ public class specimenCanada extends LinearOpMode {
     Pose midPoint1 = new Pose(20,25,0);
     Pose midPoint2 = new Pose(60,36,0);
 
-    Pose pickupPose1 = new Pose(17, 35, 0);
-    Pose pickupPose2 = new Pose(17.5, 34, 0);
-    Pose pickupPose3 = new Pose(17.75, 35, 0);
-    Pose pickupPose4 = new Pose(17.75, 35, 0);
-    Pose pickupPose = new Pose (17.5,38, 0);
+    Pose pickupPose1 = new Pose(13, 35, 0);
+    Pose pickupPose2 = new Pose(14.5, 34, 0);
+    Pose pickupPose3 = new Pose(12.75, 35, 0);
+    Pose pickupPose4 = new Pose(13, 35, 0);
+    Pose pickupPose = new Pose (14.5,38, 0);
     Pose pushPose1 = new Pose(60,28,0);
     Pose endPushPose1 = new Pose (35,28,0);
     Pose pushPose2 = new Pose(60,17,0);
@@ -119,7 +119,7 @@ public class specimenCanada extends LinearOpMode {
 
         outtake.scoreSpecimen();
         ElapsedTime time = new ElapsedTime();
-        while (opModeIsActive() && time.milliseconds()<300){
+        while (opModeIsActive() && time.milliseconds()<400){
             outtake.update();
         }
         follower.followPath(scorePreload);
@@ -384,7 +384,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose1)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(0)
+                .setPathEndTimeoutConstraint(500)
                 .build();
 
         toWall2 = follower.pathBuilder()
@@ -393,7 +393,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose2)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(0)
+                .setPathEndTimeoutConstraint(500)
                 .build();
 
         toWall3 = follower.pathBuilder()
@@ -402,7 +402,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose3)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(0)
+                .setPathEndTimeoutConstraint(500)
                 .build();
 
         toWall4 = follower.pathBuilder()
@@ -411,7 +411,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose4)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(0)
+                .setPathEndTimeoutConstraint(500)
                 .build();
 
 //        towall = new Path(new BezierCurve(new Point(scoringPose.getX(), scoringPose.getY()+2), new Point(pickupCycleMid), new Point(pickupCycleMid1),  new Point(pickupPose1)));

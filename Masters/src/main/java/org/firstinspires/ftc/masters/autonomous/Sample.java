@@ -276,10 +276,10 @@ public class Sample extends LinearOpMode {
                     if (!follower.isBusy() && outtake.isLiftReady() && elapsedTime==null){
                         outtake.openClaw();
                         follower.followPath(parker);
-                        outtake.initTeleopWall();
                         elapsedTime = new ElapsedTime();
                     } else if (!follower.isBusy() && elapsedTime!=null && elapsedTime.milliseconds()> 400){
                        pathState= PathState.Park;
+                       outtake.initTeleopWall();
                        elapsedTime = null;
                     }
                     break;
