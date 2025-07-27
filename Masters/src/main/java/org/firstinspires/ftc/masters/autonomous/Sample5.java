@@ -6,10 +6,8 @@ import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
-import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
-import com.pedropathing.util.Constants;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -28,8 +26,8 @@ import org.firstinspires.ftc.masters.pedroPathing.constants.LConstants;
 import java.util.List;
 
 @Config
-@Autonomous(name="Sample")
-public class Sample extends LinearOpMode {
+@Autonomous(name="Sample5")
+public class Sample5 extends LinearOpMode {
 
     public static double p = 0.0003, i = 0, d =.0000001;
 
@@ -43,7 +41,7 @@ public class Sample extends LinearOpMode {
     Pose sample2 = new Pose(19.5,133.5,Math.toRadians(-12));
     Pose sample3 = new Pose(16, 121.5, Math.toRadians(30));
 
-    Pose park = new Pose(85, 50, Math.toRadians(0));
+    Pose park = new Pose(60, 130, Math.toRadians(0));
 
     PathChain scorePreload, pickupSample1, pickupSample2, pickupSample3, scoreSample1_1, scoreSample1_2, scoreSample2, scoreSample3, parker;
 
@@ -112,7 +110,7 @@ public class Sample extends LinearOpMode {
         elapsedTime = new ElapsedTime();
         ElapsedTime  elapsedTimeFollow =null;
         ElapsedTime  newTime =null;
-        PathState pathState =PathState.StartLift;
+        PathState pathState = PathState.StartLift;
         outtake.scoreSample();
 
 
@@ -155,7 +153,7 @@ public class Sample extends LinearOpMode {
                         intake.pickupSampleYellow();
 
                         elapsedTime= new ElapsedTime();
-                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>500 && count==0 ) {
+                    } else if (!follower.isBusy() && !outtake.isTransferDone() && elapsedTime!=null && elapsedTime.milliseconds()>700 && count==0 ) {
                         intake.extendAutoPickup();
                         count++;
                     } else if (count==1){
@@ -270,7 +268,7 @@ public class Sample extends LinearOpMode {
 
                     break;
                 case Score3:
-                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>3000 && follower.isBusy()){
+                    if (elapsedTimeFollow!=null && elapsedTimeFollow.milliseconds()>1000 && follower.isBusy()){
                         //follower.breakFollowing();
                         elapsedTimeFollow=null;
                     }
@@ -339,9 +337,7 @@ public class Sample extends LinearOpMode {
 
 
         scoreSample2 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(sample2), new Point(midPoint)))
-                .setLinearHeadingInterpolation(sample2.getHeading(), midPoint.getHeading())
-                .addPath(new BezierLine(new Point(midPoint),  new Point(bucketPose1)))
+                .addPath(new BezierCurve(new Point(sample2), new Point(bucketPose1)))
                 .setConstantHeadingInterpolation(Math.toRadians(-45))
                 .build();
 
@@ -357,7 +353,7 @@ public class Sample extends LinearOpMode {
                 .build();
 
         parker = follower.pathBuilder()
-                .addPath(new BezierLine(new Point(bucketPose), new Point(sample3)))
+                .addPath(new BezierLine(new Point(bucketPose), new Point(park)))
                 .setConstantHeadingInterpolation(Math.toRadians(-50))
                 .build();
     }
