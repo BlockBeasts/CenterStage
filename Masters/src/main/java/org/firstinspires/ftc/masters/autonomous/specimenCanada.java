@@ -143,7 +143,7 @@ public class specimenCanada extends LinearOpMode {
                     }
                     break;
                 case Start:
-                    if (!follower.isBusy() || elapsedTime.milliseconds()>1500){
+                    if (!follower.isBusy() || elapsedTime.milliseconds()>1400){
 
                         elapsedTime = new ElapsedTime();
                         state = PathState.ToSub;
@@ -384,7 +384,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose1)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(500)
+                .setPathEndTimeoutConstraint(300)
                 .build();
 
         toWall2 = follower.pathBuilder()
@@ -393,7 +393,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose2)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(500)
+                .setPathEndTimeoutConstraint(300)
                 .build();
 
         toWall3 = follower.pathBuilder()
@@ -402,7 +402,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose3)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(500)
+                .setPathEndTimeoutConstraint(300)
                 .build();
 
         toWall4 = follower.pathBuilder()
@@ -411,7 +411,7 @@ public class specimenCanada extends LinearOpMode {
                 .addPath(new BezierCurve(new Point(pickupCycleMid1), new Point(pickupCycleMid), new Point(pickupPose4)))
                 .setConstantHeadingInterpolation(0)
                 .setPathEndVelocityConstraint(0.04)
-                .setPathEndTimeoutConstraint(500)
+                .setPathEndTimeoutConstraint(300)
                 .build();
 
 //        towall = new Path(new BezierCurve(new Point(scoringPose.getX(), scoringPose.getY()+2), new Point(pickupCycleMid), new Point(pickupCycleMid1),  new Point(pickupPose1)));

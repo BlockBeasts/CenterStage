@@ -97,10 +97,9 @@ public class TeleopManualV2Blue extends LinearOpMode {
 
         waitForStart();
 
-        intake.initStatusTeleop();
         outtake.initTeleopWall();
-
         sleep(500);
+        intake.initStatusTeleop();
 
         while (opModeIsActive()) {
 
