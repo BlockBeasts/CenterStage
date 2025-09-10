@@ -71,6 +71,10 @@ public class DriveTrain implements Component{
 
     }
 
+    public void tankDrive(Gamepad gamepad) {
+
+    }
+
     // Drive using gamepad (THIS IS THE PREFERRED METHOD TO USE)
     public void drive(Gamepad gamepad) {
         cartesianDrive(gamepad.left_stick_x, -gamepad.left_stick_y, gamepad.right_trigger - gamepad.left_trigger);
@@ -233,4 +237,5 @@ public class DriveTrain implements Component{
         rightFrontMotor.setPower(-power);
         rightRearMotor.setPower(-power);
     }
+
 }
