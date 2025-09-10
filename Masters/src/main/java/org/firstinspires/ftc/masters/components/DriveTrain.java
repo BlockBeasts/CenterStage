@@ -3,7 +3,7 @@ package org.firstinspires.ftc.masters.components;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-import org.firstinspires.ftc.masters.old.CSCons;
+//import org.firstinspires.ftc.masters.old.CSCons;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class DriveTrain implements Component{
@@ -148,10 +148,10 @@ public class DriveTrain implements Component{
             x = 0;
         }
 
-        double leftFrontPower = y + x * CSCons.frontMultiplier + t;
-        double leftRearPower = y - (x * CSCons.backMultiplier) + t;
-        double rightFrontPower = y - x * CSCons.frontMultiplier - t;
-        double rightRearPower = y + (x * CSCons.backMultiplier) - t;
+        double leftFrontPower = y + x * 1 + t;
+        double leftRearPower = y - (x * 1) + t;
+        double rightFrontPower = y - x * 1 - t;
+        double rightRearPower = y + (x * 1) - t;
 
         //if (Math.abs(leftFrontPower) > 1 || Math.abs(leftRearPower) > 1 || Math.abs(rightFrontPower) > 1 || Math.abs(rightRearPower) > 1) {
 

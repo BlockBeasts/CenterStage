@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.masters.vison;
 
-import org.firstinspires.ftc.masters.PropFindRightProcessor;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;

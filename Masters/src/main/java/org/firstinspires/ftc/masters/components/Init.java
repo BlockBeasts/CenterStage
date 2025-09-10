@@ -122,65 +122,6 @@ public class Init {
     public DcMotorEx getLeftRearMotor(){return leftRearMotor;}
     public DcMotorEx getRightRearMotor(){return rightRearMotor;}
 
-    public CRServo getIntake() {
-        return intake;
-    }
-
-    public DcMotorEx getIntakeExtendo() {
-        return intakeExtendo;
-    }
-
-    public Servo getIntakeArm() {
-        return intakeArm;
-    }
-
-    public Servo getIntakeChain() {
-        return intakeChain;
-    }
-
-    public DcMotorEx getOuttakeSlideFront() {
-        return outtakeSlideFront;
-    }
-
-    public DcMotorEx getOuttakeSlideBack() {
-        return outtakeSlideBack;
-    }
-
-    public DcMotorEx getOuttakeSlideMiddle() {
-        return outtakeSlideMiddle;
-    }
-
-    public Servo getClaw() {
-        return claw;
-    }
-
-    public Servo getArmPosition() {
-        return armPosition;
-    }
-
-    public Servo getClawPosition() {
-        return clawPosition;
-    }
-
-    public Telemetry getTelemetry() {
-        return telemetry;
-    }
-
-    public Servo getPusherServo() {
-        return pusherServo;
-    }
-
-    public RevColorSensorV3 getColor() {
-        return color;
-    }
-
-    public Servo getLed() {
-        return led;
-    }
-
-    public CRServo getHangLeft() {return hangLeft;}
-    public CRServo getHangRight() {return hangRight;}
-
     public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
 
     public VoltageSensor getControlHubVoltageSensor() { return controlHubVoltageSensor; }
