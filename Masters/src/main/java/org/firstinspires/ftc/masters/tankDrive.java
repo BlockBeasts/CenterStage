@@ -4,11 +4,12 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config // Enables FTC Dashboard
-//@TeleOp(name = "Starter")
+@TeleOp(name = "tank-drive")
 public class tankDrive extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -41,8 +42,8 @@ public class tankDrive extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            forward_power = gamepad1.left_stick_y;
-            turn_power = gamepad1.left_stick_x;
+            forward_power = gamepad1.left_stick_y * -1;
+            turn_power = (gamepad1.left_trigger + (gamepad1.right_trigger * -1) * -1);
 
             frontLeft.setPower(forward_power + turn_power);
             frontRight.setPower(forward_power - turn_power);
