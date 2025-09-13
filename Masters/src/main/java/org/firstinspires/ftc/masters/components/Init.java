@@ -120,7 +120,7 @@ public class Init {
     public DcMotorEx getLeftFrontMotor(){return leftFrontMotor;}
     public DcMotorEx getRightFrontMotor(){return rightFrontMotor;}
     public DcMotorEx getLeftRearMotor(){return leftRearMotor;}
-    public DcMotorEx getRightRearMotor(){return rightRearMotor;}
+    public DcMotorEx  getRightRearMotor(){return rightRearMotor;}
 
     public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
 

@@ -70,9 +70,19 @@ public class DriveTrain implements Component{
         this.rightRearMotor = init.getRightRearMotor();
 
     }
+    double forward_power = 0;
+    double turn_power = 0;
+
+
 
     public void tankDrive(Gamepad gamepad) {
+        forward_power = gamepad.left_stick_y;
+        turn_power = gamepad.left_stick_x;
 
+        leftFrontMotor.setPower(forward_power + turn_power);
+        rightFrontMotor.setPower(forward_power - turn_power);
+        leftRearMotor.setPower(forward_power + turn_power);
+        rightRearMotor.setPower(forward_power - turn_power);
     }
 
     // Drive using gamepad (THIS IS THE PREFERRED METHOD TO USE)
