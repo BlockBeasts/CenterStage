@@ -2,14 +2,13 @@ package org.firstinspires.ftc.masters.components;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-
-
 public class Intake implements Component{
 
+    public void initializeHardware() {
 
+    }
 
-
-    public void Intake(Init init, Telemetry telemetry){
+    public Intake(Init init, Telemetry telemetry){
 
 
     }
@@ -17,7 +16,6 @@ public class Intake implements Component{
     public void intakeOn() {
         //moter stuff! :)
     }
-
 
     public void intakeReverse() {
         //moter stuff! :)
