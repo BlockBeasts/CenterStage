@@ -3,12 +3,16 @@ package org.firstinspires.ftc.masters;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.masters.components.Init;
+
 @TeleOp(name="testdrivetrain")
 public class testdive extends LinearOpMode {
-
+                     
     double max_power = 1;
+
+
 
     double X_power = 0;
     double y_power = 0;
@@ -17,12 +21,24 @@ public class testdive extends LinearOpMode {
     double m2_power = 0;
     double m3_power = 0;
     double m4_power = 0;
+    double outSped = 0;
 
     double turn_power = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Init robot   = new Init(hardwareMap);
+
+        DcMotor frontLeft = hardwareMap.dcMotor.get("frontLeft");
+        DcMotor backLeft = hardwareMap.dcMotor.get("backLeft");
+        DcMotor frontRight = hardwareMap.dcMotor.get("frontRight");
+        DcMotor backRight = hardwareMap.dcMotor.get("backRight");
+
+  
+        DcMotor outakem1 = hardwareMap.dcMotor.get("outakem1");
+        DcMotor outakem2 = hardwareMap.dcMotor.get("outakem2");
+        DcMotor selector = hardwareMap.dcMotor.get("selector");
+
+
 
 
         waitForStart();
@@ -48,11 +64,11 @@ public class testdive extends LinearOpMode {
 
 
 
-            robot.getLeftFrontMotor().setPower(m1_power);
-            robot.getRightFrontMotor().setPower(m2_power);
+            frontLeft.setPower(m1_power);
+            backLeft.setPower(m2_power);
 
-            robot.getLeftRearMotor().setPower(m3_power);
-            robot.getRightRearMotor().setPower(m4_power);
+            frontRight.setPower(m3_power);
+            backRight.setPower(m4_power);
 
             telemetry.update();
 
