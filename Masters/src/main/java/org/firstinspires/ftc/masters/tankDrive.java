@@ -23,7 +23,7 @@ public class tankDrive extends LinearOpMode {
     double turn_power = 0;
 
     double shootpower = 0;
-    static double speedUpCoef = 0.05;
+    static double speedUpCoef = 0.25;
 
     public void runOpMode() throws InterruptedException {
 
@@ -54,7 +54,7 @@ public class tankDrive extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            if (gamepad2.dpad_up) {
+            if (gamepad2.dpad_up) { 
                 if (shootpower != 1) {
                     shootpower += speedUpCoef;
                 }
