@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.masters;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+@TeleOp(name="KARINE ITS THIS ONE")
 public class EncodeTest extends LinearOpMode {
-
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -17,18 +17,20 @@ public class EncodeTest extends LinearOpMode {
 
         waitForStart();
 
-        if (gamepad1.a){
-            leftFeed.setPower(1);
-            righTFeed.setPower(-1);
-        } else if (gamepad1.b){
-            leftFeed.setPower(0);
-            righTFeed.setPower(0);
-        }
+        while (opModeIsActive()) {
+            if (gamepad1.a) {
+                leftFeed.setPower(1);
+                righTFeed.setPower(-1);
+            } else if (gamepad1.b) {
+                leftFeed.setPower(0);
+                righTFeed.setPower(0);
+            }
 
-        if (gamepad1.x){
-            launcher.setPower(1);
-        } else if (gamepad1.y){
-            launcher.setPower(0);
+            if (gamepad1.x) {
+                launcher.setPower(1);
+            } else if (gamepad1.y) {
+                launcher.setPower(0);
+            }
         }
     }
 }
