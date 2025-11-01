@@ -5,7 +5,6 @@ repositories {
     maven { url= 'https://maven.pedropathing.com/' }
     maven { url = "https://mymaven.bylazar.com/releases" }
 }
-
 dependencies {
     implementation 'org.firstinspires.ftc:Inspection:11.0.0'
     implementation 'org.firstinspires.ftc:Blocks:11.0.0'
