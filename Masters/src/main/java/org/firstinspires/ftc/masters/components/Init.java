@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.masters.components;
 
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
-import com.pedropathing.localization.GoBildaPinpointDriver;
+//import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Init {
 
-    GoBildaPinpointDriver pinpoint = null;
+    //GoBildaPinpointDriver pinpoint = null;
 
     private final DcMotorEx leftFrontMotor;
     private final DcMotorEx rightFrontMotor;
@@ -101,7 +101,7 @@ public class Init {
 
         // Strange and evil devices
         led = hardwareMap.servo.get("led");
-        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+        //pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
 
         controlHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Control Hub");
         expansionHubVoltageSensor = hardwareMap.get(VoltageSensor.class, "Expansion Hub");
@@ -122,7 +122,7 @@ public class Init {
     public DcMotorEx getLeftRearMotor(){return leftRearMotor;}
     public DcMotorEx  getRightRearMotor(){return rightRearMotor;}
 
-    public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
+    //public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
 
     public VoltageSensor getControlHubVoltageSensor() { return controlHubVoltageSensor; }
     public VoltageSensor getExpansionHubVoltageSensor() { return expansionHubVoltageSensor; }
