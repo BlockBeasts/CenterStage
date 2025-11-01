@@ -10,9 +10,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config // Enables FTC Dashboard
-@Autonomous(name = "auto-blue")
+@Autonomous(name = "auto-red")
 
-public class tankauto_blue extends LinearOpMode {
+public class tankauto_redwall extends LinearOpMode {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public void runOpMode() throws InterruptedException {
