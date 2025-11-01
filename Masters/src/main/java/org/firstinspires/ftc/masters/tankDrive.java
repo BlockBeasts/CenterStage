@@ -9,8 +9,6 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-
-
 @Config // Enables FTC Dashboard
 @TeleOp(name = "tank-drive")
 public class tankDrive extends LinearOpMode {
@@ -65,7 +63,18 @@ public class tankDrive extends LinearOpMode {
                 }
             }
 
-            //todo add push servo stuff, here!
+            if (gamepad2.dpad_left){
+                pusher1.setPower(1);
+                pusher2.setPower(-1);
+            } //correct
+
+            if (gamepad2.dpad_right){
+                pusher1.setPower(0);
+                pusher2.setPower(0);
+            }
+
+            //todo add push servo stuff, here!f
+
 
 
 

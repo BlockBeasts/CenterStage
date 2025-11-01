@@ -18,6 +18,10 @@ apply from: '../build.dependencies.gradle'
 android {
     namespace = 'org.firstinspires.ftc.masters'
 
+    compileSdk 35
+    defaultConfig {
+        minSdk 24    }
+
     packagingOptions {
         jniLibs {
             pickFirsts += ['**/*.so']
@@ -41,4 +45,5 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.7'
     implementation 'org.ftclib.ftclib:core:2.0.1'
     implementation 'org.openftc:apriltag:2.0.0'
+    implementation 'com.bylazar:fullpanels:1.0.6'
 }
