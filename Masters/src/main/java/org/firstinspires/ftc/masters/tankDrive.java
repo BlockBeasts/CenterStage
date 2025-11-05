@@ -21,7 +21,7 @@ public class tankDrive extends LinearOpMode {
     double turn_power = 0;
 
     double shootpower = 0;
-    static double speedUpCoef = 0.25;
+
 
     public void runOpMode() throws InterruptedException {
 
@@ -53,27 +53,23 @@ public class tankDrive extends LinearOpMode {
         while (opModeIsActive()) {
 
             if (gamepad2.dpad_up) { 
-                if (shootpower != 1) {
-                    shootpower += speedUpCoef;
-                }
+                shootpower = 0.5;
 
             } else if (gamepad2.dpad_down) {
-                if (shootpower != 0) {
-                    shootpower -= speedUpCoef;
-                }
+                shootpower = -0.5;
             }
 
             if (gamepad2.dpad_left){
                 pusher1.setPower(1);
                 pusher2.setPower(-1);
-            } //correct
+            }
 
             if (gamepad2.dpad_right){
                 pusher1.setPower(0);
                 pusher2.setPower(0);
             }
 
-            //todo add push servo stuff, here!f
+
 
 
 
