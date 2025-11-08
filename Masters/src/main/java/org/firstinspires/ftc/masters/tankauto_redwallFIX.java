@@ -8,7 +8,6 @@ import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
-import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -17,11 +16,18 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Config // Enables FTC Dashboard
-@Autonomous(name = "auto-redwall")
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
-public class tankauto_redwall extends LinearOpMode {
-    private Path scorePreload;
+@Config // Enables FTC Dashboard
+@Autonomous(name = "FIXauto-redwall")
+
+public class tankauto_redwallFIX extends LinearOpMode {
+
+    Pose startPose = new Pose(28.5, 128, Math.toRadians(0));
+    Pose scorePose = new Pose(72, 128, Math.toRadians(180));
+
+    Path scorePreload;
+    PathChain grabPickup1;
 
     DcMotor frontLeft;
     DcMotor backLeft;
@@ -30,22 +36,21 @@ public class tankauto_redwall extends LinearOpMode {
     DcMotorImplEx shoot;
     CRServo pusher1;
     CRServo pusher2;
+
     int targetSpeed = 3000;
     double realSpeed = 0;
 
-    private Follower follower;
-    private PathChain grabPickup1;
+    Follower follower;
 
-    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(0));
-    private final Pose scorePose = new Pose(72, 128, Math.toRadians(180));
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public void runOpMode() throws InterruptedException {
 
         double speedTPS= (double) (28 * targetSpeed) / 60;
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetry.update();
+
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
@@ -64,7 +69,9 @@ public class tankauto_redwall extends LinearOpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        follower = Constants.createFollower(hardwareMap);
         buildPaths();
+        follower.setStartingPose(startPose);
 
         waitForStart();
 
@@ -97,14 +104,12 @@ public class tankauto_redwall extends LinearOpMode {
             pusher1.setPower(0);
             pusher2.setPower(0);
         }
-
-
-
     }
+
     public void buildPaths() {
+
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
-
 
         grabPickup1 = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
