@@ -35,7 +35,7 @@ public class tankauto_redwall extends LinearOpMode {
     DcMotorImplEx shoot;
     CRServo pusher1;
     CRServo pusher2;
-    int targetSpeed = 3000;
+    int targetSpeed = 1000;
     double realSpeed = 0;
 
 
@@ -50,7 +50,7 @@ public class tankauto_redwall extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        double speedTPS= (double) (28 * targetSpeed) / 60;
+        double speedTPS= (double) (28 * (targetSpeed+1000)) / 60;
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         telemetry.update();
@@ -117,8 +117,6 @@ public class tankauto_redwall extends LinearOpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(scorePreload);
-                shootBall();
-                shootBall();
                 shootBall();
                 setPathState(1);
                 break;
