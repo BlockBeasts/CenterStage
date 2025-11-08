@@ -7,8 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+import com.qualcomm.robotcore.util.ElapsedTime;
 @Config // Enables FTC Dashboard
 @TeleOp(name = "tank-drive")
 public class tankDrive extends LinearOpMode {
@@ -22,6 +23,18 @@ public class tankDrive extends LinearOpMode {
 
     double shootpower = 0;
 
+    DcMotor frontLeft;
+    DcMotor backLeft;
+    DcMotor frontRight;
+    DcMotor backRight;
+    DcMotorImplEx shoot;
+    CRServo pusher1;
+    CRServo pusher2;
+    int targetSpeed = 3000;
+    double realSpeed = 0;
+
+    boolean shootActive = false;
+
 
     public void runOpMode() throws InterruptedException {
 
@@ -29,14 +42,15 @@ public class tankDrive extends LinearOpMode {
 
         telemetry.update();
 
-        DcMotor frontLeft = hardwareMap.dcMotor.get("frontLeft");
-        DcMotor backLeft = hardwareMap.dcMotor.get("backLeft");
-        DcMotor frontRight = hardwareMap.dcMotor.get("frontRight");
-        DcMotor backRight = hardwareMap.dcMotor.get("backRight");
 
-        DcMotor shoot = hardwareMap.dcMotor.get("shooter");
-        CRServo pusher1 = hardwareMap.crservo.get("pusher1");
-        CRServo pusher2 = hardwareMap.crservo.get("pusher2");
+        frontLeft = hardwareMap.dcMotor.get("frontLeft");
+        backLeft = hardwareMap.dcMotor.get("backLeft");
+        frontRight = hardwareMap.dcMotor.get("frontRight");
+        backRight = hardwareMap.dcMotor.get("backRight");
+
+        shoot = hardwareMap.get(DcMotorImplEx.class, "shooter");
+        pusher1 = hardwareMap.crservo.get("pusher1");
+        pusher2 = hardwareMap.crservo.get("pusher2");
 
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -47,28 +61,27 @@ public class tankDrive extends LinearOpMode {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-
         waitForStart();
 
         while (opModeIsActive()) {
 
             if (gamepad2.dpad_up) { 
-                shootpower = 0.5;
+                shootpower = 0.6;
 
             } else if (gamepad2.dpad_down) {
                 shootpower = 0;
             }
 
-            if (gamepad2.dpad_left){
+            if (gamepad2.dpad_right) {
+                shootActive = true;
+            }
+            if (shootActive && realSpeed > targetSpeed) {
+                realSpeed = shoot.getVelocity();
+            } else if (shootActive) {
                 pusher1.setPower(1);
-                pusher2.setPower(-1);
-            }
+                pusher2.setPower(1);
 
-            if (gamepad2.dpad_right){
-                pusher1.setPower(0);
-                pusher2.setPower(0);
             }
-
 
 
 
@@ -85,6 +98,26 @@ public class tankDrive extends LinearOpMode {
             shoot.setPower(shootpower);
 
         }
+
+
     }
+    public void shootBall(){
+        while (realSpeed < targetSpeed && opModeIsActive()) {
+            realSpeed = shoot.getVelocity();
+        }
+        pusher1.setPower(1);
+        pusher2.setPower(1);
+        ElapsedTime elapsedTime = new ElapsedTime();
+
+        while(elapsedTime.milliseconds() < 2000 && opModeIsActive()) {
+            pusher1.setPower(0);
+            pusher2.setPower(0);
+        }
+
+
+
+    }
+
+
 }
 

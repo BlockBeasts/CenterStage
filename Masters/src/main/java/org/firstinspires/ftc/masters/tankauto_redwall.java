@@ -17,11 +17,16 @@ import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
+
 @Config // Enables FTC Dashboard
 @Autonomous(name = "auto-redwall")
 
 public class tankauto_redwall extends LinearOpMode {
     private Path scorePreload;
+
+    private Follower follower;
+
 
     DcMotor frontLeft;
     DcMotor backLeft;
@@ -33,11 +38,14 @@ public class tankauto_redwall extends LinearOpMode {
     int targetSpeed = 3000;
     double realSpeed = 0;
 
-    private Follower follower;
-    private PathChain grabPickup1;
 
-    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(0));
-    private final Pose scorePose = new Pose(72, 128, Math.toRadians(180));
+    private PathChain grabPickup1;
+    private int pathState;
+    private PathChain moveChain;
+
+    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
+    private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
+    private final Pose movePose = new Pose(37, 121, Math.toRadians(0));
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public void runOpMode() throws InterruptedException {
@@ -46,44 +54,34 @@ public class tankauto_redwall extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         telemetry.update();
-        frontLeft = hardwareMap.dcMotor.get("frontLeft");
-        backLeft = hardwareMap.dcMotor.get("backLeft");
-        frontRight = hardwareMap.dcMotor.get("frontRight");
-        backRight = hardwareMap.dcMotor.get("backRight");
+
 
         shoot = hardwareMap.get(DcMotorImplEx.class, "shooter");
         pusher1 = hardwareMap.crservo.get("pusher1");
         pusher2 = hardwareMap.crservo.get("pusher2");
 
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        follower = Constants.createFollower(hardwareMap);
         buildPaths();
+        follower.setStartingPose(startPose);
 
         waitForStart();
+        setPathState(0);
+        shoot.setVelocity(speedTPS);
 
         while (opModeIsActive()) {
+            follower.update();
+            autonomousPathUpdate();
 
-            follower.followPath(scorePreload);
-
-            if (!follower.isBusy()) {
-                shoot.setVelocity(speedTPS);
-
-                shootBall();
-                shootBall();
-                shootBall();
-
-
-            }
+            telemetry.addData("path state", pathState);
+            telemetry.addData("x", follower.getPose().getX());
+            telemetry.addData("y", follower.getPose().getY());
+            telemetry.addData("heading", follower.getPose().getHeading());
+            telemetry.update();
 
         }
     }
+
+
 
     public void shootBall(){
         while (realSpeed < targetSpeed && opModeIsActive()) {
@@ -102,14 +100,40 @@ public class tankauto_redwall extends LinearOpMode {
 
     }
     public void buildPaths() {
+
         scorePreload = new Path(new BezierLine(startPose, scorePose));
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
 
-
-        grabPickup1 = follower.pathBuilder()
-                .addPath(new BezierLine(startPose, scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+        moveChain = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, movePose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), movePose.getHeading())
                 .build();
+    }
+    public void setPathState(int pState) {
+        pathState = pState;
+    }
+
+    public void autonomousPathUpdate() {
+        switch (pathState) {
+            case 0:
+                follower.followPath(scorePreload);
+                shootBall();
+                shootBall();
+                shootBall();
+                setPathState(1);
+                break;
+            case 1:
+                if(!follower.isBusy()) {
+                    follower.followPath(moveChain,true);
+                    setPathState(2);
+                }
+                break;
+            case 2:
+                if(!follower.isBusy()) {
+                    setPathState(-1);
+                }
+                break;
+        }
     }
 
 }
