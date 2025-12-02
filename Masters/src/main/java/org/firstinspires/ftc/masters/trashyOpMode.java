@@ -2,7 +2,6 @@ package org.firstinspires.ftc.masters;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,14 +9,13 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "QuickAndDirtyTeleOp")
-public class quickAndDirtyTeleOp extends LinearOpMode {
+@TeleOp
+public class trashyOpMode extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -38,9 +36,9 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
 
 
-    public static double Blank = 0;
 
-    public static int targetVelo = 3000;
+
+    public static double Blank = 0;
 
     public void runOpMode() throws InterruptedException {
 
@@ -80,7 +78,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         setPIDFCoefficients(shoot, MOTOR_VELO_PID);
 
-     //   TuningController tuningController = new TuningController();
+        TuningController tuningController = new TuningController();
 
         double lastKp = 0.0;
         double lastKi = 0.0;
@@ -89,7 +87,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
 
 
-//        tuningController.start();
+        tuningController.start();
 
 
         waitForStart();
@@ -97,25 +95,38 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
 
-            if (gamepad1.dpad_up) {
-
-
-                shooter = true;
-
-            }
-            if (gamepad1.dpad_down) {
-
-
-                shooter = false;
-
+            if (gamepad2.dpad_up) {
+                if (shooter) {
+                    shooter = false;
+                } else {
+                    shooter = true;
+                }
             }
 
 
             if (shooter) {
-
+                double targetVelo = tuningController.update();
                 shoot.setVelocity(targetVelo);
 
                 telemetry.addData("targetVelocity", targetVelo);
+
+                double motorVelo = shoot.getVelocity();
+                telemetry.addData("velocity", motorVelo);
+                telemetry.addData("error", targetVelo - motorVelo);
+
+                telemetry.addData("upperBound", TuningController.rpmToTicksPerSecond(TuningController.TESTING_MAX_SPEED * 1.15));
+                telemetry.addData("lowerBound", 0);
+
+                if (lastKp != MOTOR_VELO_PID.p || lastKi != MOTOR_VELO_PID.i || lastKd != MOTOR_VELO_PID.d || lastKf != MOTOR_VELO_PID.f) {
+                    setPIDFCoefficients(shoot, MOTOR_VELO_PID);
+
+                    lastKp = MOTOR_VELO_PID.p;
+                    lastKi = MOTOR_VELO_PID.i;
+                    lastKd = MOTOR_VELO_PID.d;
+                    lastKf = MOTOR_VELO_PID.f;
+                }
+
+                tuningController.update();
 
             } else {
                 shoot.setVelocity(0);
