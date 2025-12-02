@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
@@ -29,6 +30,8 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
     CRServo pusher1;
     CRServo pusher2;
 
+    Servo indicator;
+
     boolean shooter;
 
     public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(13.8, 0, 5, 12);
@@ -41,6 +44,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
     public static double Blank = 0;
 
     public static int targetVelo = 3000;
+    public static double currentVelo = 0;
 
     public void runOpMode() throws InterruptedException {
 
@@ -59,6 +63,9 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         shoot = hardwareMap.get(DcMotorImplEx.class, "shooter");
         pusher1 = hardwareMap.crservo.get("pusher1");
         pusher2 = hardwareMap.crservo.get("pusher2");
+
+        indicator = hardwareMap.get(Servo.class, "indicator");
+
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
@@ -95,7 +102,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
+            currentVelo = shoot.getVelocity();
 
             if (gamepad1.dpad_up) {
 
@@ -117,10 +124,12 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
                 telemetry.addData("targetVelocity", targetVelo);
 
+
+
             } else {
                 shoot.setVelocity(0);
             }
-
+            telemetry.addData("currentVelocity", currentVelo);
             telemetry.update();
 
 
