@@ -16,37 +16,48 @@ public class tankDrive extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
+    public static double MOTOR_TICKS_PER_REV = 28;
+    public static double MOTOR_MAX_RPM = 6000;
+    public static double MOTOR_GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
+
+    public static double TESTING_MAX_SPEED = 0.9 * MOTOR_MAX_RPM;
+    public static double TESTING_MIN_SPEED = 0.3 * MOTOR_MAX_RPM;
+
     public static double Blank = 0;
 
     double forward_power = 0;
     double turn_power = 0;
 
-    double shootpower = 0;
+
 
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor frontRight;
     DcMotor backRight;
+    DcMotor intake;
     DcMotorImplEx shoot;
     CRServo pusher1;
     CRServo pusher2;
-    int targetSpeed = 3000;
+    int targetSpeed = 1400;
     double realSpeed = 0;
 
     boolean shootActive = false;
+    boolean loadball = false;
 
 
     public void runOpMode() throws InterruptedException {
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        telemetry.update();
+
 
 
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         backLeft = hardwareMap.dcMotor.get("backLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backRight = hardwareMap.dcMotor.get("backRight");
+
+        intake = hardwareMap.dcMotor.get("intake");
 
         shoot = hardwareMap.get(DcMotorImplEx.class, "shooter");
         pusher1 = hardwareMap.crservo.get("pusher1");
@@ -60,31 +71,44 @@ public class tankDrive extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if (gamepad2.dpad_up) { 
-                shootpower = 0.6;
+            if (gamepad2.a) {
+                intake.setPower(1);
+            } else {
+                intake.setPower(0);
+            }
 
-            } else if (gamepad2.dpad_down) {
-                shootpower = 0;
+            if (gamepad2.dpad_left) {
+                shoot.setPower(0.6);
+                shootActive = true;
             }
 
             if (gamepad2.dpad_right) {
-                shootActive = true;
+                shoot.setPower(0);
+                shootActive = false;
             }
-            if (shootActive && realSpeed > targetSpeed) {
+            if (shootActive) {
+
                 realSpeed = shoot.getVelocity();
-            } else if (shootActive) {
-                pusher1.setPower(1);
-                pusher2.setPower(1);
+                telemetry.addData("speed", realSpeed);
+                telemetry.addData("target", targetSpeed);
+                telemetry.update();
+                if (realSpeed > targetSpeed && !loadball) {
 
+                    loadball = true;
+                    pusher1.setPower(1);
+                    pusher2.setPower(-1);
+                }
+            } else {
+
+                loadball = false;
+                pusher1.setPower(0);
+                pusher2.setPower(0);
             }
-
-
-
 
 
             forward_power = gamepad1.left_stick_y * -1;
@@ -95,28 +119,13 @@ public class tankDrive extends LinearOpMode {
             backLeft.setPower(forward_power + turn_power);
             backRight.setPower(forward_power - turn_power);
 
-            shoot.setPower(shootpower);
+
 
         }
 
 
     }
-    public void shootBall(){
-        while (realSpeed < targetSpeed && opModeIsActive()) {
-            realSpeed = shoot.getVelocity();
-        }
-        pusher1.setPower(1);
-        pusher2.setPower(1);
-        ElapsedTime elapsedTime = new ElapsedTime();
 
-        while(elapsedTime.milliseconds() < 2000 && opModeIsActive()) {
-            pusher1.setPower(0);
-            pusher2.setPower(0);
-        }
-
-
-
-    }
 
 
 }
