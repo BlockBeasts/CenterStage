@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "QuickAndDirtyTeleOp")
@@ -31,6 +32,9 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
     CRServo pusher2;
 
     Servo indicator;
+
+    ElapsedTime shootTime;
+    public static int shootTimeVar;
 
     boolean shooter;
 
@@ -65,6 +69,8 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         pusher2 = hardwareMap.crservo.get("pusher2");
 
         indicator = hardwareMap.get(Servo.class, "indicator");
+
+        shootTime = new ElapsedTime();
 
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -141,14 +147,19 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
 
             if (gamepad1.a){
+                shootTime = new ElapsedTime();
                 pusher1.setPower(1);
                 pusher2.setPower(-1);
-            } else {
+            } else if (shootTime.milliseconds() >= shootTimeVar){
                 pusher1.setPower(0);
                 pusher2.setPower(0);
             }
 
-
+            if(currentVelo >= 2100){
+                indicator.setPosition(1);
+            } else {
+                indicator.setPosition(0);
+            }
 
         }
     }
