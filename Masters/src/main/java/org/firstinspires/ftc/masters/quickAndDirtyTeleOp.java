@@ -153,7 +153,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
             if (currentVelo >= 1400) {
                 indicator.setPosition(.500);
             } else {
-                indicator.setPosition(.277);
+                indicator.setPosition(.28);
             }
 
 
