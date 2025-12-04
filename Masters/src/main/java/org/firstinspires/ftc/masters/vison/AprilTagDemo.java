@@ -45,14 +45,10 @@ public class AprilTagDemo extends LinearOpMode
 
     static final double FEET_PER_METER = 3.28084;
 
-    // Lens intrinsics
-    // UNITS ARE PIXELS
-    // NOTE: this calibration is for the C920 webcam at 800x448.
-    // You will need to do your own calibration for other configurations!
-    double fx = 578.272;
-    double fy = 578.272;
-    double cx = 402.145;
-    double cy = 221.506;
+    double fx = 822.317;
+    double fy = 822.317;
+    double cx = 319.495;
+    double cy = 242.502;
 
     // UNITS ARE METERS
     double tagsize = 0.166;
@@ -77,7 +73,7 @@ public class AprilTagDemo extends LinearOpMode
             @Override
             public void onOpened()
             {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -107,7 +103,7 @@ public class AprilTagDemo extends LinearOpMode
                 telemetry.addData("Pipeline ms", camera.getPipelineTimeMs());
 
                 // If we don't see any tags
-                if(detections.size() == 0)
+                if(detections.isEmpty())
                 {
                     numFramesWithoutDetection++;
 

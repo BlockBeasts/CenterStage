@@ -47,7 +47,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
     public static double Blank = 0;
 
-    public static int targetVelo = 3000;
+    public static int targetVelo = 1500;
     public static double currentVelo = 0;
 
     public void runOpMode() throws InterruptedException {
@@ -157,10 +157,14 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
                 pusher2.setPower(0);
             }
 
-            if(currentVelo >= (2100-range) || currentVelo <= (2100+range)){
-                indicator.setPosition(1);
-            } else {
-                indicator.setPosition(0);
+            if(currentVelo >= 1400) {
+                indicator.setPosition(.500);
+                if (currentVelo >= (2100 - range) || currentVelo <= (2100 + range)) {
+                    indicator.setPosition(1);
+                } else {
+                    indicator.setPosition(.277);
+                }
+
             }
 
         }
