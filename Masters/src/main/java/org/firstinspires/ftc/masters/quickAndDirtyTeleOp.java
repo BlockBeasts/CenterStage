@@ -100,6 +100,8 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         double lastKd = 0.0;
         double lastKf = getMotorVelocityF();
 
+        double range = 10; //this is range for light so it could be 10 off or 5 off. :3
+
 
 
 //        tuningController.start();
@@ -110,13 +112,13 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         while (opModeIsActive()) {
             currentVelo = shoot.getVelocity();
 
-            if (gamepad1.dpad_up) {
+            if (gamepad2.dpad_up) {
 
 
                 shooter = true;
 
             }
-            if (gamepad1.dpad_down) {
+            if (gamepad2.dpad_down) {
 
 
                 shooter = false;
@@ -146,7 +148,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
 
 
-            if (gamepad1.a){
+            if (gamepad2.a){
                 shootTime = new ElapsedTime();
                 pusher1.setPower(1);
                 pusher2.setPower(-1);
@@ -155,7 +157,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
                 pusher2.setPower(0);
             }
 
-            if(currentVelo >= 2100){
+            if(currentVelo >= (2100-range) || currentVelo <= (2100+range)){
                 indicator.setPosition(1);
             } else {
                 indicator.setPosition(0);
