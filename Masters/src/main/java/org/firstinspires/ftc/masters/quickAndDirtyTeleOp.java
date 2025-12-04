@@ -44,7 +44,6 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
     private VoltageSensor batteryVoltageSensor;
 
 
-
     public static double Blank = 0;
 
     public static int targetVelo = 1500;
@@ -93,14 +92,13 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
         setPIDFCoefficients(shoot, MOTOR_VELO_PID);
 
-     //   TuningController tuningController = new TuningController();
+        //   TuningController tuningController = new TuningController();
 
         double lastKp = 0.0;
         double lastKi = 0.0;
         double lastKd = 0.0;
         double lastKf = getMotorVelocityF();
 
-        double range = 10; //this is range for light so it could be 10 off or 5 off. :3
 
 
 
@@ -133,7 +131,6 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
                 telemetry.addData("targetVelocity", targetVelo);
 
 
-
             } else {
                 shoot.setVelocity(0);
             }
@@ -141,31 +138,24 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
             telemetry.update();
 
 
-
-
-
             cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));
 
 
-
-            if (gamepad2.a){
+            if (gamepad2.a) {
                 shootTime = new ElapsedTime();
                 pusher1.setPower(1);
                 pusher2.setPower(-1);
-            } else if (shootTime.milliseconds() >= shootTimeVar){
+            } else if (shootTime.milliseconds() >= shootTimeVar) {
                 pusher1.setPower(0);
                 pusher2.setPower(0);
             }
 
-            if(currentVelo >= 1400) {
+            if (currentVelo >= 1400) {
                 indicator.setPosition(.500);
-                if (currentVelo >= (2100 - range) || currentVelo <= (2100 + range)) {
-                    indicator.setPosition(1);
-                } else {
-                    indicator.setPosition(.277);
-                }
-
+            } else {
+                indicator.setPosition(.277);
             }
+
 
         }
     }
