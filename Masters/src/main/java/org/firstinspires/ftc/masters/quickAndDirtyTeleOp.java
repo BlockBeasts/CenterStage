@@ -38,7 +38,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
     boolean shooter;
 
-    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(13.8, 0, 5, 12);
+    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(800, 0, 5, 12);
 
 
     private VoltageSensor batteryVoltageSensor;
@@ -46,7 +46,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
     public static double Blank = 0;
 
-    public static int targetVelo = 1500;
+    public static int targetVelo = 1400;
     public static double currentVelo = 0;
 
     public void runOpMode() throws InterruptedException {
@@ -100,8 +100,6 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
         double lastKf = getMotorVelocityF();
 
 
-
-
 //        tuningController.start();
 
 
@@ -150,7 +148,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
                 pusher2.setPower(0);
             }
 
-            if (currentVelo >= 1400) {
+            if (currentVelo >= 1370) {
                 indicator.setPosition(.500);
             } else {
                 indicator.setPosition(.28);
