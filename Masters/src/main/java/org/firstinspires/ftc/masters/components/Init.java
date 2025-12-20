@@ -23,7 +23,10 @@ public class Init {
     DcMotor frontRight;
     DcMotor backRight;
     DcMotor intakemoter;
-    DcMotor shoot;
+    DcMotor shoota;
+    DcMotor shootb;
+
+    DcMotor lift;
     public Init(HardwareMap hardwareMap) {
 
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -32,8 +35,9 @@ public class Init {
         backRight = hardwareMap.dcMotor.get("backRight");
 
         intakemoter = hardwareMap.dcMotor.get("intakemoter");
-        shoot = hardwareMap.dcMotor.get("shoot");
-
+        shoota = hardwareMap.dcMotor.get("shoota");
+        shootb = hardwareMap.dcMotor.get("shootb");
+        lift = hardwareMap.dcMotor.get("lift");
 
 
 
@@ -46,10 +50,22 @@ public class Init {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakemoter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shoot.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shoota.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shootb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
+
 
     public DcMotor getIntakemoter() {
         return intakemoter;
+    }
+    public DcMotor getShootAmoter() {
+        return shoota;
+    }
+    public DcMotor getShootBmoter() {
+        return shootb;
+    }
+    public DcMotor getLiftmoter() {
+        return lift;
     }
 }

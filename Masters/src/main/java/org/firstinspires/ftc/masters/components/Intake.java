@@ -27,6 +27,10 @@ public class Intake implements Component{
         intakemoter.setPower(1);
     }
 
+    public void intakeOff() {
+        intakemoter.setPower(0);
+    }
+
     public void intakeReverse() {
         intakemoter.setPower(-1);
     }
