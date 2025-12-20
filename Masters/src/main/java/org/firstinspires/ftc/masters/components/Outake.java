@@ -52,19 +52,22 @@ public class Outake implements Component{
 
 
     public void update() {
-        if (Objects.equals(mode, "launch")) {
+        if (Objects.equals(mode, "launch") || Objects.equals(mode, "reset")) {
 
 
-            if (armed == false) {
+            if (!armed) {
                 outakeOn();
                 armed = true;
             } else {
-                if (usefullMath.ticksToAngle(shoota.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)
-                        && usefullMath.ticksToAngle(shootb.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)) {
+                if (shoota.getCurrentPosition() >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)
+                        && shootb.getCurrentPosition() >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)) {
                     outakeOff();
+                    mode = "reset";
 
-                    if (usefullMath.ticksToAngle(shoota.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)
-                            && usefullMath.ticksToAngle(shootb.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
+
+                } else if (Objects.equals(mode, "reset")) {
+                    if (shoota.getCurrentPosition() >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)
+                            && shootb.getCurrentPosition() >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
                         mode = "off";
                         armed = false;
                     }
