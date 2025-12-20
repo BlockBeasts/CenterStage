@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.Objects;
+
 public class Outake implements Component{
 
     Init init;
@@ -14,8 +16,8 @@ public class Outake implements Component{
     DcMotor shoota;
     DcMotor shootb;
 
-    double launchAngle = 0.0;
-    double fireAngle = 25.0;
+    String mode = "off";
+    boolean armed = false;
 
     public void initializeHardware() {
 
@@ -30,11 +32,45 @@ public class Outake implements Component{
     }
 
 
-    public void outakeon() {
+    private void outakeOn() {
 
-        shoota.setTargetPosition(usefullMath.angleToTicks(fireAngle, 537.7));
-        shootb.setTargetPosition(usefullMath.angleToTicks(fireAngle, 537.7));
+        shoota.setTargetPosition(usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
+        shootb.setTargetPosition(usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
 
+    }
+    private void outakeOff() {
+
+        shoota.setTargetPosition(usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
+        shootb.setTargetPosition(usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
+
+    }
+
+    public void launch() {
+        mode = "launch";
+    }
+
+
+
+    public void update() {
+        if (Objects.equals(mode, "launch")) {
+
+
+            if (armed == false) {
+                outakeOn();
+                armed = true;
+            } else {
+                if (usefullMath.ticksToAngle(shoota.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)
+                        && usefullMath.ticksToAngle(shootb.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)) {
+                    outakeOff();
+
+                    if (usefullMath.ticksToAngle(shoota.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)
+                            && usefullMath.ticksToAngle(shootb.getCurrentPosition(), ITDCons.shootPPR) >= usefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
+                        mode = "off";
+                        armed = false;
+                    }
+                }
+            }
+        }
     }
 
 
