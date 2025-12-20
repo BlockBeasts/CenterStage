@@ -7,9 +7,13 @@ import org.firstinspires.ftc.masters.components.Init;
 public class Intake implements Component{
 
     Init init;
+
+
     Telemetry telemetry;
 
     DcMotor intakemoter;
+
+
 
     public void initializeHardware() {
 

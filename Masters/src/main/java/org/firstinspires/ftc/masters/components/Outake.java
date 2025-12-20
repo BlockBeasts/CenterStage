@@ -7,10 +7,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Outake implements Component{
 
     Init init;
+
+    UsefullMath usefullMath;
     Telemetry telemetry;
 
     DcMotor shoota;
     DcMotor shootb;
+
+    double launchAngle = 0.0;
+    double fireAngle = 25.0;
 
     public void initializeHardware() {
 
@@ -27,6 +32,8 @@ public class Outake implements Component{
 
     public void outakeon() {
 
+        shoota.setTargetPosition(usefullMath.angleToTicks(fireAngle, 537.7));
+        shootb.setTargetPosition(usefullMath.angleToTicks(fireAngle, 537.7));
 
     }
 

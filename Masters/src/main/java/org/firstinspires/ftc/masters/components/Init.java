@@ -40,7 +40,7 @@ public class Init {
         lift = hardwareMap.dcMotor.get("lift");
 
 
-
+        shootb.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
