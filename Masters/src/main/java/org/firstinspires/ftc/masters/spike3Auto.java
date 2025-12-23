@@ -7,9 +7,15 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.masters.components.Intake;
+import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 public class spike3Auto extends LinearOpMode {
+
+
+    Intake intake;
+    Outake outake;
 
     private Follower follower;
 
@@ -48,6 +54,9 @@ public class spike3Auto extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
+            outake.update();
+
+
         }
 
     }
@@ -62,42 +71,45 @@ public class spike3Auto extends LinearOpMode {
                 if(!follower.isBusy()) {
                     follower.followPath(spike1,true);
                     setPathState(2);
-                    // Pickup balls command
+                    intake.intakeOn();
                 }
                 break;
             case 2:
                 if(!follower.isBusy()) {
                     follower.followPath(score1,true);
                     setPathState(3);
-                    // Score balls command
+                    intake.intakeOff();
+                    outake.launch();
                 }
                 break;
             case 3:
                 if(!follower.isBusy()) {
                     follower.followPath(spike2,true);
                     setPathState(4);
-                    // Pickup balls command
+                    intake.intakeOn();
                 }
                 break;
             case 4:
                 if(!follower.isBusy()) {
                     follower.followPath(score2,true);
                     setPathState(5);
-                    // Score balls command
+                    intake.intakeOff();
+                    outake.launch();
                 }
                 break;
             case 5:
                 if(!follower.isBusy()) {
                     follower.followPath(spike3,true);
                     setPathState(6);
-                    // Pickup balls command
+                    intake.intakeOn();
                 }
                 break;
             case 6:
                 if(!follower.isBusy()) {
                     follower.followPath(score3,true);
                     setPathState(7);
-                    // Score balls command
+                    intake.intakeOff();
+                    outake.launch();
                 }
                 break;
             case 7:
