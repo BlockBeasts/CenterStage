@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorImplEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+
 @Config // Enables FTC Dashboard
 @TeleOp(name = "tank-drive")
 public class tankDrive extends LinearOpMode {
@@ -43,6 +45,7 @@ public class tankDrive extends LinearOpMode {
 
     boolean shootActive = false;
     boolean loadball = false;
+
 
 
     public void runOpMode() throws InterruptedException {

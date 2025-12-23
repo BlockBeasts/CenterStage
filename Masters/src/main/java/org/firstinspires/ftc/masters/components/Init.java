@@ -56,9 +56,22 @@ public class Init {
     }
 
 
-    public DcMotor getIntakemoter() {
-        return intakemoter;
+    public DcMotor getIntakemoter() {return intakemoter; }
+
+    public DcMotor getFrontLeft() {
+        return frontLeft;
     }
+    public DcMotor getBackLeft() {
+        return backLeft;
+    }
+    public DcMotor getFrontRight() {
+        return frontRight;
+    }
+    public DcMotor getBackRight() {return backRight; }
+
+
+
+
     public DcMotor getShootAmoter() {
         return shoota;
     }

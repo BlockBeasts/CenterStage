@@ -3,8 +3,8 @@ package org.firstinspires.ftc.masters.components;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.masters.components.Init;
-public class Intake implements Component{
+
+public class Intake {
 
     Init init;
 
@@ -15,28 +15,18 @@ public class Intake implements Component{
 
 
 
-    public void initializeHardware() {
 
-    }
-
-    public Intake(Init init, Telemetry telemetry){
-
-        this.init = init;
-        this.telemetry=telemetry;
-        this.intakemoter=init.getIntakemoter();
-
-    }
 
     public void intakeOn() {
-        intakemoter.setPower(1);
+        init.getIntakemoter().setPower(1);
     }
 
     public void intakeOff() {
-        intakemoter.setPower(0);
+        init.getIntakemoter().setPower(0);
     }
 
     public void intakeReverse() {
-        intakemoter.setPower(-1);
+        init.getIntakemoter().setPower(-1);
     }
 
 

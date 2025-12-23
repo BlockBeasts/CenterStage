@@ -6,12 +6,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.masters.components.Init;
+import org.firstinspires.ftc.masters.components.Intake;
 
 @TeleOp(name="testdrivetrain")
 public class testdive extends LinearOpMode {
                      
     double max_power = 1;
 
+
+
+
+    Intake intake;
 
 
     double X_power = 0;
@@ -38,14 +44,14 @@ public class testdive extends LinearOpMode {
         DcMotor outakem2 = hardwareMap.dcMotor.get("outakem2");
         DcMotor selector = hardwareMap.dcMotor.get("selector");
 
-
-
+        
 
         waitForStart();
 
 
-
         while(opModeIsActive()){
+
+
 
             X_power = (gamepad1.left_stick_y * max_power)*-1;
             y_power = (gamepad1.left_stick_x * max_power);
