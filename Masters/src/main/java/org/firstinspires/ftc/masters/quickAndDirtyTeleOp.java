@@ -46,7 +46,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
     public static double Blank = 0;
 
-    public static int targetVelo = 1400;
+    public static int targetVelo = 1375;
     public static double currentVelo = 0;
 
     public void runOpMode() throws InterruptedException {
