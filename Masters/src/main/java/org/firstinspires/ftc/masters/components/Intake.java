@@ -6,6 +6,10 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Intake {
 
+    public Intake(Init init) {
+        this.init= init;
+    }
+
     Init init;
 
 

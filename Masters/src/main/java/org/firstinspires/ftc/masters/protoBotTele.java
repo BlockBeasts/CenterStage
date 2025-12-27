@@ -45,6 +45,10 @@ public class protoBotTele extends LinearOpMode {
 
 
     public void runOpMode() throws InterruptedException {
+
+        init = new Init(hardwareMap);
+        outake = new Outake(init);
+        intake = new Intake(init);
         initializeHardware();
 
         waitForStart();
@@ -62,6 +66,9 @@ public class protoBotTele extends LinearOpMode {
             }
             if (gamepad1.dpad_right) {
                 outake.launch();
+            }
+            if (gamepad1.dpad_left) {
+                outake.outakeOff();
             }
 
             if (gamepad1.dpad_down) {
