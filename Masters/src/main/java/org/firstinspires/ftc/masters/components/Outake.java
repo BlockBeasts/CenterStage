@@ -24,7 +24,7 @@ public class Outake {
 
 
 
-    private void outakeOn() {
+    public void outakeOn() {
         init.getShootAmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
         init.getShootBmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
         init.getShootAmoter().setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -56,29 +56,29 @@ public class Outake {
 
     public void update() {
 
-        if (Objects.equals(mode, "launch")) {
-            outakeOn();
-            if (!init.getShootAmoter().isBusy()) {
-                init.getShootAmoter().setPower(0.0);
-            }
-            if (!init.getShootBmoter().isBusy()) {
-                init.getShootBmoter().setPower(0.0);
-            }
-            if (isInLaunchPos()) {
-                outakeOff();
-                mode = "reset";
-            }
-        }
-        if (Objects.equals(mode, "reset")) {
-            if (!init.getShootAmoter().isBusy()) {
-                init.getShootAmoter().setPower(0.0);
-            }
-            if (!init.getShootBmoter().isBusy()) {
-                init.getShootBmoter().setPower(0.0);
-            }
-            if (isInResetPos()) {
-                mode = "off";
-            }
-        }
+//        if (Objects.equals(mode, "launch")) {
+//            outakeOn();
+//            if (!init.getShootAmoter().isBusy()) {
+//                init.getShootAmoter().setPower(0.0);
+//            }
+//            if (!init.getShootBmoter().isBusy()) {
+//                init.getShootBmoter().setPower(0.0);
+//            }
+//            if (isInLaunchPos()) {
+//                outakeOff();
+//                mode = "reset";
+//            }
+
+//        if (Objects.equals(mode, "reset")) {
+//            if (!init.getShootAmoter().isBusy()) {
+//                init.getShootAmoter().setPower(0.0);
+//            }
+//            if (!init.getShootBmoter().isBusy()) {
+//                init.getShootBmoter().setPower(0.0);
+//            }
+//            if (isInResetPos()) {
+//                mode = "off";
+//            }
+//        }
     }
 }

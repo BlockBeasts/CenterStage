@@ -40,7 +40,7 @@ public class Init {
         lift = hardwareMap.dcMotor.get("lift");
 
 
-        shootb.setDirection(DcMotorSimple.Direction.REVERSE);
+        shoota.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -52,6 +52,11 @@ public class Init {
         intakemoter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shoota.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         shootb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        shoota.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shootb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
