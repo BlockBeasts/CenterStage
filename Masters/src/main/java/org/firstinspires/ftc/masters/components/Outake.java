@@ -25,20 +25,14 @@ public class Outake {
 
 
     public void outakeOn() {
-        init.getShootAmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
-        init.getShootBmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
-        init.getShootAmoter().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        init.getShootBmoter().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         init.getShootAmoter().setPower(1.0);
         init.getShootBmoter().setPower(1.0);
     }
     public void outakeOff() {
-        init.getShootAmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
-        init.getShootBmoter().setTargetPosition(UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
-        init.getShootAmoter().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        init.getShootBmoter().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        init.getShootAmoter().setPower(1.0);
-        init.getShootBmoter().setPower(1.0);
+
+        init.getShootAmoter().setPower(0.0);
+        init.getShootBmoter().setPower(0.0);
     }
 
     private boolean isInLaunchPos() {
@@ -55,7 +49,12 @@ public class Outake {
     }
 
     public void update() {
-
+        if (Objects.equals(mode, "launch")) {
+            if (init.getShootAmoter().getCurrentPosition() == UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
+                outakeOff();
+                mode = "off";
+            }
+        }
 //        if (Objects.equals(mode, "launch")) {
 //            outakeOn();
 //            if (!init.getShootAmoter().isBusy()) {

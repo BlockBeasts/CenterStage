@@ -59,7 +59,7 @@ public class protoBotTele extends LinearOpMode {
                 intake.intakeOn();
             }
             if (gamepad1.x) {
-                intake.intakeOn();
+                intake.intakeReverse();
             }
             if (gamepad1.b) {
                 intake.intakeOff();
