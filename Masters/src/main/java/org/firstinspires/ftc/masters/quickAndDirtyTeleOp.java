@@ -93,8 +93,8 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
         shoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
-        setPIDFCoefficients(shoot, MOTOR_VELO_PID);
+//        batteryVoltageSensor = hardwareMap.voltageSensor.iterator().next();
+//        setPIDFCoefficients(shoot, MOTOR_VELO_PID);
 
         //   TuningController tuningController = new TuningController();
 

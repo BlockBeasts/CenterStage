@@ -70,6 +70,13 @@ public class protoBotTele extends LinearOpMode {
             if (gamepad1.dpad_left) {
                 outake.outakeOff();
             }
+            if (gamepad2.dpad_up) {
+                lift.liftBot();
+            }
+            if (gamepad2.dpad_down) {
+                lift.liftBot();
+            }
+
 
             if (gamepad1.dpad_down) {
                 lift.lowerBot();

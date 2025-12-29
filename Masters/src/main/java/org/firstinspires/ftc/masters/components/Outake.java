@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.masters.components;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -20,9 +20,9 @@ public class Outake {
     String mode = "off";
 
 
-
-
-
+//    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(800, 0, 5, 12);
+//
+//    private VoltageSensor batteryVoltageSensor;
 
     public void outakeOn() {
 
@@ -80,4 +80,10 @@ public class Outake {
 //            }
 //        }
     }
+
+//    private void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
+//        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
+//                coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+//        ));
+//    }
 }
