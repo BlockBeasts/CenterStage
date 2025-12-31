@@ -6,20 +6,27 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.masters.components.ITDCons;
+import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.masters.components.UsefullMath;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 public class spike3Auto extends LinearOpMode {
 
-
+    Init init;
     Intake intake;
     Outake outake;
+
 
     private Follower follower;
 
     private int pathState;
+
+
 
     private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
     private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
@@ -64,22 +71,35 @@ public class spike3Auto extends LinearOpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(scorePreload);
-                setPathState(1);
+                outake.reset();
+                if (outake.isInResetPos()) {
+                    outake.outakeHold();
+                    follower.followPath(scorePreload);
+                    setPathState(1);
+                }
+
                 break;
             case 1:
                 if(!follower.isBusy()) {
-                    follower.followPath(spike1,true);
-                    setPathState(2);
-                    intake.intakeOn();
+                    outake.launch();
+
+                    if (outake.isInLaunchPos()) {
+                        follower.followPath(spike1,true);
+
+                        setPathState(2);
+                    }
+
+
+
                 }
                 break;
             case 2:
                 if(!follower.isBusy()) {
+
+
                     follower.followPath(score1,true);
                     setPathState(3);
-                    intake.intakeOff();
-                    outake.launch();
+
                 }
                 break;
             case 3:
@@ -159,5 +179,6 @@ public class spike3Auto extends LinearOpMode {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
                 .build();
     }
+
 
 }

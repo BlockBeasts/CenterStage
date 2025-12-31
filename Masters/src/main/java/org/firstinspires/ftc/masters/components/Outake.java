@@ -39,12 +39,16 @@ public class Outake {
         init.getShootAmoter().setPower(0.0);
         init.getShootBmoter().setPower(0.0);
     }
+    public void outakeHold() {
+        init.getShootAmoter().setPower(0.1);
+        init.getShootBmoter().setPower(0.1);
+    }
 
-    private boolean isInLaunchPos() {
+    public boolean isInLaunchPos() {
         return (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)
                 && init.getShootBmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
     }
-    private boolean isInResetPos() {
+    public boolean isInResetPos() {
         return (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)
                 && init.getShootBmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
     }
