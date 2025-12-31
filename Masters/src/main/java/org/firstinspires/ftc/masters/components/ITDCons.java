@@ -4,7 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 
 @Config
-public class ITDCons {
+public class  ITDCons {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 

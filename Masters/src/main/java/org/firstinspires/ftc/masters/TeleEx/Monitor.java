@@ -1,4 +1,4 @@
-//package org.firstinspires.ftc.masters.TeleEx;
+//    public static double Blank = 0;//package org.firstinspires.ftc.masters.TeleEx;
 //
 //import android.os.Environment;
 //
@@ -65,7 +65,7 @@
 //        controlHublynx = init.getControlHublynx();
 //        expansionHublynx = init.getExpansionHublynx();
 //
-////        gp1 = init.getGp1();
+///    public static double Blank = 0;/        gp1 = init.getGp1();
 //
 //        initializeHardware(0,0,0);
 //
