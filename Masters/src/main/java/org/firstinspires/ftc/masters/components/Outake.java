@@ -2,7 +2,7 @@ package org.firstinspires.ftc.masters.components;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.Objects;
@@ -26,8 +26,13 @@ public class Outake {
 
     public void outakeOn() {
 
-        init.getShootAmoter().setPower(1.0);
-        init.getShootBmoter().setPower(1.0);
+        init.getShootAmoter().setPower(1);
+        init.getShootBmoter().setPower(1);
+    }
+    public void outakerev() {
+
+        init.getShootAmoter().setPower(-1);
+        init.getShootBmoter().setPower(-1);
     }
     public void outakeOff() {
 
@@ -45,12 +50,29 @@ public class Outake {
     }
 
     public void launch() {
+        outakerev();
         mode = "launch";
     }
+    public void reset() {
+        outakeOn();
+        mode = "reset";
+    }
 
-    public void update() {
+
+    public void update(Telemetry telemetry) {
+
+        telemetry.update();
+        telemetry.addData(" motA pos: ", UsefullMath.ticksToAngle(init.getShootAmoter().getCurrentPosition(), ITDCons.shootPPR));
+        telemetry.addData(" motB pos: ", UsefullMath.ticksToAngle(init.getShootBmoter().getCurrentPosition(), ITDCons.shootPPR));
+
         if (Objects.equals(mode, "launch")) {
-            if (init.getShootAmoter().getCurrentPosition() == UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
+            if (init.getShootAmoter().getCurrentPosition() <= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
+                outakeOff();
+                mode = "off";
+            }
+        }
+        if (Objects.equals(mode, "reset")) {
+            if (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)) {
                 outakeOff();
                 mode = "off";
             }

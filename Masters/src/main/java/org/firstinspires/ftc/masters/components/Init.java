@@ -56,6 +56,9 @@ public class Init {
         shoota.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shootb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        shoota.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shootb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

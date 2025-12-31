@@ -98,10 +98,10 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
         //   TuningController tuningController = new TuningController();
 
-        double lastKp = 0.0;
-        double lastKi = 0.0;
-        double lastKd = 0.0;
-        double lastKf = getMotorVelocityF();
+//        double lastKp = 0.0;
+//        double lastKi = 0.0;
+//        double lastKd = 0.0;
+//        double lastKf = getMotorVelocityF();
 
 
 //        tuningController.start();
@@ -190,16 +190,16 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
     }
 
 
-    private void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
-        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
-                coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
-        ));
-    }
-
-    public static double getMotorVelocityF() {
-        // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
-        return 32767 * 60.0 / (TuningController.MOTOR_MAX_RPM * TuningController.MOTOR_TICKS_PER_REV);
-    }
+//    private void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
+//        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
+//                coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+//        ));
+//    }
+//
+//    public static double getMotorVelocityF() {
+//        // see https://docs.google.com/document/d/1tyWrXDfMidwYyP_5H4mZyVgaEswhOC35gvdmP-V-5hA/edit#heading=h.61g9ixenznbx
+//        return 32767 * 60.0 / (TuningController.MOTOR_MAX_RPM * TuningController.MOTOR_TICKS_PER_REV);
+//    }
 
 }
 

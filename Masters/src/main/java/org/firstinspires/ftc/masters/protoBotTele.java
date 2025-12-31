@@ -31,7 +31,6 @@ public class protoBotTele extends LinearOpMode {
     DcMotor frontRight;
     DcMotor backRight;
 
-    Telemetry telemetry;
 
     public void initializeHardware(){
 
@@ -65,10 +64,10 @@ public class protoBotTele extends LinearOpMode {
                 intake.intakeOff();
             }
             if (gamepad1.dpad_right) {
-                outake.outakeOn();
+                outake.launch();
             }
             if (gamepad1.dpad_left) {
-                outake.outakeOff();
+                outake.reset();
             }
             if (gamepad2.dpad_up) {
                 lift.liftBot();
@@ -86,7 +85,7 @@ public class protoBotTele extends LinearOpMode {
             }
 
 
-            outake.update();
+            outake.update(telemetry);
 
             cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));
         }
