@@ -49,6 +49,7 @@ public class protoBotTele extends LinearOpMode {
         outake = new Outake(init);
         intake = new Intake(init);
         initializeHardware();
+        outake.init();
 
         waitForStart();
 
@@ -69,20 +70,20 @@ public class protoBotTele extends LinearOpMode {
             if (gamepad1.dpad_left) {
                 outake.reset();
             }
-            if (gamepad2.dpad_up) {
-                lift.liftBot();
-            }
-            if (gamepad2.dpad_down) {
-                lift.liftBot();
-            }
+//            if (gamepad2.dpad_up) {
+//                lift.liftBot();
+//            }
+//            if (gamepad2.dpad_down) {
+//                lift.liftBot();
+//            }
 
 
-            if (gamepad1.dpad_down) {
-                lift.lowerBot();
-            }
-            if (gamepad1.dpad_up) {
-                lift.liftBot();
-            }
+//            if (gamepad1.dpad_down) {
+//                lift.lowerBot();
+//            }
+//            if (gamepad1.dpad_up) {
+//                lift.liftBot();
+//            }
 
 
             outake.update(telemetry);
