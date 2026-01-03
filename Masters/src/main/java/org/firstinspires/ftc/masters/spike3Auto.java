@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.masters;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -14,6 +16,9 @@ import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.components.UsefullMath;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
+
+@Config
+@Autonomous(name = "protoBot auto")
 
 public class spike3Auto extends LinearOpMode {
 
@@ -39,6 +44,10 @@ public class spike3Auto extends LinearOpMode {
 
 
     public void runOpMode() throws InterruptedException {
+
+        init = new Init(hardwareMap);
+        outake = new Outake(init);
+        intake = new Intake(init);
 
         follower = Constants.createFollower(hardwareMap);
         buildPaths();
@@ -83,7 +92,7 @@ public class spike3Auto extends LinearOpMode {
                 if(!follower.isBusy()) {
                     outake.launch();
 
-                    if (outake.isInLaunchPos()) {
+                    if (outake.isInUpPos()) {
                         follower.followPath(spike1,true);
 
                         setPathState(2);

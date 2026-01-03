@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.masters.components;
 
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,18 +19,20 @@ public class Outake {
     DcMotor shootb;
 
     String mode = "off";
+    private PIDController controller;
 
+    public static double p = 0, i = 0, d = 0;
+    public static double f = 0;
 
-//    public static PIDFCoefficients MOTOR_VELO_PID = new PIDFCoefficients(800, 0, 5, 12);
-//
-//    private VoltageSensor batteryVoltageSensor;
+    public double target = ITDCons.fireAngle;
+    public final double ticks_in_degree = 537.7 / 180;
 
-    public void outakeOn() {
+    public void outakeUp() {
 
         init.getShootAmoter().setPower(1);
         init.getShootBmoter().setPower(1);
     }
-    public void outakerev() {
+    public void outakeDown() {
 
         init.getShootAmoter().setPower(-1);
         init.getShootBmoter().setPower(-1);
@@ -40,47 +43,70 @@ public class Outake {
         init.getShootBmoter().setPower(0.0);
     }
     public void outakeHold() {
-        init.getShootAmoter().setPower(0.1);
-        init.getShootBmoter().setPower(0.1);
+        init.getShootAmoter().setPower(-1);
+        init.getShootBmoter().setPower(-1);
     }
 
-    public boolean isInLaunchPos() {
+    public boolean isInResetPos() {
         return (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)
                 && init.getShootBmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR));
     }
-    public boolean isInResetPos() {
+    public boolean isInUpPos() {
         return (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)
                 && init.getShootBmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR));
     }
 
     public void launch() {
-        outakerev();
+
         mode = "launch";
     }
     public void reset() {
-        outakeOn();
-        mode = "reset";
+
+        mode = "down";
+    }
+
+    public void init() {
+        controller = new PIDController(p, i, d);
+
+    }
+
+    public void updatePID() {
+        controller.setPID(p, i, d);
+        int slidePos = init.getShootAmoter().getCurrentPosition();
+        double pid = controller.calculate(slidePos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+        double power = pid + ff;
+
+        init.getShootAmoter().setPower(power);
+        init.getShootBmoter().setPower(power);
     }
 
 
-    public void update(Telemetry telemetry) {
+    public void  update(Telemetry telemetry) {
 
         telemetry.update();
         telemetry.addData(" motA pos: ", UsefullMath.ticksToAngle(init.getShootAmoter().getCurrentPosition(), ITDCons.shootPPR));
         telemetry.addData(" motB pos: ", UsefullMath.ticksToAngle(init.getShootBmoter().getCurrentPosition(), ITDCons.shootPPR));
 
         if (Objects.equals(mode, "launch")) {
-            if (init.getShootAmoter().getCurrentPosition() <= UsefullMath.angleToTicks(ITDCons.launchAngle, ITDCons.shootPPR)) {
-                outakeOff();
-                mode = "off";
+            outakeUp();
+            if (isInUpPos()) {
+
             }
         }
-        if (Objects.equals(mode, "reset")) {
-            if (init.getShootAmoter().getCurrentPosition() >= UsefullMath.angleToTicks(ITDCons.fireAngle, ITDCons.shootPPR)) {
-                outakeOff();
-                mode = "off";
+        if (Objects.equals(mode, "down")) {
+            outakeDown();
+            if (isInResetPos()) {
+                outakeHold();
             }
         }
+
+
+
+
+
+
 //        if (Objects.equals(mode, "launch")) {
 //            outakeOn();
 //            if (!init.getShootAmoter().isBusy()) {
