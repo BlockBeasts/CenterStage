@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "LinearPID")
@@ -25,32 +26,32 @@ public class LinearPID extends LinearOpMode {
 
     public final double ticks_in_degree = 537.7 / 180;
 
-    private DcMotor motor;
+    private DcMotor shoota, shootb;
 
     public void runOpMode() throws InterruptedException {
-
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        telemetry.update();
 
         controller = new PIDController(p, i, d);
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        motor = hardwareMap.dcMotor.get("changeme");
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shoota = hardwareMap.dcMotor.get("shoota");
+        shootb = hardwareMap.dcMotor.get("shootb");
+        shoota.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shootb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shoota.setDirection(DcMotorSimple.Direction.REVERSE);
 
         waitForStart();
 
         while (opModeIsActive()) {
 
             controller.setPID(p, i, d);
-            int slidePos = motor.getCurrentPosition();
+            int slidePos = shoota.getCurrentPosition();
             double pid = controller.calculate(slidePos, target);
             double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
 
             double power = pid + ff;
 
-            motor.setPower(power);
+            shoota.setPower(power);
+            shootb.setPower(power);
 
             telemetry.addData("pos ", slidePos);
             telemetry.addData("target ", target);
