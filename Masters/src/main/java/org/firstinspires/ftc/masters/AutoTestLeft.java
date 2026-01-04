@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 
 @Config // Enables FTC Dashboard
-@Autonomous(name = "Quick and Dirty Auto Left")
+//@Autonomous(name = "Quick and Dirty Auto Left")
 public class AutoTestLeft extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();

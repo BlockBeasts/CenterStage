@@ -1,32 +1,21 @@
 package org.firstinspires.ftc.masters.components;
 
-import com.arcrobotics.ftclib.gamepad.GamepadEx;
 //import com.pedropathing.localization.GoBildaPinpointDriver;
-import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.CRServo;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.VoltageSensor;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-import java.util.List;
 
 public class Init {
     DcMotor frontLeft;
     DcMotor backLeft;
     DcMotor frontRight;
     DcMotor backRight;
-    DcMotor intakemoter;
-    DcMotor shoota;
-    DcMotor shootb;
-
+    DcMotor intakeMotor;
+    DcMotor shootA;
+    DcMotor shootB;
     DcMotor lift;
+
     public Init(HardwareMap hardwareMap) {
 
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -34,62 +23,67 @@ public class Init {
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backRight = hardwareMap.dcMotor.get("backRight");
 
-        intakemoter = hardwareMap.dcMotor.get("intakemoter");
-        shoota = hardwareMap.dcMotor.get("shoota");
-        shootb = hardwareMap.dcMotor.get("shootb");
+        intakeMotor = hardwareMap.dcMotor.get("intakemoter");
+        shootA = hardwareMap.dcMotor.get("shoota");
+        shootB = hardwareMap.dcMotor.get("shootb");
         lift = hardwareMap.dcMotor.get("lift");
 
 
-        shoota.setDirection(DcMotorSimple.Direction.REVERSE);
+        shootA.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        shoota.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        intakemoter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shoota.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        shootb.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        shootA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        shootB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        shoota.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        shootb.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shootA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shootB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        shoota.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        shootb.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shootA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shootB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
 
-    public DcMotor getIntakemoter() {return intakemoter; }
+    public DcMotor getIntakeMotor() {
+        return intakeMotor;
+    }
 
     public DcMotor getFrontLeft() {
         return frontLeft;
     }
+
     public DcMotor getBackLeft() {
         return backLeft;
     }
+
     public DcMotor getFrontRight() {
         return frontRight;
     }
-    public DcMotor getBackRight() {return backRight; }
 
-
-
-
-    public DcMotor getShootAmoter() {
-        return shoota;
+    public DcMotor getBackRight() {
+        return backRight;
     }
-    public DcMotor getShootBmoter() {
-        return shootb;
+
+    public DcMotor getShootMotorA() {
+        return shootA;
     }
-    public DcMotor getLiftmoter() {
+
+    public DcMotor getShootMotorB() {
+        return shootB;
+    }
+
+    public DcMotor getLiftMotor() {
         return lift;
     }
 }

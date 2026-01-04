@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 
-@TeleOp(name="testdrivetrain")
+@TeleOp(group ="Test", name="testdrivetrain")
 public class testdive extends LinearOpMode {
                      
     double max_power = 1;

@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="PID back")
+@TeleOp(group = "Test", name="PID back")
 @Config
 public class PIDF_ScoreSlides extends OpMode {
 
@@ -19,7 +19,7 @@ public class PIDF_ScoreSlides extends OpMode {
 
     public static int target = 0;
 
-    public final double ticks_in_degree = 384.5 / 180;
+    public final double ticks_in_degree = 537.7 / 360;
 
     private DcMotor backSlides;
 

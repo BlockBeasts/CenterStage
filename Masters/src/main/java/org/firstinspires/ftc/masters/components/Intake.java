@@ -22,15 +22,15 @@ public class Intake {
 
 
     public void intakeOn() {
-        init.getIntakemoter().setPower(1);
+        init.getIntakeMotor().setPower(1);
     }
 
     public void intakeOff() {
-        init.getIntakemoter().setPower(0);
+        init.getIntakeMotor().setPower(0);
     }
 
     public void intakeReverse() {
-        init.getIntakemoter().setPower(-1);
+        init.getIntakeMotor().setPower(-1);
     }
 
 

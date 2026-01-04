@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 
 @Config // Enables FTC Dashboard
-@Autonomous(name = "justatapright")
+@Autonomous( group ="Test",name = "justatapright")
 
 
 public class JustATapRight extends LinearOpMode{

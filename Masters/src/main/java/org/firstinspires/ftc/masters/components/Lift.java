@@ -14,23 +14,20 @@ public class Lift {
 
     DcMotor lift;
 
-
-
-
-
-
-
+    public Lift(Init init){
+        this.init = init;
+    }
 
 
 
 
     public void liftBot() {
 
-        init.getLiftmoter().setTargetPosition(usefullMath.angleToTicks(ITDCons.upPos, 537.7));
+        init.getLiftMotor().setTargetPosition(usefullMath.angleToTicks(ITDCons.upPos, 537.7));
 
     }
     public void lowerBot() {
-        init.getLiftmoter().setTargetPosition(usefullMath.angleToTicks(ITDCons.downPos, 537.7));
+        init.getLiftMotor().setTargetPosition(usefullMath.angleToTicks(ITDCons.downPos, 537.7));
 
     }
 

@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.masters.components.Lift;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
@@ -15,7 +14,7 @@ import org.firstinspires.ftc.masters.components.Outake;
 
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "ProtoBot_tele")
+@TeleOp(name = "Decode Teleop")
 public class protoBotTele extends LinearOpMode {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -42,48 +41,44 @@ public class protoBotTele extends LinearOpMode {
     }
 
 
-
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
         outake = new Outake(init);
         intake = new Intake(init);
+        lift = new Lift(init);
         initializeHardware();
-        outake.init();
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            if (gamepad1.a) {
+            //intake
+
+            if (gamepad2.a) {
                 intake.intakeOn();
+                outake.down();
             }
-            if (gamepad1.x) {
+            if (gamepad2.x) {
                 intake.intakeReverse();
             }
-            if (gamepad1.b) {
+            if (gamepad2.b) {
                 intake.intakeOff();
             }
-            if (gamepad1.dpad_right) {
+
+            if (gamepad2.dpad_right) {
                 outake.launch();
             }
-            if (gamepad1.dpad_left) {
-                outake.reset();
+            if (gamepad2.dpad_left) {
+                outake.down();
             }
-//            if (gamepad2.dpad_up) {
-//                lift.liftBot();
-//            }
-//            if (gamepad2.dpad_down) {
-//                lift.liftBot();
-//            }
+            if (gamepad2.dpad_up) {
+                lift.liftBot();
+            }
+            if (gamepad2.dpad_down) {
+                lift.liftBot();
+            }
 
-
-//            if (gamepad1.dpad_down) {
-//                lift.lowerBot();
-//            }
-//            if (gamepad1.dpad_up) {
-//                lift.liftBot();
-//            }
 
 
             outake.update(telemetry);

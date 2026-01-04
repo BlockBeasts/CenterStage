@@ -15,7 +15,7 @@ import com.qualcomm.robotcore.hardware.Servo;
                            
 
 @Config // Enables FTC Dashboard
-@Autonomous(name = "test-auto")
+@Autonomous(group= "Test", name = "test-auto")
 
 
 public class testauto extends LinearOpMode{

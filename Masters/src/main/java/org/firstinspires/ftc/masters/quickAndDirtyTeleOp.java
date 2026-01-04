@@ -20,7 +20,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.masters.components.Init;
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "QuickAndDirtyTeleOp")
+//@TeleOp(name = "QuickAndDirtyTeleOp")
 public class quickAndDirtyTeleOp extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
