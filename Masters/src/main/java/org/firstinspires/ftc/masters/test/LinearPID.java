@@ -19,12 +19,12 @@ public class LinearPID extends LinearOpMode {
 
     private PIDController controller;
 
-    public static double p = 0, i = 0, d = 0;
-    public static double f = 0;
+    public static double p = 0.09, i = 0, d = 0;
+    public static double f = 0.1;
 
     public static int target = 0;
 
-    public final double ticks_in_degree = 537.7 / 180;
+    public final double ticks_in_degree = 537.7 / 360;
 
     private DcMotor shoota, shootb;
 
@@ -52,7 +52,7 @@ public class LinearPID extends LinearOpMode {
 
             shoota.setPower(power);
             shootb.setPower(power);
-
+            telemetry.addData("power", power);
             telemetry.addData("pos ", slidePos);
             telemetry.addData("target ", target);
             telemetry.update();

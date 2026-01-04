@@ -80,7 +80,6 @@ public class protoBotTele extends LinearOpMode {
             }
 
 
-
             outake.update(telemetry);
 
             cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));
