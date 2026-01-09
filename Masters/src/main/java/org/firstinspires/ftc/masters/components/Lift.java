@@ -23,11 +23,16 @@ public class Lift {
 
     public void liftBot() {
 
-        init.getLiftMotor().setTargetPosition(usefullMath.angleToTicks(ITDCons.upPos, 537.7));
+        init.getLiftMotor().setTargetPosition(ITDCons.upPos);
+        init.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        init.getLiftMotor().setPower(1);
 
     }
     public void lowerBot() {
-        init.getLiftMotor().setTargetPosition(usefullMath.angleToTicks(ITDCons.downPos, 537.7));
+        init.getLiftMotor().setTargetPosition(ITDCons.downPos);
+
+        init.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        init.getLiftMotor().setPower(1);
 
     }
 

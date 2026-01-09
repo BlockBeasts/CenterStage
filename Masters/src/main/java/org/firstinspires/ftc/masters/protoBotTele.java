@@ -72,15 +72,23 @@ public class protoBotTele extends LinearOpMode {
             if (gamepad2.dpad_left) {
                 outake.down();
             }
-            if (gamepad2.dpad_up) {
-                lift.liftBot();
-            }
-            if (gamepad2.dpad_down) {
-                lift.liftBot();
-            }
+//            if (gamepad2.left_stick_y<-0.2) {
+//                lift.liftBot();
+//            }
+//            if (gamepad2.left_stick_y>0.2) {
+//                lift.lowerBot();
+//            }
 
+            if (gamepad1.dpad_up){
+                init.getLiftMotor().setPower(-0.9);
+            } else if (gamepad1.dpad_down){
+                init.getLiftMotor().setPower(0.9);
+            } else {
+                init.getLiftMotor().setPower(0);
+            }
 
             outake.update(telemetry);
+            telemetry.addData("lift encoder", init.getLiftMotor().getCurrentPosition());
 
             cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));
         }

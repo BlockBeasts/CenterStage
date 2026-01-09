@@ -9,8 +9,8 @@ public class  ITDCons {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
 
-    public static double upPos = 90.0;
-    public static double downPos = 0.0;
+    public static int upPos = 0;
+    public static int downPos = 1500;
 
     public static double launchAngle = 0.0;
     public static double downAngle = 89;
