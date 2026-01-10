@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.masters;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 
 @TeleOp(group ="Test", name="testdrivetrain")
+@Disabled
 public class testdive extends LinearOpMode {
                      
     double max_power = 1;

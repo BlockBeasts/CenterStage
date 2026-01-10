@@ -8,6 +8,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Wruff!")
+@Disabled
 public class newLeaf extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();

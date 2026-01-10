@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.masters.vison;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -10,6 +11,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 
 
 @TeleOp(name="Vision But Evil")
+@Disabled
 public class visionTest extends LinearOpMode {
 
     int width = 320;

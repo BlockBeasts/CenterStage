@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class TeleWriter {
+public class LogWriter {
 
     public FileWriter logWriter;
     ElapsedTime runtime;

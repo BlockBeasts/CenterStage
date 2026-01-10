@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.masters;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 @TeleOp(name="KARINE ITS THIS ONE")
+@Disabled
 public class EncodeTest extends LinearOpMode {
 
     @Override

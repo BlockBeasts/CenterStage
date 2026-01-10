@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.masters.components.Init;
 
 @Config // Enables FTC Dashboard
 //@TeleOp(name = "QuickAndDirtyTeleOp")
+@Disabled
 public class quickAndDirtyTeleOp extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();

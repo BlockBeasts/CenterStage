@@ -1,12 +1,14 @@
 package org.firstinspires.ftc.masters.test;
 
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.masters.components.ITDCons;
 
 @TeleOp(name="Color Test", group = "Test")
+@Disabled
 public class ColorTest extends LinearOpMode {
 
 

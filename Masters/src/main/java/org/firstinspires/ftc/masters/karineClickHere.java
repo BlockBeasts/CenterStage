@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(group="Demo", name = "Karine Click Here")
+@Disabled
 public class karineClickHere extends LinearOpMode {
 
     private boolean sheepFound;

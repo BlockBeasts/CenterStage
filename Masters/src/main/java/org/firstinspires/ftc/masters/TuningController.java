@@ -3,8 +3,10 @@
 package org.firstinspires.ftc.masters;
 
 import com.bylazar.configurables.annotations.Configurable;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 @Configurable
+@Disabled
 public class TuningController {
     public static double MOTOR_TICKS_PER_REV = 28;
     public static double MOTOR_MAX_RPM = 6000;
