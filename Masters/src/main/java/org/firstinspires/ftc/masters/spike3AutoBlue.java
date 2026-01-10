@@ -16,9 +16,9 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 @Config
-@Autonomous(name = "protoBot auto")
+@Autonomous(name = "goal auto blue")
 
-public class spike3Auto extends LinearOpMode {
+public class spike3AutoBlue extends LinearOpMode {
 
     Init init;
     Intake intake;
