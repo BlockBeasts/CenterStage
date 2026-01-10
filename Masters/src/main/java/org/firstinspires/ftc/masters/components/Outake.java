@@ -48,6 +48,7 @@ public class Outake {
 
         return (init.getShootMotorA().getCurrentPosition() >= ITDCons.downAngle-5
                 && init.getShootMotorB().getCurrentPosition() >= ITDCons.downAngle - 5);
+
     }
     public boolean isInUpPos() {
         return (init.getShootMotorA().getCurrentPosition() <=ITDCons.launchAngle + 5

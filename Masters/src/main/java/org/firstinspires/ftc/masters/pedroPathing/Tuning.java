@@ -156,8 +156,8 @@ class LocalizationTest extends OpMode {
 
         Tuning.telemetryM.debug("x:" + Tuning.follower.getPose().getX());
         Tuning.telemetryM.debug("y:" + Tuning.follower.getPose().getY());
-        Tuning.telemetryM.debug("heading:" + Tuning.follower.getPose().getHeading());
-        Tuning.telemetryM.debug("total heading:" + Tuning.follower.getTotalHeading());
+        Tuning.telemetryM.debug("heading:" + Math.toDegrees(follower.getPose().getHeading()));
+        Tuning.telemetryM.debug("total heading:" + Math.toDegrees(follower.getTotalHeading()));
         Tuning.telemetryM.update(telemetry);
 
         Tuning.draw();

@@ -27,14 +27,14 @@ public class spike3Auto extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
-    private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(45, 84, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (24, 84, 0);
-    private final Pose pickup2Pose = new Pose(45, 60, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(24, 60, 0);
-    private final Pose pickup3Pose = new Pose(45, 36, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(24, 36, 0);
+    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(145));
+    private final Pose scorePose = new Pose(28.5, 128, Math.toRadians(135));
+    private final Pose pickup1Pose = new Pose(55, 87, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (24, 87, Math.toRadians(180));
+    private final Pose pickup2Pose = new Pose(55, 63.5, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(24, 63.5, Math.toRadians(180));
+    private final Pose pickup3Pose = new Pose(55, 40, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(24, 40, Math.toRadians(180));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
@@ -45,6 +45,9 @@ public class spike3Auto extends LinearOpMode {
     private State pathState;
 
     int scored = 0;
+
+    double run = 1;
+    double pick = .3;
 
     ElapsedTime elapsedTime = new ElapsedTime();
 
@@ -87,27 +90,28 @@ public class spike3Auto extends LinearOpMode {
             case Start:
                 outake.down();
                 if (outake.isInDownPos()) {
-                    follower.followPath(scorePreload);
+                    //follower.followPath(scorePreload);
                     pathState = State.ToGoal;
                 }
 
                 break;
             case ToGoal:
                 if(!follower.isBusy()) {
-                    //at the goal
-                    if (outake.isInDownPos()) {
+
                         outake.launch();
-                    }
 
                     if (outake.isInUpPos()) {
                         if (scored==0) {
-                            follower.followPath(spike1, false);
+                            outake.down();
+                            follower.followPath(spike1, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==1 ){
-                            follower.followPath(spike2, false);
+                            outake.down();
+                            follower.followPath(spike2, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==2){
-                            follower.followPath(spike3, false);
+                            outake.down();
+                            follower.followPath(spike3, run, false);
                             pathState = State.ToSpike;
                         } else {
                             follower.followPath(end);
@@ -129,13 +133,12 @@ public class spike3Auto extends LinearOpMode {
                 if(!follower.isBusy()) {
                     //pick up
                     intake.intakeOn();
-                    outake.down();
                     if (scored == 0){
-                        follower.followPath(pickup1, false);
+                        follower.followPath(pickup1, pick, false);
                     } else if (scored ==1){
-                        follower.followPath(pickup2, false);
+                        follower.followPath(pickup2, pick-.02, false);
                     } else if (scored ==2 ){
-                        follower.followPath(pickup3, false);
+                        follower.followPath(pickup3, pick-.02, false);
                     }
                     pathState= State.Pickup;
 
@@ -145,11 +148,11 @@ public class spike3Auto extends LinearOpMode {
                 if(!follower.isBusy()) {
                    elapsedTime = new ElapsedTime();
                     if (scored == 0){
-                        follower.followPath(score1, false);
+                        follower.followPath(score1, run, false);
                     } else if (scored ==1){
-                        follower.followPath(score2, false);
+                        follower.followPath(score2, run, false);
                     } else if (scored ==2 ){
-                        follower.followPath(score3, false);
+                        follower.followPath(score3, run, false);
                     }
                     scored++;
                     pathState = State.ToGoal;
@@ -170,8 +173,8 @@ public class spike3Auto extends LinearOpMode {
         scorePreload.setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading());
 
         spike1 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup1Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
+                .addPath(new BezierLine(startPose, pickup1Pose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), pickup1Pose.getHeading())
                 .build();
 
         pickup1 = follower.pathBuilder()
@@ -208,6 +211,11 @@ public class spike3Auto extends LinearOpMode {
                 .build();
 
         score3 = follower.pathBuilder()
+                .addPath(new BezierLine(pickup3Pose, scorePose))
+                .setLinearHeadingInterpolation(endPickup3.getHeading(), scorePose.getHeading())
+                .build();
+
+        end = follower.pathBuilder()
                 .addPath(new BezierLine(pickup3Pose, scorePose))
                 .setLinearHeadingInterpolation(endPickup3.getHeading(), scorePose.getHeading())
                 .build();
