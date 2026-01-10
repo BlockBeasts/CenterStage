@@ -24,7 +24,7 @@ public class TelemetryEx extends TelemetryImpl {
         this.telemetry=telemetry;
     }
 
-    LogWriter logWriter = new LogWriter();
+    LogWriterFTC logWriterFTC = new LogWriterFTC();
 
     @Override
     public Item addData(String caption, Object value) {
@@ -39,16 +39,16 @@ public class TelemetryEx extends TelemetryImpl {
     public boolean update(){
         telemetry.update();
 
-        if(logWriter.log == null){
+        if(logWriterFTC.log == null){
             try {
-                logWriter.newCSVFile(name, header);
+                logWriterFTC.newCSVFile(name, header);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         } else {
             try {
 
-                ElapsedTime runtime = logWriter.getRuntime();
+                ElapsedTime runtime = logWriterFTC.getRuntime();
 
                 dataMap.put("Time", Math.round(runtime.milliseconds()));
 
@@ -63,7 +63,7 @@ public class TelemetryEx extends TelemetryImpl {
                     }
                 }
 
-                logWriter.writeCSVFile(stringBuilder.substring(0, stringBuilder.length()-1));
+                logWriterFTC.writeCSVFile(stringBuilder.substring(0, stringBuilder.length()-1));
 
             } catch (IOException e) {
                 throw new RuntimeException(e);

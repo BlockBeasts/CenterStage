@@ -1,17 +1,22 @@
 package org.firstinspires.ftc.masters;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.masters.TeleEx.LogWriterFTC;
 import org.firstinspires.ftc.masters.components.Lift;
 
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Config // Enables FTC Dashboard
@@ -26,11 +31,12 @@ public class protoBotTele extends LinearOpMode {
 
     Lift lift;
 
-    DcMotor frontLeft;
-    DcMotor backLeft;
-    DcMotor frontRight;
-    DcMotor backRight;
+    DcMotorEx frontLeft;
+    DcMotorEx backLeft;
+    DcMotorEx frontRight;
+    DcMotorEx backRight;
 
+    ElapsedTime runtime;
 
     public void initializeHardware(){
 
@@ -48,13 +54,39 @@ public class protoBotTele extends LinearOpMode {
         outake = new Outake(init);
         intake = new Intake(init);
         lift = new Lift(init);
+
+        List<String> headers = new ArrayList<>();
+        headers.add("Device");
+        headers.add("Current");
+        headers.add("Time");
+
+        LogWriterFTC logWriterFTC = new LogWriterFTC();
+        try {
+            logWriterFTC.newCSVFile(null, headers);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        runtime = new ElapsedTime();
+
         initializeHardware();
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            //intake
+            double time = Math.round(runtime.milliseconds());
+
+            try {
+                logWriterFTC.writeCSVFile(
+                        "LeftFront," + frontLeft.getCurrent(CurrentUnit.AMPS) + "," + time +  "\n" +
+                        "RightFront," + frontRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
+                        "LeftRear," + backLeft.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
+                        "RightRear," + backRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n"
+                );
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             if (gamepad2.a) {
                 intake.intakeOn();

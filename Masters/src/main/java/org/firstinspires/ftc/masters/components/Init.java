@@ -3,14 +3,15 @@ package org.firstinspires.ftc.masters.components;
 //import com.pedropathing.localization.GoBildaPinpointDriver;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Init {
-    DcMotor frontLeft;
-    DcMotor backLeft;
-    DcMotor frontRight;
-    DcMotor backRight;
+    DcMotorEx frontLeft;
+    DcMotorEx backLeft;
+    DcMotorEx frontRight;
+    DcMotorEx backRight;
     DcMotor intakeMotor;
     DcMotor shootA;
     DcMotor shootB;
@@ -18,10 +19,10 @@ public class Init {
 
     public Init(HardwareMap hardwareMap) {
 
-        frontLeft = hardwareMap.dcMotor.get("frontLeft");
-        backLeft = hardwareMap.dcMotor.get("backLeft");
-        frontRight = hardwareMap.dcMotor.get("frontRight");
-        backRight = hardwareMap.dcMotor.get("backRight");
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
         intakeMotor = hardwareMap.dcMotor.get("intakemoter");
         shootA = hardwareMap.dcMotor.get("shoota");
@@ -60,19 +61,19 @@ public class Init {
         return intakeMotor;
     }
 
-    public DcMotor getFrontLeft() {
+    public DcMotorEx getFrontLeft() {
         return frontLeft;
     }
 
-    public DcMotor getBackLeft() {
+    public DcMotorEx getBackLeft() {
         return backLeft;
     }
 
-    public DcMotor getFrontRight() {
+    public DcMotorEx getFrontRight() {
         return frontRight;
     }
 
-    public DcMotor getBackRight() {
+    public DcMotorEx getBackRight() {
         return backRight;
     }
 

@@ -16,7 +16,7 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 @Config
-@Autonomous(name = "goal auto blue")
+@Autonomous(name = "goal auto red")
 
 public class spike3AutoRed extends LinearOpMode {
 
@@ -31,9 +31,9 @@ public class spike3AutoRed extends LinearOpMode {
     private final Pose scorePose = new Pose(144-28.5, 128, Math.toRadians(90-45));
     private final Pose pickup1Pose = new Pose(144-55, 87, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (144-24, 87, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(144-55, 63.5, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose pickup2Pose = new Pose(144-53, 63.5, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose endPickup2 = new Pose(144-24, 63.5, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(144-55, 40, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose pickup3Pose = new Pose(144-53, 40, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose endPickup3 = new Pose(144-24, 40, Math.toRadians(0));
 
     //private final Pose endPose = new Pose (144-60, 85, Math.toRadians(135)); // need to change values to get off the line
@@ -98,23 +98,27 @@ public class spike3AutoRed extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
+                        intake.intakeOff();
                         outake.launch();
 
                     if (outake.isInUpPos()) {
                         if (scored==0) {
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike1, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==1 ){
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike2, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==2){
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike3, run, false);
                             pathState = State.ToSpike;
                         } else {
-                            follower.followPath(end);
+                            follower.followPath(spike3, run, false);
                             pathState = State.End;
                         }
 
@@ -132,12 +136,14 @@ public class spike3AutoRed extends LinearOpMode {
             case ToSpike:
                 if(!follower.isBusy()) {
                     //pick up
-                    intake.intakeOn();
                     if (scored == 0){
+                        intake.intakeOn();
                         follower.followPath(pickup1, pick, false);
                     } else if (scored ==1){
+                        intake.intakeOn();
                         follower.followPath(pickup2, pick-.02, false);
                     } else if (scored ==2 ){
+                        intake.intakeOn();
                         follower.followPath(pickup3, pick-.02, false);
                     }
                     pathState= State.Pickup;

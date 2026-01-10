@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class LogWriter {
+public class LogWriterFTC {
 
     public FileWriter logWriter;
     ElapsedTime runtime;
