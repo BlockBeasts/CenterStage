@@ -1,63 +1,83 @@
 package org.firstinspires.ftc.masters;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
+import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.Path;
+import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
+
+@Autonomous(name = "Auto Wall Red")
+public class JustATapRight extends LinearOpMode {
+
+    private Follower follower;
+
+    private int pathState;
+
+    public int moveDistance = 24;
+
+    private final Pose startPose = new Pose(72, 72, Math.toRadians(90));
+    private final Pose stopPose = new Pose(72+moveDistance, 72+3, Math.toRadians(90));
+    private PathChain moveOut;
 
 
-@Config // Enables FTC Dashboard
-@Autonomous( name = "auto wall red")
-
-
-public class JustATapRight extends LinearOpMode{
-
-    private final FtcDashboard dashboard = FtcDashboard.getInstance();
-
-    DcMotor frontLeft;
-    DcMotor backLeft;
-    DcMotor frontRight;
-    DcMotor backRight;
-
-    @Override
     public void runOpMode() throws InterruptedException {
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        telemetry.update();
-
-        frontLeft = hardwareMap.dcMotor.get("frontLeft");
-        backLeft = hardwareMap.dcMotor.get("backLeft");
-        frontRight = hardwareMap.dcMotor.get("frontRight");
-        backRight = hardwareMap.dcMotor.get("backRight");
-
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        follower = Constants.createFollower(hardwareMap);
+        buildPaths();
+        follower.setStartingPose(startPose);
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        setPathState(0);
 
-            frontLeft.setPower(-.5);
-            backLeft.setPower(-.5);
-            frontRight.setPower(.5);
-            backRight.setPower(.5);
-            sleep(1000);
-            frontLeft.setPower(0);
-            backLeft.setPower(0);
-            frontRight.setPower(0);
-            backRight.setPower(0);
-            sleep(1000);
+        while (opModeIsActive()){
+
+            // These loop the movements of the robot, these must be called continuously in order to work
+            follower.update();
+            autonomousPathUpdate();
+
+            // Feedback to Driver Hub for debugging
+            telemetry.addData("path state", pathState);
+            telemetry.addData("x", follower.getPose().getX());
+            telemetry.addData("y", follower.getPose().getY());
+            telemetry.addData("heading", follower.getPose().getHeading());
+            telemetry.update();
 
         }
+
     }
+
+    public void autonomousPathUpdate() {
+        switch (pathState) {
+            case 0:
+                if(!follower.isBusy()) {
+                    follower.followPath(moveOut,true);
+                    setPathState(1);
+                }
+                break;
+            case 1:
+                if(!follower.isBusy()) {
+                    setPathState(-1);
+                }
+                break;
+        }
+    }
+
+    public void setPathState(int pState) {
+        pathState = pState;
+    }
+
+    public void buildPaths() {
+
+        moveOut = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, stopPose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), stopPose.getHeading())
+                .build();
+
+    }
+
 }

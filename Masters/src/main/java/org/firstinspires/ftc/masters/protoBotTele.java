@@ -36,7 +36,7 @@ public class protoBotTele extends LinearOpMode {
     DcMotorEx frontRight;
     DcMotorEx backRight;
 
-    ElapsedTime runtime;
+//    ElapsedTime runtime;
 
     public void initializeHardware(){
 
@@ -55,19 +55,19 @@ public class protoBotTele extends LinearOpMode {
         intake = new Intake(init);
         lift = new Lift(init);
 
-        List<String> headers = new ArrayList<>();
-        headers.add("Device");
-        headers.add("Current");
-        headers.add("Time");
+//        List<String> headers = new ArrayList<>();
+//        headers.add("Device");
+//        headers.add("Current");
+//        headers.add("Time");
 
-        LogWriterFTC logWriterFTC = new LogWriterFTC();
-        try {
-            logWriterFTC.newCSVFile(null, headers);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        LogWriterFTC logWriterFTC = new LogWriterFTC();
+//        try {
+//            logWriterFTC.newCSVFile(null, headers);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        runtime = new ElapsedTime();
+//        runtime = new ElapsedTime();
 
         initializeHardware();
 
@@ -75,18 +75,18 @@ public class protoBotTele extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double time = Math.round(runtime.milliseconds());
-
-            try {
-                logWriterFTC.writeCSVFile(
-                        "LeftFront," + frontLeft.getCurrent(CurrentUnit.AMPS) + "," + time +  "\n" +
-                        "RightFront," + frontRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
-                        "LeftRear," + backLeft.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
-                        "RightRear," + backRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n"
-                );
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+//            double time = Math.round(runtime.milliseconds());
+//
+//            try {
+//                logWriterFTC.writeCSVFile(
+//                        "LeftFront," + frontLeft.getCurrent(CurrentUnit.AMPS) + "," + time +  "\n" +
+//                        "RightFront," + frontRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
+//                        "LeftRear," + backLeft.getCurrent(CurrentUnit.AMPS) + "," + time + "\n" +
+//                        "RightRear," + backRight.getCurrent(CurrentUnit.AMPS) + "," + time + "\n"
+//                );
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
 
             if (gamepad2.a) {
                 intake.intakeOn();

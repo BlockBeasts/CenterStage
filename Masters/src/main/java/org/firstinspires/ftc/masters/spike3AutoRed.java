@@ -66,6 +66,8 @@ public class spike3AutoRed extends LinearOpMode {
 
         pathState = State.Start;
 
+        sleep(5500);
+
         while (opModeIsActive()){
 
             // These loop the movements of the robot, these must be called continuously in order to work
@@ -222,8 +224,8 @@ public class spike3AutoRed extends LinearOpMode {
                 .build();
 
         end = follower.pathBuilder()
-                .addPath(new BezierLine(pickup3Pose, scorePose))
-                .setLinearHeadingInterpolation(endPickup3.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(scorePose, pickup2Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
                 .build();
     }
 

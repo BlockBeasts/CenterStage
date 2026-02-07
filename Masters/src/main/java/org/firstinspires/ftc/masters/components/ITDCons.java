@@ -13,7 +13,7 @@ public class  ITDCons {
     public static int downPos = 1500;
 
     public static double launchAngle = 0.0;
-    public static double downAngle = 89;
+    public static double downAngle = 94;
 
     public static double shootPPR = 537.7;
 

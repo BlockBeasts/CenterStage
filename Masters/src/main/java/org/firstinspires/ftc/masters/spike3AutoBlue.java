@@ -66,6 +66,8 @@ public class spike3AutoBlue extends LinearOpMode {
 
         pathState = State.Start;
 
+        sleep(5500);
+
         while (opModeIsActive()){
 
             // These loop the movements of the robot, these must be called continuously in order to work
@@ -103,14 +105,17 @@ public class spike3AutoBlue extends LinearOpMode {
                     if (outake.isInUpPos()) {
                         if (scored==0) {
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike1, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==1 ){
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike2, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==2){
                             outake.down();
+                            intake.intakeOff();
                             follower.followPath(spike3, run, false);
                             pathState = State.ToSpike;
                         } else {
@@ -134,10 +139,13 @@ public class spike3AutoBlue extends LinearOpMode {
                     //pick up
                     intake.intakeOn();
                     if (scored == 0){
+                        intake.intakeOn();
                         follower.followPath(pickup1, pick, false);
                     } else if (scored ==1){
+                        intake.intakeOn();
                         follower.followPath(pickup2, pick-.02, false);
                     } else if (scored ==2 ){
+                        intake.intakeOn();
                         follower.followPath(pickup3, pick-.02, false);
                     }
                     pathState= State.Pickup;
@@ -216,8 +224,8 @@ public class spike3AutoBlue extends LinearOpMode {
                 .build();
 
         end = follower.pathBuilder()
-                .addPath(new BezierLine(pickup3Pose, scorePose))
-                .setLinearHeadingInterpolation(endPickup3.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(scorePose, pickup2Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
                 .build();
     }
 

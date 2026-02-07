@@ -12,8 +12,8 @@ public class Outake {
     String mode = "off";
     private final PIDController controller;
 
-    public static double p = 0.05, i = 0, d = 0.0000001;
-    public static double f = 0.01;
+    public static double p = 0.04, i = 0, d = 0;
+    public static double f = 0.1;
 
     public double target = 0;
     public final double ticks_in_degree = 537.7 / 360;

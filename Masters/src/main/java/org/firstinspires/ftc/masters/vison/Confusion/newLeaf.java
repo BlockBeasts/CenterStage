@@ -8,6 +8,8 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Wruff!")
-@Disabled
 public class newLeaf extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
@@ -63,8 +64,8 @@ public class newLeaf extends LinearOpMode {
 
         // Sets up pedropathing and sets its pose
         follower = Constants.createFollower(hardwareMap);
-        Pose startingPos = (Pose) blackboard.get(POSE_KEY);
-        follower.setStartingPose(startingPos);
+//        Pose startingPos = (Pose) blackboard.get(POSE_KEY);
+//        follower.setStartingPose(startingPos);
 
         // FTC dashboard telemetry
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -123,18 +124,22 @@ public class newLeaf extends LinearOpMode {
                     for(AprilTagDetection detection : detections)
                     {
 
+                        Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+
                         if(gamepad1.a){
+                            float angle = 0;
+                            if (detection.id == 20)
+                                angle = rot.firstAngle;
+                            double distance = detection.pose.z * 39.37008;
+
                             if (!following) {
                                 follower.followPath(
                                         follower.pathBuilder()
-//                                                .addPath(new BezierLine(follower.getPose(), pickup1Pose.getHeading()))
-//                                                .setLinearHeadingInterpolation(follower.getHeading(), pickup1Pose.getHeading())
+                                                .setHeadingInterpolation(HeadingInterpolator.linearFromPoint(follower::getHeading, Math.toRadians(angle), 0.8))
                                                 .build()
                                 );
                             }
                         }
-
-                        Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
                         telemetry.addData("Detected tag ID", detection.id);
                         telemetry.addData("Translation Z CM", detection.pose.z*100);
