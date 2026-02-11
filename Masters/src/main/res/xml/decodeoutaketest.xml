@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+
+    <LynxUsbDevice name="Magic Wizard Portal" serialNumber="(embedded)" parentModuleAddress="173">
+
+        <!--Control Hub, Don't ask why it's port 173-->
+        <LynxModule name="Control Hub" port="173">
+    
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="leftMotor" port="3" />
+            <goBILDA5202SeriesMotor name="intakeMotor" port="2" />
+
+
+            <!--Servos-->
+            <Servo name="leftServo" port="5" />
+
+            <!--Other-->
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+
+        </LynxModule>
+
+
+        <!--Expansion Hub, No witty comment here-->
+        <LynxModule name="Expansion Hub" port="2">
+
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="rightMotor" port="3" />
+
+            <!--Servos-->
+            <Servo name="rightServo" port="0" />
+
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+
+        </LynxModule>
+
+    </LynxUsbDevice>
+    
+</Robot>
