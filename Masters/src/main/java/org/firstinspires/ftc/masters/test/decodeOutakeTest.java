@@ -69,9 +69,9 @@ public class decodeOutakeTest extends LinearOpMode {
             }
 
             if (gamepad1.left_bumper) {
-                liftLeftServoPos = 90f;
+                liftLeftServoPos = 0.65f;
                 liftMiddleServoPos = 90f;
-                liftRightServoPos= 90f;
+                liftRightServoPos= 0.35f;
             }
             if (gamepad1.right_bumper) {
                 liftLeftServoPos = 0f;
