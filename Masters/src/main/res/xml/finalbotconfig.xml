@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+
+    <LynxUsbDevice name="Possably final Bot Config :3" serialNumber="(embedded)" parentModuleAddress="173">
+
+        <!--Control Hub, Don't ask why it's port 173-->
+        <LynxModule name="Control Hub" port="173">
+
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="leftMotor" port="3" />
+            <goBILDA5202SeriesMotor name="intakeMotor" port="2" />
+
+            <goBILDA5202SeriesMotor name="frontLeft" port="0" />
+            <goBILDA5202SeriesMotor name="backLeft" port="1" />
+
+
+            <!--Servos-->
+            <Servo name="trayLeftServo" port="0" />
+
+            <Servo name="trayMiddleServo" port="2" />
+            <Servo name="leftServo" port="5" />
+
+
+            <!--Other-->
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+            <RevColorSensorV3 name="leftColor" port="1" bus="0" />
+            <RevColorSensorV3 name="middleColor" port="2" bus="0" />
+            <RevColorSensorV3 name="rightColor" port="0" bus="1" />
+        </LynxModule>
+
+
+        <!--Expansion Hub, No witty comment here-->
+        <LynxModule name="Expansion Hub" port="2">
+
+            <goBILDA5202SeriesMotor name="frontRight" port="1" />
+            <goBILDA5202SeriesMotor name="backRight" port="0" />
+
+            <goBILDA5202SeriesMotor name="lift" port="2" />
+
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="rightMotor" port="3" />
+
+            <!--Servos-->
+            <Servo name="rightServo" port="0" />
+            <Servo name="trayRightServo" port="5" />
+
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+
+
+
+
+        </LynxModule>
+
+    </LynxUsbDevice>
+
+</Robot>

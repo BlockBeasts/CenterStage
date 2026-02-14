@@ -6,7 +6,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class Lift {
 
-    Init init;
+    Init2 init2;
 
 
     UsefullMath usefullMath;
@@ -14,8 +14,8 @@ public class Lift {
 
     DcMotor lift;
 
-    public Lift(Init init){
-        this.init = init;
+    public Lift(Init2 init2){
+        this.init2 = init2;
     }
 
 
@@ -23,16 +23,16 @@ public class Lift {
 
     public void liftBot() {
 
-        init.getLiftMotor().setTargetPosition(ITDCons.upPos);
-        init.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        init.getLiftMotor().setPower(1);
+        init2.getLiftMotor().setTargetPosition(ITDCons.upPos);
+        init2.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        init2.getLiftMotor().setPower(1);
 
     }
     public void lowerBot() {
-        init.getLiftMotor().setTargetPosition(ITDCons.downPos);
+        init2.getLiftMotor().setTargetPosition(ITDCons.downPos);
 
-        init.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        init.getLiftMotor().setPower(1);
+        init2.getLiftMotor().setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        init2.getLiftMotor().setPower(1);
 
     }
 
