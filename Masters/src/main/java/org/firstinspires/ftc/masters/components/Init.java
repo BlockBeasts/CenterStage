@@ -1,91 +1,91 @@
-package org.firstinspires.ftc.masters.components;
-
-//import com.pedropathing.localization.GoBildaPinpointDriver;
-
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-
-public class Init {
-    DcMotorEx frontLeft;
-    DcMotorEx backLeft;
-    DcMotorEx frontRight;
-    DcMotorEx backRight;
-    DcMotor intakeMotor;
-    DcMotor shootA;
-    DcMotor shootB;
-    DcMotor lift;
-
-    public Init(HardwareMap hardwareMap) {
-
-        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
-        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-
-        intakeMotor = hardwareMap.dcMotor.get("intakemoter");
-        shootA = hardwareMap.dcMotor.get("shoota");
-        shootB = hardwareMap.dcMotor.get("shootb");
-        lift = hardwareMap.dcMotor.get("lift");
-
-
-        shootA.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        shootA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        shootB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        shootA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        shootB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        shootA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        shootB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-
-    public DcMotor getIntakeMotor() {
-        return intakeMotor;
-    }
-
-    public DcMotorEx getFrontLeft() {
-        return frontLeft;
-    }
-
-    public DcMotorEx getBackLeft() {
-        return backLeft;
-    }
-
-    public DcMotorEx getFrontRight() {
-        return frontRight;
-    }
-
-    public DcMotorEx getBackRight() {
-        return backRight;
-    }
-
-    public DcMotor getShootMotorA() {
-        return shootA;
-    }
-
-    public DcMotor getShootMotorB() {
-        return shootB;
-    }
-
-    public DcMotor getLiftMotor() {
-        return lift;
-    }
-}
+//package org.firstinspires.ftc.masters.components;
+//
+////import com.pedropathing.localization.GoBildaPinpointDriver;
+//
+//import com.qualcomm.robotcore.hardware.DcMotor;
+//import com.qualcomm.robotcore.hardware.DcMotorEx;
+//import com.qualcomm.robotcore.hardware.DcMotorSimple;
+//import com.qualcomm.robotcore.hardware.HardwareMap;
+//
+//public class Init {
+//    DcMotorEx frontLeft;
+//    DcMotorEx backLeft;
+//    DcMotorEx frontRight;
+//    DcMotorEx backRight;
+//    DcMotor intakeMotor;
+//    DcMotor shootA;
+//    DcMotor shootB;
+//    DcMotor lift;
+//
+//    public Init(HardwareMap hardwareMap) {
+//
+//        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+//        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+//        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+//        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+//
+//        intakeMotor = hardwareMap.dcMotor.get("intakemoter");
+//        shootA = hardwareMap.dcMotor.get("shoota");
+//        shootB = hardwareMap.dcMotor.get("shootb");
+//        lift = hardwareMap.dcMotor.get("lift");
+//
+//
+//        shootA.setDirection(DcMotorSimple.Direction.REVERSE);
+//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+//        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+//
+//        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+////        shootA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+////        shootB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//
+//        shootA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        shootB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        shootA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        shootB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//
+//
+//        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//    }
+//
+//
+//    public DcMotor getIntakeMotor() {
+//        return intakeMotor;
+//    }
+//
+//    public DcMotorEx getFrontLeft() {
+//        return frontLeft;
+//    }
+//
+//    public DcMotorEx getBackLeft() {
+//        return backLeft;
+//    }
+//
+//    public DcMotorEx getFrontRight() {
+//        return frontRight;
+//    }
+//
+//    public DcMotorEx getBackRight() {
+//        return backRight;
+//    }
+//
+//    public DcMotor getShootMotorA() {
+//        return shootA;
+//    }
+//
+//    public DcMotor getShootMotorB() {
+//        return shootB;
+//    }
+//
+//    public DcMotor getLiftMotor() {
+//        return lift;
+//    }
+//}

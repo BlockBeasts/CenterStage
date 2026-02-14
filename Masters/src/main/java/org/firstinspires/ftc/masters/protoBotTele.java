@@ -9,7 +9,7 @@
 //import org.firstinspires.ftc.masters.TeleEx.LogWriterFTC;
 //import org.firstinspires.ftc.masters.components.Lift;
 //
-//import org.firstinspires.ftc.masters.components.Init;
+//import org.firstinspires.ftc.masters.components.Init2;
 //import org.firstinspires.ftc.masters.components.Intake;
 //import org.firstinspires.ftc.masters.components.Outake;
 //import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -24,7 +24,7 @@
 //public class protoBotTele extends LinearOpMode {
 //    private final FtcDashboard dashboard = FtcDashboard.getInstance();
 //
-//    Init init;
+//    Init2 init;
 //
 //    Intake intake;
 //    Outake outake;
@@ -50,7 +50,7 @@
 //
 //    public void runOpMode() throws InterruptedException {
 //
-//        init = new Init(hardwareMap);
+//        init = new Init2(hardwareMap);
 //        outake = new Outake(init);
 //        intake = new Intake(init);
 //        lift = new Lift(init);

@@ -7,7 +7,7 @@ public class Turrent implements Component{
 
     }
 
-    public Turrent(Init init, Telemetry telemetry){
+    public Turrent(Init2 init, Telemetry telemetry){
 
     }
 

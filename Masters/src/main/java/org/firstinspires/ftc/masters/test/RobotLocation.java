@@ -8,7 +8,7 @@
 //import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 //import com.qualcomm.robotcore.hardware.DcMotor;
 //
-//import org.firstinspires.ftc.masters.components.Init;
+//import org.firstinspires.ftc.masters.components.Init2;
 //import org.firstinspires.ftc.masters.components.Intake;
 //import org.firstinspires.ftc.masters.pedroPathing.constants.FConstants;
 //import org.firstinspires.ftc.masters.pedroPathing.constants.LConstants;
@@ -27,7 +27,7 @@
 //        PoseUpdater poseUpdater = new PoseUpdater(hardwareMap);
 //        poseUpdater.setStartingPose(new Pose(10,45,0));
 //
-//        Init init = new Init(hardwareMap);
+//        Init2 init = new Init2(hardwareMap);
 //        Intake intake = new Intake(init, telemetry);
 //
 //        this.leftFrontMotor = init.getLeftFrontMotor();

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.masters.components.Init;
+import org.firstinspires.ftc.masters.components.Init2;
 import org.firstinspires.ftc.masters.components.Intake;
 
 @TeleOp(group ="Test", name="testdrivetrain")

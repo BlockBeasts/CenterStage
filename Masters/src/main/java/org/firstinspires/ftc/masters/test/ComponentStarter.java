@@ -7,7 +7,7 @@
 //
 //    }
 //
-//    public ComponentStarter(Init init, Telemetry telemetry){
+//    public ComponentStarter(Init2 init, Telemetry telemetry){
 //
 //    }
 //

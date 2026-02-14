@@ -503,7 +503,7 @@ This is a bug fix only release to address the following four issues.
     whether you were actually going to use them or not. This could result in reduced performance and
     unnecessary warnings.
   * With this change, it is very important for Java users to retrieve all needed devices from the
-    `HardwareMap` **during the Init phase of the OpMode**. Namely, declare a variable for each hardware
+    `HardwareMap` **during the Init2 phase of the OpMode**. Namely, declare a variable for each hardware
     device the OpMode will use, and assign a value to each. Do not do this during the Run phase, or your
     OpMode may briefly hang while the devices you are retrieving get initialized.
   * OpModes that do not use all of the I2C devices specified in the configuration file should take
@@ -1605,7 +1605,7 @@ Changes include:
  * code modified to allow for a long list of OpMode names.
  * changes to improve thread safety of RobocolDatagramSocket
  * Fix for "missing hardware leaves robot controller disconnected from driver station" error
- * fix for "fast tapping of Init/Start causes problems" (toast is now only instantiated on UI thread).
+ * fix for "fast tapping of Init2/Start causes problems" (toast is now only instantiated on UI thread).
  * added some log statements for thread life cycle.
  * moved gamepad reset logic inside of initActiveOpMode() for robustness
  * changes made to mitigate risk of race conditions on public methods.
