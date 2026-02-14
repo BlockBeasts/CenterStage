@@ -13,6 +13,8 @@
 
             <!--Servos-->
             <Servo name="leftServo" port="5" />
+            <Servo name="liftLeftServo" port="1" />
+            <Servo name="liftMiddleServo" port="3" />
 
             <!--Other-->
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
@@ -28,6 +30,7 @@
 
             <!--Servos-->
             <Servo name="rightServo" port="0" />
+            <Servo name="liftRightServo" port="5" />
 
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
 

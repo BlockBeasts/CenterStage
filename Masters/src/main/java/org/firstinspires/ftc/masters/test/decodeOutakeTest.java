@@ -27,7 +27,7 @@ public class decodeOutakeTest extends LinearOpMode {
     public static int MotorVol = 0;
     public static int IntakeSpeed = 0;
 
-    Servo leftServo, rightServo, liftLeftServo, liftRightServo, liftMiddleServo;
+    Servo leftServo, rightServo, liftLeftServo, liftRightServo, liftMiddleServo;  // 153
     DcMotorEx leftMotor, rightMotor, intakeMotor;
 
     public void runOpMode() throws InterruptedException {

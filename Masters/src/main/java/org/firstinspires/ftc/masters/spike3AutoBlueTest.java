@@ -16,7 +16,7 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 @Config
-@Autonomous(name = "goal auto blue")
+@Autonomous(name = "goal auto blue test")
 
 public class spike3AutoBlueTest extends LinearOpMode {
 
