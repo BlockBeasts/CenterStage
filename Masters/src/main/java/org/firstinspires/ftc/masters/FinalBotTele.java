@@ -6,7 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
-import org.firstinspires.ftc.masters.components.Init2;
+import org.firstinspires.ftc.masters.components.Init;
+import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.masters.components.init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake2;
@@ -17,11 +19,11 @@ import org.firstinspires.ftc.masters.components.Outake2;
 public class FinalBotTele extends LinearOpMode {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    Init2 init2;
+    Init init;
 
     Intake intake;
 
-    Outake2 outake2;
+    Outake outake;
 
     Lift lift;
 
@@ -37,23 +39,23 @@ public class FinalBotTele extends LinearOpMode {
 
     public void initializeHardware(){
 
-        frontRight = init2.getFrontRight();
-        frontLeft = init2.getFrontLeft();
-        backRight = init2.getBackRight();
-        backLeft = init2.getBackLeft();
+        frontRight = init.getFrontRight();
+        frontLeft = init.getFrontLeft();
+        backRight = init.getBackRight();
+        backLeft = init.getBackLeft();
 
     }
 
 
     public void runOpMode() throws InterruptedException {
 
-        init2 = new Init2(hardwareMap);
+        init = new Init(hardwareMap);
 
-        intake = new Intake(init2);
+        intake = new Intake(init);
 
-        outake2 = new Outake2(init2);
+        outake = new Outake(init);
 
-        lift = new Lift(init2);
+        lift = new Lift(init);
 
 
 
@@ -69,7 +71,6 @@ public class FinalBotTele extends LinearOpMode {
 
             if (gamepad2.left_bumper) {
                 intake.intakeOn();
-
             }
             if (gamepad2.dpad_left) {
                 intake.intakeReverse();
@@ -84,10 +85,10 @@ public class FinalBotTele extends LinearOpMode {
                 lift.lowerBot();
             }
             if (gamepad2.aWasPressed()) {
-                outake2.shootGreen();
+                outake.shootGreen();
             }
             if (gamepad2.bWasPressed()) {
-                outake2.reset();
+                outake.reset();
             }
 
 

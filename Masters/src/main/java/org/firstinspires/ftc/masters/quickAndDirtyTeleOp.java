@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.masters.components.Init2;
+import org.firstinspires.ftc.masters.components.Init;
 
 @Config // Enables FTC Dashboard
 //@TeleOp(name = "QuickAndDirtyTeleOp")
@@ -27,7 +27,7 @@ public class quickAndDirtyTeleOp extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    Init2 init;
+    Init init;
 
     DcMotor frontLeft;
     DcMotor backLeft;

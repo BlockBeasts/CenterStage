@@ -1,91 +1,135 @@
-//package org.firstinspires.ftc.masters.components;
-//
-////import com.pedropathing.localization.GoBildaPinpointDriver;
-//
-//import com.qualcomm.robotcore.hardware.DcMotor;
-//import com.qualcomm.robotcore.hardware.DcMotorEx;
-//import com.qualcomm.robotcore.hardware.DcMotorSimple;
-//import com.qualcomm.robotcore.hardware.HardwareMap;
-//
-//public class Init {
-//    DcMotorEx frontLeft;
-//    DcMotorEx backLeft;
-//    DcMotorEx frontRight;
-//    DcMotorEx backRight;
-//    DcMotor intakeMotor;
-//    DcMotor shootA;
-//    DcMotor shootB;
-//    DcMotor lift;
-//
-//    public Init(HardwareMap hardwareMap) {
-//
-//        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
-//        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
-//        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
-//        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
-//
-//        intakeMotor = hardwareMap.dcMotor.get("intakemoter");
-//        shootA = hardwareMap.dcMotor.get("shoota");
-//        shootB = hardwareMap.dcMotor.get("shootb");
-//        lift = hardwareMap.dcMotor.get("lift");
-//
-//
-//        shootA.setDirection(DcMotorSimple.Direction.REVERSE);
-//        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-//        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-//
-//        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-////        shootA.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-////        shootB.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//
-//        shootA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        shootB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        shootA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        shootB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//
-//
-//        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//    }
-//
-//
-//    public DcMotor getIntakeMotor() {
-//        return intakeMotor;
-//    }
-//
-//    public DcMotorEx getFrontLeft() {
-//        return frontLeft;
-//    }
-//
-//    public DcMotorEx getBackLeft() {
-//        return backLeft;
-//    }
-//
-//    public DcMotorEx getFrontRight() {
-//        return frontRight;
-//    }
-//
-//    public DcMotorEx getBackRight() {
-//        return backRight;
-//    }
-//
-//    public DcMotor getShootMotorA() {
-//        return shootA;
-//    }
-//
-//    public DcMotor getShootMotorB() {
-//        return shootB;
-//    }
-//
-//    public DcMotor getLiftMotor() {
-//        return lift;
-//    }
-//}
+package org.firstinspires.ftc.masters.components;
+
+//import com.pedropathing.localization.GoBildaPinpointDriver;
+
+import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
+
+public class Init {
+    DcMotorEx frontLeft, backLeft, frontRight, backRight;
+    DcMotorEx shooterLeft, shooterRight;
+    DcMotorEx intakeMotor;
+    DcMotor lift;
+    Servo outakeTrayLeft, outakeTrayRight, outakeTrayMiddle;
+    Servo leftLight, middleLight, rightLight;
+    Servo hoodLeftServo, hoodRightServo;
+    RevColorSensorV3 colorLeft, colorMiddle, colorRight;
+
+    public Init(HardwareMap hardwareMap) {
+
+        frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
+        frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
+        backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
+        backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+
+        shooterLeft = hardwareMap.get(DcMotorEx.class, "leftMotor");
+        shooterRight = hardwareMap.get(DcMotorEx.class, "rightMotor");
+
+
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
+
+
+        lift = hardwareMap.dcMotor.get("lift");
+        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        outakeTrayLeft = hardwareMap.get(Servo.class, "trayLeftServo");
+        outakeTrayMiddle = hardwareMap.get(Servo.class, "trayMiddleServo");
+        outakeTrayRight = hardwareMap.get(Servo.class, "trayRightServo");
+
+        hoodLeftServo = hardwareMap.get(Servo.class, "leftServo");
+        hoodRightServo = hardwareMap.get(Servo.class, "rightServo");
+
+        leftLight = hardwareMap.get(Servo.class, "leftLed");
+        middleLight = hardwareMap.get(Servo.class, "middleLed");
+        rightLight = hardwareMap.get(Servo.class, "rightLed");
+
+        colorLeft = hardwareMap.get(RevColorSensorV3.class, "leftColor");
+        colorMiddle = hardwareMap.get(RevColorSensorV3.class, "middleColor");
+        colorRight = hardwareMap.get(RevColorSensorV3.class, "rightColor");
+
+        shooterLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+    }
+
+    public DcMotorEx getFrontLeft() {
+        return frontLeft;
+    }
+
+    public DcMotorEx getBackLeft() {
+        return backLeft;
+    }
+
+    public DcMotorEx getFrontRight() {
+        return frontRight;
+    }
+
+    public DcMotorEx getBackRight() {
+        return backRight;
+    }
+
+    public DcMotorEx getShooterLeft() {
+        return shooterLeft;
+    }
+
+    public DcMotorEx getShooterRight() {
+        return shooterRight;
+    }
+
+    public DcMotorEx getIntakeMotor() {
+        return intakeMotor;
+    }
+
+    public DcMotor getLift() {
+        return lift;
+    }
+
+    public Servo getOutakeTrayLeft() {
+        return outakeTrayLeft;
+    }
+
+    public Servo getOutakeTrayRight() {
+        return outakeTrayRight;
+    }
+
+    public Servo getOutakeTrayMiddle() {
+        return outakeTrayMiddle;
+    }
+
+    public Servo getLeftLight() {
+        return leftLight;
+    }
+
+    public Servo getMiddleLight() {
+        return middleLight;
+    }
+
+    public Servo getRightLight() {
+        return rightLight;
+    }
+
+    public Servo getHoodLeftServo() {
+        return hoodLeftServo;
+    }
+
+    public Servo getHoodRightServo() {
+        return hoodRightServo;
+    }
+
+    public RevColorSensorV3 getColorLeft() {
+        return colorLeft;
+    }
+
+    public RevColorSensorV3 getColorMiddle() {
+        return colorMiddle;
+    }
+
+    public RevColorSensorV3 getColorRight() {
+        return colorRight;
+    }
+
+}
