@@ -17,8 +17,13 @@
             <!--Servos-->
             <Servo name="trayLeftServo" port="0" />
 
-            <Servo name="trayMiddleServo" port="2" />
+            <Servo name="leftLed" port="1" />
+            <Servo name="middleLed" port="3" />
+            <Servo name="rightLed" port="4" />
+
+
             <Servo name="leftServo" port="5" />
+            <Servo name="trayMiddleServo" port="2" />
 
 
             <!--Other-->
@@ -41,6 +46,7 @@
             <goBILDA5202SeriesMotor name="rightMotor" port="3" />
 
             <!--Servos-->
+
             <Servo name="rightServo" port="0" />
             <Servo name="trayRightServo" port="5" />
 

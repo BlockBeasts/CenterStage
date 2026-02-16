@@ -54,6 +54,10 @@ public class Init {
         shooterLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        outakeTrayLeft.setPosition(Constant.leftTrayBottom);
+        outakeTrayMiddle.setPosition(Constant.middleTrayBottom);
+        outakeTrayRight.setPosition(Constant.rightTrayBottom);
+
     }
 
     public DcMotorEx getFrontLeft() {

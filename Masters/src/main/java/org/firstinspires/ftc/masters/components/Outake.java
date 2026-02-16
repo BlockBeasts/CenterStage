@@ -9,17 +9,18 @@ public class Outake {
     Init init;
 
     Telemetry telemetry;
-    public Outake(Init init) {
+    public Outake(Init init, Telemetry telemetry) {
         this.init= init;
+        this.telemetry = telemetry;
     }
 
     public static int motorVel = 1000;
 
     public static double hoodServoPos = 0;
 
-    public static double liftLeftPos = 0;
-    public static double liftRightPos = 0;
-    public static double liftMiddlePos = 0;
+    public static double liftLeftPos = Constant.leftTrayBottom;
+    public static double liftMiddlePos = Constant.middleTrayBottom;
+    public static double liftRightPos = Constant.rightTrayBottom;
 
     public static int delay =500;
 
@@ -31,8 +32,8 @@ public class Outake {
 
     public void update() {
 
-        init.getShooterLeft().setVelocity(motorVel);
-        init.getShooterRight().setVelocity(motorVel);
+        init.getShooterLeft().setVelocity(Constant.shooterMin);
+        init.getShooterRight().setVelocity(Constant.shooterMin);
 
         if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
             liftLeftPos = Constant.leftTrayBottom;
@@ -53,8 +54,10 @@ public class Outake {
 
 
 
-        init.getHoodLeftServo().setPosition(hoodServoPos);
-        init.getHoodRightServo().setPosition(hoodServoPos);
+        init.getHoodLeftServo().setPosition(Constant.hoodDown);
+        init.getHoodRightServo().setPosition(Constant.hoodDown);
+
+        telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
     }
     public void shootGreen() {
         liftLeftPos = 0.65;
@@ -72,7 +75,7 @@ public class Outake {
         shootMiddleDelay = new ElapsedTime();
     }
 
-    public void setShootRightDelay(){
+    public void shootRight(){
         liftRightPos = Constant.rightTrayTop;
         shootRightDelay = new ElapsedTime();
     }

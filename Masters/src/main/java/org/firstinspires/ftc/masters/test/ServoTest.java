@@ -9,11 +9,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "BoooServoTest")
-@Disabled
+@TeleOp(name = "ServoTest")
 public class ServoTest extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
+    public static double position=0;
 
     public void runOpMode() throws InterruptedException {
 
@@ -21,13 +21,13 @@ public class ServoTest extends LinearOpMode {
 
         telemetry.update();
 
-        Servo servo = hardwareMap.servo.get("servo");
+        Servo servo = hardwareMap.servo.get("test");
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            servo.setPosition(.5);
+            servo.setPosition(position);
 
         }
     }

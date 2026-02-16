@@ -2,6 +2,7 @@ package org.firstinspires.ftc.masters;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
-
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 
 @Config // Enables FTC Dashboard
@@ -47,12 +48,13 @@ public class FinalBotTele extends LinearOpMode {
 
 
     public void runOpMode() throws InterruptedException {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         init = new Init(hardwareMap);
 
         intake = new Intake(init);
 
-        outake = new Outake(init);
+        outake = new Outake(init, telemetry);
 
         lift = new Lift(init);
 
@@ -84,13 +86,21 @@ public class FinalBotTele extends LinearOpMode {
                 lift.lowerBot();
             }
             if (gamepad2.aWasPressed()) {
-                outake.shootGreen();
+                outake.shootAll();
             }
             if (gamepad2.bWasPressed()) {
-                outake.reset(); //temporary, just for testing reasons ;3
+                outake.shootLeft();
+            }
+            if (gamepad2.xWasPressed()) {
+                outake.shootRight();
+            }
+            if (gamepad2.yWasPressed()) {
+                outake.shootMiddle();
             }
 
-
+            intake.update();
+            outake.update();
+            telemetry.update();
 
 
             cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));

@@ -24,8 +24,9 @@ public class Intake {
         init.getIntakeMotor().setPower(-0.5);
     }
 
-    //TODO:
-    //should voltage check be here?
+    public void update() {
+
+    }
 
 
 }
