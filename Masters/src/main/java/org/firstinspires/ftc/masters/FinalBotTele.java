@@ -8,10 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Outake;
-import org.firstinspires.ftc.masters.components.init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
-import org.firstinspires.ftc.masters.components.Outake2;
+
 
 
 @Config // Enables FTC Dashboard
@@ -88,7 +87,7 @@ public class FinalBotTele extends LinearOpMode {
                 outake.shootGreen();
             }
             if (gamepad2.bWasPressed()) {
-                outake.reset();
+                outake.reset(); //temporary, just for testing reasons ;3
             }
 
 
