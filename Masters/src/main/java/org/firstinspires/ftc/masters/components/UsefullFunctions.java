@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.masters.components;
 
 public class UsefullFunctions {
-    public boolean isInRange(double value, double min, double max) {
+    public static boolean isInRange(double value, double min, double max) {
         return (value >= min && value <= max);
     }
-    public String getColor(double green) {
+    public static String getColor(double green) {
         if (green <= Constant.nothingColor) {
             return "nothing";
         } else if (isInRange(green, Constant.greenColor, Constant.purpleColor)) {

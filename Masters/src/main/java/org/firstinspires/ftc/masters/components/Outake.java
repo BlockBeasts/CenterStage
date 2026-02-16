@@ -18,9 +18,15 @@ public class Outake {
 
     public static double hoodServoPos = 0;
 
+
+
     public static double liftLeftPos = Constant.leftTrayBottom;
     public static double liftMiddlePos = Constant.middleTrayBottom;
     public static double liftRightPos = Constant.rightTrayBottom;
+
+    private String leftColor = "nothing";
+    private String middleColor = "nothing";
+    private String rightColor = "nothing";
 
     public static int delay =500;
 
@@ -35,6 +41,10 @@ public class Outake {
         init.getShooterLeft().setVelocity(Constant.shooterMin);
         init.getShooterRight().setVelocity(Constant.shooterMin);
 
+        leftColor = UsefullFunctions.getColor(init.getColorLeft().green());
+        middleColor = UsefullFunctions.getColor(init.getColorMiddle().green());
+        rightColor = UsefullFunctions.getColor(init.getColorRight().green());
+
         if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
             liftLeftPos = Constant.leftTrayBottom;
             shootLeftDelay = null;
@@ -48,6 +58,52 @@ public class Outake {
             shootRightDelay = null;
         }
 
+        switch (leftColor) {
+            case ("nothing"): {
+                init.getLeftLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getLeftLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getLeftLight().setPosition(Constant.purpleLed);
+                break;
+            }
+        }
+
+        switch (middleColor) {
+            case ("nothing"): {
+                init.getMiddleLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getMiddleLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getMiddleLight().setPosition(Constant.purpleLed);
+                break;
+            }
+        }
+
+        switch (rightColor) {
+            case ("nothing"): {
+                init.getRightLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getRightLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getRightLight().setPosition(Constant.purpleLed);
+                break;
+            }
+        }
+
+
         init.outakeTrayLeft.setPosition(liftLeftPos);
         init.outakeTrayMiddle.setPosition(liftMiddlePos);
         init.outakeTrayRight.setPosition(liftRightPos);
@@ -58,6 +114,9 @@ public class Outake {
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
+        telemetry.addData("left color", leftColor);
+        telemetry.addData("middle color", middleColor);
+        telemetry.addData("right color", rightColor);
     }
     public void shootGreen() {
         liftLeftPos = 0.65;
