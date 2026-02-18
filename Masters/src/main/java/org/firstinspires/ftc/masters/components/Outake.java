@@ -34,12 +34,24 @@ public class Outake {
     ElapsedTime shootRightDelay = null;
     ElapsedTime shootMiddleDelay = null;
 
+    private boolean muteShoot = true;
 
+    public void muteShooter() {
+        muteShoot = true;
+    }
+    public void unmuteShooter() {
+        muteShoot = false;
+    }
 
     public void update() {
+        if (muteShoot) {
+            init.getShooterLeft().setVelocity(0);
+            init.getShooterRight().setVelocity(0);
+        } else {
+            init.getShooterLeft().setVelocity(Constant.shooterMin);
+            init.getShooterRight().setVelocity(Constant.shooterMin);
+        }
 
-        init.getShooterLeft().setVelocity(Constant.shooterMin);
-        init.getShooterRight().setVelocity(Constant.shooterMin);
 
         leftColor = UsefullFunctions.getColor(init.getColorLeft().green());
         middleColor = UsefullFunctions.getColor(init.getColorMiddle().green());
@@ -117,6 +129,10 @@ public class Outake {
         telemetry.addData("left color", leftColor);
         telemetry.addData("middle color", middleColor);
         telemetry.addData("right color", rightColor);
+
+        telemetry.addData("left green", init.getColorLeft().green());
+        telemetry.addData("middle green", init.getColorMiddle().green());
+        telemetry.addData("right green", init.getColorRight().green());
     }
     public void shootGreen() {
         liftLeftPos = 0.65;
