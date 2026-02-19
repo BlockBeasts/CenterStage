@@ -26,6 +26,11 @@ public class Init {
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
 
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
+
         shooterLeft = hardwareMap.get(DcMotorEx.class, "leftMotor");
         shooterRight = hardwareMap.get(DcMotorEx.class, "rightMotor");
 

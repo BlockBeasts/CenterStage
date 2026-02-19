@@ -110,7 +110,7 @@ public class FinalBotTele extends LinearOpMode {
             telemetry.update();
 
 
-            cartesianDrive(Math.pow(gamepad1.left_stick_x, 3), -Math.pow(gamepad1.left_stick_y, 3), Math.pow((gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8), 3));
+            cartesianDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
         }
     }
 
@@ -141,4 +141,6 @@ public class FinalBotTele extends LinearOpMode {
         frontRight.setPower(rightFrontPower);
         backRight.setPower(rightRearPower);
     }
+
+
 }
