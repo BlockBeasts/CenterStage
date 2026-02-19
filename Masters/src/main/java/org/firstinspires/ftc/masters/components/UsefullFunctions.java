@@ -5,12 +5,12 @@ public class UsefullFunctions {
         return (value >= min && value <= max);
     }
     public static String getColor(double green) {
-        if (green <= Constant.nothingColor) {
+        if (isInRange(green, Constant.minnothingColor, Constant.maxnothingColor)) {
             return "nothing";
-        } else if (isInRange(green, Constant.greenColor, Constant.purpleColor)) {
-            return "green";
-        } else if (green <= Constant.purpleColor + 400) {
+        } else if (isInRange(green, Constant.minpurpleColor, Constant.maxpurpleColor)) {
             return "purple";
+        } else if (isInRange(green, Constant.mingreenColor, Constant.maxgreenColor)) {
+            return "green";
         }
         return "nothing";
     }

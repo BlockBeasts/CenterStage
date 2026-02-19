@@ -98,6 +98,13 @@ public class FinalBotTele extends LinearOpMode {
                 outake.shootMiddle();
             }
 
+            if (gamepad1.dpad_right) {
+                outake.unmuteShooter();
+            }
+            if (gamepad1.dpad_right) {
+                outake.muteShooter();
+            }
+
             intake.update();
             outake.update();
             telemetry.update();
