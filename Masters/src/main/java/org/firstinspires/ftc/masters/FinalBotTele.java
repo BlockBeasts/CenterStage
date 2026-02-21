@@ -35,6 +35,8 @@ public class FinalBotTele extends LinearOpMode {
     DcMotorEx frontRight;
     DcMotorEx backRight;
 
+    boolean lifted = false;
+
 //    ElapsedTime runtime;
 
     public void initializeHardware(){
@@ -81,10 +83,12 @@ public class FinalBotTele extends LinearOpMode {
             }
             if (gamepad2.dpad_up) {
                 lift.liftBot();
-            }
-            if (gamepad2.dpad_down) {
+                lifted = true;
+            } else if (lifted) {
                 lift.lowerBot();
+                lifted = false;
             }
+
             if (gamepad2.aWasPressed()) {
                 outake.shootAll();
             }
