@@ -81,31 +81,31 @@ public class FinalBotTele extends LinearOpMode {
             if (gamepad2.right_bumper) {
                 intake.intakeOff();
             }
-            if (gamepad2.dpad_up) {
+            if (gamepad1.dpad_up) {
                 lift.liftBot();
-                lifted = true;
-            } else if (lifted) {
+            }else if (gamepad1.dpad_down){
                 lift.lowerBot();
-                lifted = false;
+            } else {
+                lift.stopLift();
             }
 
             if (gamepad2.aWasPressed()) {
                 outake.shootAll();
             }
-            if (gamepad2.bWasPressed()) {
+            if (gamepad2.squareWasPressed()) {
                 outake.shootLeft();
             }
-            if (gamepad2.xWasPressed()) {
+            if (gamepad2.circleWasPressed()) {
                 outake.shootRight();
             }
             if (gamepad2.yWasPressed()) {
                 outake.shootMiddle();
             }
 
-            if (gamepad1.dpad_right) {
+            if (gamepad2.dpad_right) {
                 outake.unmuteShooter();
             }
-            if (gamepad1.dpad_right) {
+            if (gamepad2.dpad_left) {
                 outake.muteShooter();
             }
 
