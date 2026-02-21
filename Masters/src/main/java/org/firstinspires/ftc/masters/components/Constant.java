@@ -21,12 +21,12 @@ public class Constant {
     public static int shooterMin = 1500;
     public static int shooterMax= 2500;
 
-    public static double minnothingColor = 100;
-    public static double maxnothingColor = 500;
-    public static double mingreenColor = 800;
-    public static double maxgreenColor = 1000;
-    public static double minpurpleColor = 1700;
-    public static double maxpurpleColor = 1900;
+    public static double minnothingColor = 0;
+    public static double maxnothingColor = 400;
+    public static double mingreenColor = 600;
+    public static double maxgreenColor = 1750;
+    public static double minpurpleColor = 1800;
+    public static double maxpurpleColor = 2000;
 
     public static double greenLed = 0.5;
     public static double purpleLed = 0.722;
