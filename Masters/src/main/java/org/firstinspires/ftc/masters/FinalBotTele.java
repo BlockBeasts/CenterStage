@@ -3,6 +3,7 @@ package org.firstinspires.ftc.masters;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -13,23 +14,20 @@ import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
+import java.util.List;
+
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Decode Teleop")
 public class FinalBotTele extends LinearOpMode {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
+
+
     Init init;
-
     Intake intake;
-
     Outake outake;
-
     Lift lift;
-
-
-
-
     DcMotorEx frontLeft;
     DcMotorEx backLeft;
     DcMotorEx frontRight;
@@ -51,26 +49,28 @@ public class FinalBotTele extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
+
+        for (LynxModule hub: allHubs){
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
 
         init = new Init(hardwareMap);
-
         intake = new Intake(init);
-
         outake = new Outake(init, telemetry);
-
         lift = new Lift(init);
-
-
-
-
 
         initializeHardware();
 
         waitForStart();
 
+        outake.unmuteShooter();
+
         while (opModeIsActive()) {
 
-
+            for (LynxModule hub: allHubs){
+                hub.clearBulkCache();
+            }
 
             if (gamepad2.left_bumper) {
                 intake.intakeOn();
@@ -102,12 +102,12 @@ public class FinalBotTele extends LinearOpMode {
                 outake.shootMiddle();
             }
 
-            if (gamepad2.dpad_right) {
-                outake.unmuteShooter();
-            }
-            if (gamepad2.dpad_left) {
-                outake.muteShooter();
-            }
+//            if (gamepad2.dpad_right) {
+//                outake.unmuteShooter();
+//            }
+//            if (gamepad2.dpad_left) {
+//                outake.muteShooter();
+//            }
 
             intake.update();
             outake.update();

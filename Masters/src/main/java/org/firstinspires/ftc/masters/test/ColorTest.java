@@ -16,6 +16,8 @@ public class ColorTest extends LinearOpMode {
 
         waitForStart();
 
+        color.getNormalizedColors().toColor();
+
         int checkColorCount =0;
         int MAX_COUNT = 10;
         double redTotal=0, blueTotal=0, greenTotal=0;

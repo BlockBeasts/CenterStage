@@ -2,13 +2,16 @@ package org.firstinspires.ftc.masters.components;
 
 //import com.pedropathing.localization.GoBildaPinpointDriver;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Init {
     DcMotorEx frontLeft, backLeft, frontRight, backRight;
     DcMotorEx shooterLeft, shooterRight;
@@ -18,6 +21,9 @@ public class Init {
     Servo leftLight, middleLight, rightLight;
     Servo hoodLeftServo, hoodRightServo;
     RevColorSensorV3 colorLeft, colorMiddle, colorRight;
+
+    public static double p=240;
+    public static double f=13;
 
     public Init(HardwareMap hardwareMap) {
 
@@ -62,6 +68,13 @@ public class Init {
         outakeTrayLeft.setPosition(Constant.leftTrayBottom);
         outakeTrayMiddle.setPosition(Constant.middleTrayBottom);
         outakeTrayRight.setPosition(Constant.rightTrayBottom);
+
+        shooterLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        PIDFCoefficients coef = new PIDFCoefficients(p,0,0,f);
+        shooterLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
+        shooterRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
 
     }
 

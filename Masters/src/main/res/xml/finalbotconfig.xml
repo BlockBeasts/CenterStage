@@ -28,9 +28,9 @@
 
             <!--Other-->
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <RevColorSensorV3 name="leftColor" port="1" bus="0" />
-            <RevColorSensorV3 name="middleColor" port="2" bus="0" />
-            <RevColorSensorV3 name="rightColor" port="0" bus="1" />
+            <RevColorSensorV3 name="leftColor" port="0" bus="1" />
+            <RevColorSensorV3 name="middleColor" port="0" bus="2" />
+            <RevColorSensorV3 name="rightColor" port="1" bus="0" />
         </LynxModule>
 
 

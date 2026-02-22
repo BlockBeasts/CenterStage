@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.masters.components;
 
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Outake {
     Init init;
@@ -53,9 +55,9 @@ public class Outake {
         }
 
 
-        leftColor = UsefullFunctions.getColor(init.getColorLeft().green());
-        middleColor = UsefullFunctions.getColor(init.getColorMiddle().green());
-        rightColor = UsefullFunctions.getColor(init.getColorRight().green());
+        leftColor = UsefullFunctions.getColor(init.getColorLeft());
+        middleColor = UsefullFunctions.getColor(init.getColorMiddle());
+        rightColor = UsefullFunctions.getColor(init.getColorRight());
 
         if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
             liftLeftPos = Constant.leftTrayBottom;
@@ -126,13 +128,18 @@ public class Outake {
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
-        telemetry.addData("left color", leftColor);
-        telemetry.addData("middle color", middleColor);
-        telemetry.addData("right color", rightColor);
-
-        telemetry.addData("left green", init.getColorLeft().green());
-        telemetry.addData("middle green", init.getColorMiddle().green());
-        telemetry.addData("right green", init.getColorRight().green());
+//        telemetry.addData("left color", leftColor);
+//        telemetry.addData("middle color", middleColor);
+//        telemetry.addData("right color", rightColor);
+//
+//        telemetry.addData("left green", init.getColorLeft().green());
+//        telemetry.addData("middle green", init.getColorMiddle().green());
+//        telemetry.addData("right green", init.getColorRight().green());
+//        telemetry.addData("left red", init.getColorLeft().red());
+//        telemetry.addData("left blue", init.getColorLeft().blue());
+//        telemetry.addData("left raw", init.getColorLeft().rawOptical());
+//        telemetry.addData("left argb", init.getColorLeft().argb());
+//        telemetry.addData("left distance", init.getColorLeft().getDistance(DistanceUnit.MM));
     }
     public void shootGreen() {
         liftLeftPos = 0.65;
@@ -171,6 +178,8 @@ public class Outake {
         shootRightDelay = null;
         shootMiddleDelay = null;
     }
+
+
 
 
 
