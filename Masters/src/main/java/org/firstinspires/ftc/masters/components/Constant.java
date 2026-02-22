@@ -24,5 +24,14 @@ public class Constant {
     public static double greenLed = 0.5;
     public static double purpleLed = 0.722;
 
+    public static double m=2.188;
+    public static double b = 1391.5;
+
+    public static double blueGoalX= 11.5;
+    public static double goalY= 129.5;
+
+    public static double redGoalX= 144-11.5;
+
+
 
 }

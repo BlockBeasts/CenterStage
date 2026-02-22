@@ -29,7 +29,7 @@ public class Outake {
 
 
 
-    public void update() {
+    public void update(Telemetry telemetry) {
 
         init.getShooterLeft().setVelocity(motorVel);
         init.getShooterRight().setVelocity(motorVel);

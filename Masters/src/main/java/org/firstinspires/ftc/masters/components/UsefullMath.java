@@ -10,4 +10,12 @@ public  class UsefullMath {
     public static double ticksToAngle(double ticks, double ppr) {
         return (ticks/ppr) * 360;
     }
+
+    public static int getVelocityBlue (double x, double y){
+        double distance = Math.sqrt(((x-Constant.blueGoalX)*(x-Constant.blueGoalX))+((y-Constant.goalY)*(y-Constant.goalY)));
+
+        int velocity =(int)(Constant.m*distance+Constant.b);
+
+        return velocity;
+    }
 }
