@@ -1,15 +1,20 @@
 package org.firstinspires.ftc.masters.components;
 
-//import com.pedropathing.localization.GoBildaPinpointDriver;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@Config
 public class Init {
+
+    GoBildaPinpointDriver pinpoint = null;
     DcMotorEx frontLeft, backLeft, frontRight, backRight;
     DcMotorEx shooterLeft, shooterRight;
     DcMotorEx intakeMotor;
@@ -19,12 +24,20 @@ public class Init {
     Servo hoodLeftServo, hoodRightServo;
     RevColorSensorV3 colorLeft, colorMiddle, colorRight;
 
+    public static double p=240;
+    public static double f=13;
+
     public Init(HardwareMap hardwareMap) {
 
         frontLeft = hardwareMap.get(DcMotorEx.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotorEx.class, "frontRight");
         backLeft = hardwareMap.get(DcMotorEx.class, "backLeft");
         backRight = hardwareMap.get(DcMotorEx.class, "backRight");
+
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
 
         shooterLeft = hardwareMap.get(DcMotorEx.class, "leftMotor");
         shooterRight = hardwareMap.get(DcMotorEx.class, "rightMotor");
@@ -53,6 +66,20 @@ public class Init {
 
         shooterLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        outakeTrayLeft.setPosition(Constant.leftTrayBottom);
+        outakeTrayMiddle.setPosition(Constant.middleTrayBottom);
+        outakeTrayRight.setPosition(Constant.rightTrayBottom);
+
+        shooterLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        PIDFCoefficients coef = new PIDFCoefficients(p,0,0,f);
+        shooterLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
+        shooterRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
+
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
+        pinpoint.resetPosAndIMU();
 
     }
 
@@ -131,5 +158,7 @@ public class Init {
     public RevColorSensorV3 getColorRight() {
         return colorRight;
     }
+
+    public GoBildaPinpointDriver getPinpoint() { return pinpoint; }
 
 }

@@ -17,15 +17,21 @@
             <!--Servos-->
             <Servo name="trayLeftServo" port="0" />
 
-            <Servo name="trayMiddleServo" port="2" />
+            <Servo name="leftLed" port="1" />
+            <Servo name="middleLed" port="3" />
+            <Servo name="rightLed" port="4" />
+
+
             <Servo name="leftServo" port="5" />
+            <Servo name="trayMiddleServo" port="2" />
 
 
             <!--Other-->
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <RevColorSensorV3 name="leftColor" port="1" bus="0" />
-            <RevColorSensorV3 name="middleColor" port="2" bus="0" />
-            <RevColorSensorV3 name="rightColor" port="0" bus="1" />
+            <RevColorSensorV3 name="leftColor" port="0" bus="1" />
+            <RevColorSensorV3 name="middleColor" port="0" bus="2" />
+            <RevColorSensorV3 name="rightColor" port="1" bus="0" />
+            <goBILDAPinpoint name="pinpoint" port="0" bus="3" />
         </LynxModule>
 
 
@@ -41,6 +47,7 @@
             <goBILDA5202SeriesMotor name="rightMotor" port="3" />
 
             <!--Servos-->
+
             <Servo name="rightServo" port="0" />
             <Servo name="trayRightServo" port="5" />
 

@@ -18,4 +18,12 @@ public  class UsefullMath {
 
         return velocity;
     }
+
+    public static int getVelocityRed (double x, double y){
+        double distance = Math.sqrt(((x-Constant.redGoalX)*(x-Constant.blueGoalX))+((y-Constant.goalY)*(y-Constant.goalY)));
+
+        int velocity =(int)(Constant.m*distance+Constant.b);
+
+        return velocity;
+    }
 }

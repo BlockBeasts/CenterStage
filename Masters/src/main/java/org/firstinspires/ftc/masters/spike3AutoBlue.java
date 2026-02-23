@@ -57,8 +57,8 @@ public class spike3AutoBlue extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
-        outake = new Outake(init);
-        intake = new Intake(init);
+        outake = new Outake(init, telemetry);
+        intake = new Intake(init, outake, telemetry);
 
         follower = Constants.createFollower(hardwareMap);
         buildPaths();
@@ -83,7 +83,7 @@ public class spike3AutoBlue extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
-            outake.update(telemetry);
+            outake.update();
 
         }
 

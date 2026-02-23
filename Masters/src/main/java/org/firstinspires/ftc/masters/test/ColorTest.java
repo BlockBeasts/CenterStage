@@ -6,16 +6,17 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Color Test", group = "Test")
-@Disabled
 public class ColorTest extends LinearOpMode {
 
 
     @Override
     public void runOpMode() throws InterruptedException {
 
-        RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "color");
+        RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "leftColor");
 
         waitForStart();
+
+        color.getNormalizedColors().toColor();
 
         int checkColorCount =0;
         int MAX_COUNT = 10;
