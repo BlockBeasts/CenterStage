@@ -37,9 +37,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
     boolean lifted = false;
 
     boolean outakeToggle = true;
-    boolean intakeRevToggle = false;
 
-    boolean intakeToggle = false;
 
     boolean debounceLeft = false;
 
@@ -55,6 +53,8 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
 
     public void runOpMode() throws InterruptedException {
+
+
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
 
@@ -71,6 +71,10 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
         lift = new Lift(init);
 
+        frontLeft = init.getFrontLeft();
+        frontRight = init.getFrontRight();
+        backLeft = init.getBackLeft();
+        backRight = init.getBackRight();
         waitForStart();
 
         outake.startShooter();
