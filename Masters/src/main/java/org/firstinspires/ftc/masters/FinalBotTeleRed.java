@@ -16,7 +16,7 @@ public class FinalBotTeleRed extends FinalBotTeleBlue {
     @Override
     public void initializeHardwareAlliance(){
 
-        allianceColor = Constant.AllianceColor.BLUE;
+        allianceColor = Constant.AllianceColor.RED;
 
     }
 

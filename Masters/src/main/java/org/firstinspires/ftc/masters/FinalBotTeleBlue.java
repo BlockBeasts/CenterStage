@@ -3,6 +3,7 @@ package org.firstinspires.ftc.masters;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -34,6 +35,17 @@ public class FinalBotTeleBlue extends LinearOpMode {
     Constant.AllianceColor allianceColor;
 
     boolean lifted = false;
+
+    boolean outakeToggle = true;
+    boolean intakeRevToggle = false;
+
+    boolean intakeToggle = false;
+
+    boolean debounceLeft = false;
+
+    boolean debounceRight = false;
+
+    private final Pose startPose = new Pose(72, 0, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
 
@@ -69,47 +81,69 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 hub.clearBulkCache();
             }
 
-            if (gamepad2.left_bumper) {
+            if (gamepad2.right_bumper) {
                 intake.intakeOn();
             }
             if (gamepad2.dpad_left) {
                 intake.intakeReverse();
             }
-            if (gamepad2.right_bumper) {
+            if (gamepad2.dpad_up) {
                 intake.intakeOff();
             }
             if (gamepad1.dpad_up) {
                 lift.liftBot();
-                outake.stopShooter();
-            }else if (gamepad1.dpad_down){
+            }
+            else if (gamepad1.dpad_down){
                 lift.lowerBot();
             } else {
                 lift.stopLift();
             }
+            if (gamepad2.dpad_down){
 
-            if (gamepad1.a){
-                outake.startShooter();
+                if (!outakeToggle) {
+                    outakeToggle = true;
+
+                    outake.startShooter();
+
+                } else {
+                    outakeToggle = false;
+                    outake.stopShooter();
+                }
+
+
             }
-
             if (gamepad2.aWasPressed()) {
                 outake.shootAll();
             }
-            if (gamepad2.squareWasPressed()) {
+            if (gamepad2.left_stick_x <= -0.9) {
                 outake.shootLeft();
             }
-            if (gamepad2.circleWasPressed()) {
+            if (gamepad2.left_stick_x >= 0.9) {
                 outake.shootRight();
             }
-            if (gamepad2.yWasPressed()) {
+            if (gamepad2.left_stick_y <= -0.9) {
                 outake.shootMiddle();
             }
 
-//            if (gamepad2.dpad_right) {
-//                outake.unmuteShooter();
-//            }
-//            if (gamepad2.dpad_left) {
-//                outake.muteShooter();
-//            }
+            if (gamepad2.left_bumper) {
+                if (!debounceLeft) {
+                    debounceLeft = true;
+                    outake.shootPurple();
+                }
+            } else {
+                debounceLeft = false;
+            }
+
+            if (gamepad2.right_bumper) {
+                if (!debounceRight) {
+                    debounceRight = true;
+                    outake.shootGreen();
+                }
+            } else {
+                debounceRight = false;
+            }
+
+
 
             intake.update();
             outake.update();
