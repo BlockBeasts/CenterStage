@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.masters;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
@@ -16,7 +18,13 @@ import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+
+import java.util.ArrayList;
 
 @Config
 @Autonomous(name = "goal auto blue")
@@ -29,6 +37,23 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+
+    static final double FEET_PER_METER = 3.28084;
+
+    double fx = 822.317;
+    double fy = 822.317;
+    double cx = 319.495;
+    double cy = 242.502;
+
+    // UNITS ARE METERS
+    double tagsize = 0.166;
+
+    int numFramesWithoutDetection = 0;
+
+    final float DECIMATION_HIGH = 3;
+    final float DECIMATION_LOW = 2;
+    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
+    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     private Follower follower;
 
@@ -69,13 +94,39 @@ public class spike3AutoBlueCV extends LinearOpMode {
         buildPaths();
         follower.setStartingPose(startPose);
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+
+        camera.setPipeline(aprilTagDetectionPipeline);
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });
+
         waitForStart();
+
+        telemetry.setMsTransmissionInterval(50);
 
         pathState = State.Start;
 
         sleep(5500);
 
         while (opModeIsActive()){
+
+            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
