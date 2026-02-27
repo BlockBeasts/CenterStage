@@ -41,7 +41,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
     boolean outakeToggle = true;
     boolean debounceLeft = false;
     boolean debounceRight = false;
-    private final Pose startPose = new Pose(72, 0, Math.toRadians(90));
+    private final Pose startPose = new Pose(9, 9, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
 
@@ -147,6 +147,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
             intake.update();
             outake.update();
+            follower.update();
             telemetry.update();
 
 

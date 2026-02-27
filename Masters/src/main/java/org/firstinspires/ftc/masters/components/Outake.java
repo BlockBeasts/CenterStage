@@ -156,6 +156,8 @@ public class Outake {
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
+        telemetry.addData("x", init.getPinpoint().getPosX(DistanceUnit.INCH));
+        telemetry.addData("y", init.getPinpoint().getPosY(DistanceUnit.INCH));
 //        telemetry.addData("left color", leftColor);
 //        telemetry.addData("middle color", middleColor);
 //        telemetry.addData("right color", rightColor);

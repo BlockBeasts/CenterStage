@@ -43,7 +43,7 @@ public class Intake {
             elapsedTime = new ElapsedTime();
         }
 
-        if (outake.has3Balls() && elapsedTime.milliseconds()>2000){
+        if (outake.has3Balls() && elapsedTime!=null &&     elapsedTime.milliseconds()>2000){
             intakeOff();
             elapsedTime = null;
         }

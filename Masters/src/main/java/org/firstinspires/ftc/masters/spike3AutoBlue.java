@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.masters.components.Constant;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Outake;
@@ -57,7 +58,7 @@ public class spike3AutoBlue extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
-        outake = new Outake(init, telemetry);
+        outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
         intake = new Intake(init, outake, telemetry);
 
         follower = Constants.createFollower(hardwareMap);
