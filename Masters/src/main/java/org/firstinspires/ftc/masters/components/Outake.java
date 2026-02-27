@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.masters.components;
 
 
+import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -12,10 +13,15 @@ public class Outake {
     Telemetry telemetry;
 
     Constant.AllianceColor allianceColor= null;
+    Follower follower;
     public Outake(Init init, Telemetry telemetry, Constant.AllianceColor allianceColor) {
         this.init= init;
         this.telemetry = telemetry;
         this.allianceColor = allianceColor;
+    }
+
+    public void setFollower(Follower follower){
+        this.follower = follower;
     }
 
     public static int motorVel = 1000;
@@ -53,12 +59,12 @@ public class Outake {
             init.getShooterRight().setVelocity(0);
         } else {
             if (allianceColor == Constant.AllianceColor.BLUE) {
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(init.getPinpoint().getPosX(DistanceUnit.INCH), init.getPinpoint().getPosY(DistanceUnit.INCH)));
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(init.getPinpoint().getPosX(DistanceUnit.INCH), init.getPinpoint().getPosY(DistanceUnit.INCH)));
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
             }
             if (allianceColor == Constant.AllianceColor.RED){
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(init.getPinpoint().getPosX(DistanceUnit.INCH), init.getPinpoint().getPosY(DistanceUnit.INCH)));
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(init.getPinpoint().getPosX(DistanceUnit.INCH), init.getPinpoint().getPosY(DistanceUnit.INCH)));
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose()));
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose()));
             }
 
         }
@@ -156,8 +162,8 @@ public class Outake {
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
-        telemetry.addData("x", init.getPinpoint().getPosX(DistanceUnit.INCH));
-        telemetry.addData("y", init.getPinpoint().getPosY(DistanceUnit.INCH));
+        telemetry.addData("x", follower.getPose().getX());
+        telemetry.addData("y", follower.getPose().getY());
 //        telemetry.addData("left color", leftColor);
 //        telemetry.addData("middle color", middleColor);
 //        telemetry.addData("right color", rightColor);

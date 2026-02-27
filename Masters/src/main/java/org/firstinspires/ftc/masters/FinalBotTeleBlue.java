@@ -67,6 +67,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         initializeHardwareAlliance();
 
         outake = new Outake(init, telemetry, allianceColor);
+        outake.setFollower(follower);
         intake = new Intake(init, outake, telemetry);
 
         lift = new Lift(init);
