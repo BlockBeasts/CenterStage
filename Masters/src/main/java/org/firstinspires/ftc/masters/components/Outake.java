@@ -101,6 +101,10 @@ public class Outake {
                 init.getLeftLight().setPosition(Constant.purpleLed);
                 break;
             }
+            case ("unknown"):{
+                init.getLeftLight().setPosition(Constant.orangeLed);
+                break;
+            }
         }
 
         switch (middleColor) {
@@ -116,6 +120,10 @@ public class Outake {
                 init.getMiddleLight().setPosition(Constant.purpleLed);
                 break;
             }
+            case ("unknown"):{
+                init.getMiddleLight().setPosition(Constant.orangeLed);
+                break;
+            }
         }
 
         switch (rightColor) {
@@ -129,6 +137,10 @@ public class Outake {
             }
             case ("purple"): {
                 init.getRightLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getRightLight().setPosition(Constant.orangeLed);
                 break;
             }
         }
@@ -242,7 +254,9 @@ public class Outake {
 
     }
 
-
+    protected void setHoodLow(){
+        init.getHoodRightServo().setPosition(Constant.hoodDown);
+    }
 
 
 

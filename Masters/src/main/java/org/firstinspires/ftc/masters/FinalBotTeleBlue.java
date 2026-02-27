@@ -3,6 +3,7 @@ package org.firstinspires.ftc.masters;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 import java.util.List;
 
@@ -33,16 +35,12 @@ public class FinalBotTeleBlue extends LinearOpMode {
     DcMotorEx backRight;
 
     Constant.AllianceColor allianceColor;
+    private Follower follower;
 
     boolean lifted = false;
-
     boolean outakeToggle = true;
-
-
     boolean debounceLeft = false;
-
     boolean debounceRight = false;
-
     private final Pose startPose = new Pose(72, 0, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
@@ -62,6 +60,8 @@ public class FinalBotTeleBlue extends LinearOpMode {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         }
 
+        follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(startPose);
 
         init = new Init(hardwareMap);
         initializeHardwareAlliance();
@@ -95,6 +95,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 intake.intakeOff();
             }
             if (gamepad1.dpad_up) {
+                outake.stopShooter();
                 lift.liftBot();
             }
             else if (gamepad1.dpad_down){
@@ -106,15 +107,12 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
                 if (!outakeToggle) {
                     outakeToggle = true;
-
                     outake.startShooter();
 
                 } else {
                     outakeToggle = false;
                     outake.stopShooter();
                 }
-
-
             }
             if (gamepad2.aWasPressed()) {
                 outake.shootAll();
@@ -146,8 +144,6 @@ public class FinalBotTeleBlue extends LinearOpMode {
             } else {
                 debounceRight = false;
             }
-
-
 
             intake.update();
             outake.update();

@@ -30,7 +30,7 @@ public class spike3AutoBlue extends LinearOpMode {
     private final Pose startPose = new Pose(28.5, 128, Math.toRadians(145));
 
     private final Pose tagPose = new Pose (30, 130, Math.toRadians(145));
-    private final Pose scorePose = new Pose(28.5, 128, Math.toRadians(135));
+    private final Pose scorePose = new Pose(37, 106, Math.toRadians(135));
     private final Pose pickup1Pose = new Pose(55, 87, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (24, 87, Math.toRadians(180));
     private final Pose pickup2Pose = new Pose(55, 63.5, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
@@ -49,7 +49,7 @@ public class spike3AutoBlue extends LinearOpMode {
     int scored = 0;
 
     double run = 1;
-    double pick = .3;
+    double pick = 1;
 
     ElapsedTime elapsedTime = new ElapsedTime();
 
@@ -92,7 +92,7 @@ public class spike3AutoBlue extends LinearOpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case Start:
-                    outake.
+                    outake.startShooter();
                     follower.followPath(scorePreload);
 
                     pathState = State.ToGoal;
@@ -102,21 +102,18 @@ public class spike3AutoBlue extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
-                        outake.launch();
+                        outake.shootAll();
 
-                    if (outake.isInUpPos()) {
+
                         if (scored==0) {
-                            outake.down();
                             intake.intakeOff();
                             follower.followPath(spike1, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==1 ){
-                            outake.down();
                             intake.intakeOff();
                             follower.followPath(spike2, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==2){
-                            outake.down();
                             intake.intakeOff();
                             follower.followPath(spike3, run, false);
                             pathState = State.ToSpike;
@@ -125,15 +122,11 @@ public class spike3AutoBlue extends LinearOpMode {
                             pathState = State.End;
                         }
 
-                    }
-
                 } else {
                     if (elapsedTime!=null && elapsedTime.milliseconds()>3000){
                         intake.intakeOff();
                     }
                 }
-
-
 
                 break;
             case ToSpike:
@@ -145,10 +138,10 @@ public class spike3AutoBlue extends LinearOpMode {
                         follower.followPath(pickup1, pick, false);
                     } else if (scored ==1){
                         intake.intakeOn();
-                        follower.followPath(pickup2, pick-.02, false);
+                        follower.followPath(pickup2, pick, false);
                     } else if (scored ==2 ){
                         intake.intakeOn();
-                        follower.followPath(pickup3, pick-.02, false);
+                        follower.followPath(pickup3, pick, false);
                     }
                     pathState= State.Pickup;
 
@@ -172,7 +165,7 @@ public class spike3AutoBlue extends LinearOpMode {
             case End:
                 if (!follower.isBusy()){
                     intake.intakeOff();
-                    outake.outakeUp();
+                    outake.stopShooter();
                 }
         }
     }

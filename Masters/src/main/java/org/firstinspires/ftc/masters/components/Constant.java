@@ -9,7 +9,7 @@ public class Constant {
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     public static double hoodDown = 0;
-    public static double hoodMax = 0.5;
+    public static double hoodFar = 0.15;
 
     public static double leftTrayBottom = 0.95;
     public static double middleTrayBottom = 0.95;
@@ -18,8 +18,8 @@ public class Constant {
     public static double middleTrayTop = 0.6;
     public static double rightTrayTop = 0.35;
 
-    public static int shooterMin = 1500;
-    public static int shooterMax= 2500;
+    public static int shooterMin = 1440;
+    public static int shooterFar = 1830;
 
     public static double minnothingColor = 0;
     public static double maxnothingColor = 400;
@@ -30,6 +30,8 @@ public class Constant {
 
     public static double greenLed = 0.5;
     public static double purpleLed = 0.722;
+
+    public static double orangeLed = 0.333;
 
     public static double m=2.188;
     public static double b = 1391.5;

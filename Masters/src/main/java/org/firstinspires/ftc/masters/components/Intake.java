@@ -38,7 +38,7 @@ public class Intake {
 
     public void update() {
 
-        if (outake.has3Balls() && elapsedTime ==null){
+        if (outake.has3Balls() && intakeOn && elapsedTime ==null){
             intakeReverse();
             elapsedTime = new ElapsedTime();
         }

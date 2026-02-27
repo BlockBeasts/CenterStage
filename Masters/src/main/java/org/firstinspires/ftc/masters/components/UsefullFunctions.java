@@ -32,11 +32,12 @@ public class UsefullFunctions {
 //            int green = (argb >>8) & 0xFF;
 //            int blue = (argb & 0xFF);
 
-            int red = sensor.red();
-            if (red>70){
-                return "purple";
-            } else
-                return "green";
+//            int red = sensor.red();
+//            if (red>70){
+//                return "purple";
+//            } else
+//                return "green";
+            return "unknown";
         }
 
             return "nothing";
