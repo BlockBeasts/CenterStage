@@ -16,7 +16,7 @@ public  class UsefullMath {
     public static int getVelocityBlue (Pose pose2D){
         double x, y;
 
-        x= pose2D.getX();
+        x = pose2D.getX();
         y = pose2D.getY();
 
         int velocity =0;
