@@ -57,10 +57,11 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(145));
+    private final Pose startPose = new Pose(19.5, 123, Math.toRadians(55));
 
-    private final Pose tagPose = new Pose (30, 130, Math.toRadians(145));
-    private final Pose scorePose = new Pose(37, 106, Math.toRadians(135));
+    private final Pose tagPose = new Pose (55, 100, Math.toRadians(90));
+
+    private final Pose scorePose = new Pose(56, 101, Math.toRadians(135));
     private final Pose pickup1Pose = new Pose(55, 87, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (24, 87, Math.toRadians(180));
     private final Pose pickup2Pose = new Pose(55, 63.5, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
@@ -70,7 +71,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
-    private Path scorePreload, readTag;
+    private PathChain scorePreload, readTag;
     private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
@@ -121,16 +122,18 @@ public class spike3AutoBlueCV extends LinearOpMode {
         telemetry.setMsTransmissionInterval(50);
 
         pathState = State.Start;
+        int tagId = -1;
 
         sleep(5500);
 
         while (opModeIsActive()){
 
             ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+            tagId = getTag(detections);
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
-            autonomousPathUpdate();
+            autonomousPathUpdate(tagId);
 
             // Feedback to Driver Hub for debugging
             telemetry.addData("path state", pathState);
@@ -145,32 +148,37 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     }
 
-    public void autonomousPathUpdate() {
+    public void autonomousPathUpdate(int tagId) {
         switch (pathState) {
             case Start:
                     outake.startShooter();
+                    follower.followPath(readTag);
+
+                    pathState = State.ToTag;
+
+
+                break;
+            case ToTag:
+                if (!follower.isBusy()){
                     follower.followPath(scorePreload);
-
                     pathState = State.ToGoal;
-
-
+                }
                 break;
             case ToGoal:
                 if(!follower.isBusy()) {
 
                         outake.shootAll();
 
-
                         if (scored==0) {
-                            intake.intakeOff();
+//                            intake.intakeOn();
                             follower.followPath(spike1, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==1 ){
-                            intake.intakeOff();
+//                            intake.intakeOn();
                             follower.followPath(spike2, run, false);
                             pathState = State.ToSpike;
                         } else if (scored ==2){
-                            intake.intakeOff();
+//                            intake.intakeOn();
                             follower.followPath(spike3, run, false);
                             pathState = State.ToSpike;
                         } else {
@@ -228,11 +236,15 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     public void buildPaths() {
 
-        readTag = new Path (new BezierLine(startPose, tagPose));
-        readTag.setLinearHeadingInterpolation(startPose.getHeading(), tagPose.getHeading());
+        readTag = follower.pathBuilder()
+                .addPath (new BezierLine(startPose, tagPose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), tagPose.getHeading())
+                .build();
 
-        scorePreload = new Path(new BezierLine(tagPose, scorePose));
-        scorePreload.setLinearHeadingInterpolation(tagPose.getHeading(), scorePose.getHeading());
+        scorePreload= follower.pathBuilder()
+                .addPath(new BezierLine(tagPose, scorePose))
+                .setLinearHeadingInterpolation(tagPose.getHeading(), scorePose.getHeading())
+                .build();
 
         spike1 = follower.pathBuilder()
                 .addPath(new BezierLine(startPose, pickup1Pose))
@@ -281,6 +293,17 @@ public class spike3AutoBlueCV extends LinearOpMode {
                 .addPath(new BezierLine(scorePose, pickup2Pose))
                 .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
                 .build();
+    }
+
+    protected int getTag(ArrayList<AprilTagDetection> detections){
+
+        for (AprilTagDetection tag: detections){
+            if (tag.id==21 || tag.id==22 || tag.id ==23){
+                return tag.id;
+            }
+        }
+
+        return -1;
     }
 
 
