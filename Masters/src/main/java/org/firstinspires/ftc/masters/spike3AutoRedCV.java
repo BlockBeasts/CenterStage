@@ -27,9 +27,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal auto blue")
+@Autonomous(name = "goal auto red")
 
-public class spike3AutoBlueCV extends LinearOpMode {
+public class spike3AutoRedCV extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -57,21 +57,21 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(26, 130, Math.toRadians(55));
+    private final Pose startPose = new Pose(144-26, 130, Math.toRadians((90-55)+90));
 
-    private final Pose tagPose = new Pose (55, 100, Math.toRadians(90));
+    private final Pose tagPose = new Pose (144-55, 100, Math.toRadians(90));
 
-    private final Pose scorePose = new Pose(56, 88, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(65, 64, Math.toRadians(150)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (40, 64, Math.toRadians(150));
-    private final Pose pickup2Pose = new Pose(65, 43, Math.toRadians(150)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(40, 43, Math.toRadians(150));
-    private final Pose pickup3Pose = new Pose(65, 24, Math.toRadians(150)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(40, 24, Math.toRadians(150));
+    private final Pose scorePose = new Pose(144-56, 88, Math.toRadians(180-135));
+    private final Pose pickup1Pose = new Pose(144-65, 72, Math.toRadians(150+180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (144-40, 72, Math.toRadians(150+180));
+    private final Pose pickup2Pose = new Pose(144-65, 51, Math.toRadians(150+180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(144-40, 51, Math.toRadians(150+180));
+    private final Pose pickup3Pose = new Pose(144-65, 32, Math.toRadians(150+180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(144-40, 32, Math.toRadians(150+180));
 
-    private final Pose evilScore = new Pose(56, 88, Math.toRadians(145));
+    private final Pose evilScore = new Pose(144-56, 88, Math.toRadians(180-145));
 
-    private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
+    private final Pose endPose = new Pose (144-60, 85, Math.toRadians(180-135)); // need to change values to get off the line
 
     private PathChain scorePreload, readTag;
     private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
@@ -93,7 +93,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
-        outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
+        outake = new Outake(init, telemetry, Constant.AllianceColor.RED);
         intake = new Intake(init, outake, telemetry);
 
         follower = Constants.createFollower(hardwareMap);
