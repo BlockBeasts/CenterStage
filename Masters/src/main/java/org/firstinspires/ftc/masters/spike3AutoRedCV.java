@@ -82,7 +82,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
     int scored = 0;
 
     double run = 1;
-    double pick = 0.5;
+    double pick = 0.4;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
@@ -169,8 +169,8 @@ public class spike3AutoBlueCV extends LinearOpMode {
         switch (pathState) {
             case Start:
 
-                    follower.followPath(readTag);
-                    pathState = State.ToTag;
+                follower.followPath(readTag);
+                pathState = State.ToTag;
 
                 break;
             case ToTag:
@@ -183,38 +183,38 @@ public class spike3AutoBlueCV extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
-                        if (elapsedTime ==null){
-                            reverseWait = null;
-                            elapsedTime= new ElapsedTime();
-                            intake.intakeOn();
-                        } else if (elapsedTime.milliseconds()>1500) {
-                            outake.shootAll();
-                            if (shootWait ==null) {
-                                shootWait = new ElapsedTime();
+                    if (elapsedTime ==null){
+                        reverseWait = null;
+                        elapsedTime= new ElapsedTime();
+                        intake.intakeOn();
+                    } else if (elapsedTime.milliseconds()>1500) {
+                        outake.shootAll();
+                        if (shootWait ==null) {
+                            shootWait = new ElapsedTime();
 
-                            }
-                            if ( shootWait!=null && shootWait.milliseconds() > 500) {
-                                elapsedTime = null;
-                                shootWait = null;
+                        }
+                        if ( shootWait!=null && shootWait.milliseconds() > 500) {
+                            elapsedTime = null;
+                            shootWait = null;
 
-                                if (scored == 0) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike1, run, false);
-                                    pathState = State.ToSpike;
-                                } else if (scored == 1) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike2, run, false);
-                                    pathState = State.ToSpike;
-                                } else if (scored == 2) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike3, run, false);
-                                    pathState = State.ToSpike;
-                                } else {
-                                    follower.followPath(end);
-                                    pathState = State.End;
-                                }
+                            if (scored == 0) {
+                                intake.intakeOn();
+                                follower.followPath(spike1, run, false);
+                                pathState = State.ToSpike;
+                            } else if (scored == 1) {
+                                intake.intakeOn();
+                                follower.followPath(spike2, run, false);
+                                pathState = State.ToSpike;
+                            } else if (scored == 2) {
+                                intake.intakeOn();
+                                follower.followPath(spike3, run, false);
+                                pathState = State.ToSpike;
+                            } else {
+                                follower.followPath(end);
+                                pathState = State.End;
                             }
                         }
+                    }
 
                 } else {
                     if (reverseWait==null){
@@ -248,7 +248,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
             case Pickup:
                 if(!follower.isBusy()) {
                     //intake.intakeReverse();
-                   elapsedTime = new ElapsedTime();
+                    elapsedTime = new ElapsedTime();
                     if (scored == 0){
                         follower.followPath(score1, run, false);
                     } else if (scored ==1){
