@@ -57,17 +57,17 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(19.5, 123, Math.toRadians(55));
+    private final Pose startPose = new Pose(26, 130, Math.toRadians(55));
 
     private final Pose tagPose = new Pose (55, 100, Math.toRadians(90));
 
-    private final Pose scorePose = new Pose(56, 101, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(55, 87, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (24, 87, Math.toRadians(180));
-    private final Pose pickup2Pose = new Pose(55, 63.5, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(24, 63.5, Math.toRadians(180));
-    private final Pose pickup3Pose = new Pose(55, 40, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(24, 40, Math.toRadians(180));
+    private final Pose scorePose = new Pose(54, 80, Math.toRadians(135));
+    private final Pose pickup1Pose = new Pose(65, 67, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (40, 67, Math.toRadians(180));
+    private final Pose pickup2Pose = new Pose(65, 48, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(40, 48, Math.toRadians(180));
+    private final Pose pickup3Pose = new Pose(65, 36, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(40, 36, Math.toRadians(180));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
@@ -80,9 +80,10 @@ public class spike3AutoBlueCV extends LinearOpMode {
     int scored = 0;
 
     double run = 1;
-    double pick = 1;
+    double pick = 0.5;
 
-    ElapsedTime elapsedTime = new ElapsedTime();
+    ElapsedTime elapsedTime = null;
+    ElapsedTime shootWait =null;
 
 
     public void runOpMode() throws InterruptedException {
@@ -92,6 +93,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
         intake = new Intake(init, outake, telemetry);
 
         follower = Constants.createFollower(hardwareMap);
+        outake.setFollower(follower);
         buildPaths();
         follower.setStartingPose(startPose);
 
@@ -124,18 +126,21 @@ public class spike3AutoBlueCV extends LinearOpMode {
         pathState = State.Start;
         int tagId = -1;
 
-        sleep(5500);
+        //sleep(5500);
 
         while (opModeIsActive()){
 
-            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-            tagId = getTag(detections);
+            if (tagId==-1) {
+                ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+                tagId = getTag(detections);
+            }
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
             autonomousPathUpdate(tagId);
 
             // Feedback to Driver Hub for debugging
+            telemetry.addData("tagId", tagId);
             telemetry.addData("path state", pathState);
             telemetry.addData("x", follower.getPose().getX());
             telemetry.addData("y", follower.getPose().getY());
@@ -151,15 +156,14 @@ public class spike3AutoBlueCV extends LinearOpMode {
     public void autonomousPathUpdate(int tagId) {
         switch (pathState) {
             case Start:
-                    outake.startShooter();
+
                     follower.followPath(readTag);
-
                     pathState = State.ToTag;
-
 
                 break;
             case ToTag:
                 if (!follower.isBusy()){
+                    outake.startShooter();
                     follower.followPath(scorePreload);
                     pathState = State.ToGoal;
                 }
@@ -167,29 +171,36 @@ public class spike3AutoBlueCV extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
-                        outake.shootAll();
+                        if (elapsedTime ==null){
+                            elapsedTime= new ElapsedTime();
+                        } else if (elapsedTime.milliseconds()>3000) {
+                            outake.shootAll();
+                            if (shootWait ==null) {
+                                shootWait = new ElapsedTime();
+                            }
+                            if ( shootWait!=null && shootWait.milliseconds() > 500) {
+                                elapsedTime = null;
+                                shootWait = null;
 
-                        if (scored==0) {
-//                            intake.intakeOn();
-                            follower.followPath(spike1, run, false);
-                            pathState = State.ToSpike;
-                        } else if (scored ==1 ){
-//                            intake.intakeOn();
-                            follower.followPath(spike2, run, false);
-                            pathState = State.ToSpike;
-                        } else if (scored ==2){
-//                            intake.intakeOn();
-                            follower.followPath(spike3, run, false);
-                            pathState = State.ToSpike;
-                        } else {
-                            follower.followPath(end);
-                            pathState = State.End;
+                                if (scored == 0) {
+                            intake.intakeOn();
+                                    follower.followPath(spike1, run, false);
+                                    pathState = State.ToSpike;
+                                } else if (scored == 1) {
+                            intake.intakeOn();
+                                    follower.followPath(spike2, run, false);
+                                    pathState = State.ToSpike;
+                                } else if (scored == 2) {
+                              intake.intakeOn();
+                                    follower.followPath(spike3, run, false);
+                                    pathState = State.ToSpike;
+                                } else {
+                                    follower.followPath(end);
+                                    pathState = State.End;
+                                }
+                            }
                         }
 
-                } else {
-                    if (elapsedTime!=null && elapsedTime.milliseconds()>3000){
-                        intake.intakeOff();
-                    }
                 }
 
                 break;
@@ -213,6 +224,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
                 break;
             case Pickup:
                 if(!follower.isBusy()) {
+                    //intake.intakeReverse();
                    elapsedTime = new ElapsedTime();
                     if (scored == 0){
                         follower.followPath(score1, run, false);
@@ -263,7 +275,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
         spike2 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
                 .build();
         pickup2 = follower.pathBuilder()
                 .addPath( new BezierLine(pickup2Pose, endPickup2))
@@ -277,7 +289,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
         spike3 = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickup3Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading())
                 .build();
         pickup3 = follower.pathBuilder()
                 .addPath( new BezierLine(pickup3Pose, endPickup3))
@@ -297,9 +309,11 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     protected int getTag(ArrayList<AprilTagDetection> detections){
 
-        for (AprilTagDetection tag: detections){
-            if (tag.id==21 || tag.id==22 || tag.id ==23){
-                return tag.id;
+        if (detections!=null) {
+            for (AprilTagDetection tag : detections) {
+                if (tag.id == 21 || tag.id == 22 || tag.id == 23) {
+                    return tag.id;
+                }
             }
         }
 
