@@ -49,6 +49,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
     }
 
+    public static final String POSE_KEY = "Pose";
 
     public void runOpMode() throws InterruptedException {
 
@@ -61,8 +62,13 @@ public class FinalBotTeleBlue extends LinearOpMode {
         }
 
         follower = Constants.createFollower(hardwareMap);
-        follower.setStartingPose(startPose);
 
+        Pose startingPosSaved = (Pose) blackboard.get(POSE_KEY);
+        if (startingPosSaved != null) {
+            follower.setStartingPose(startPose);
+        } else {
+            follower.setStartingPose(startPose);
+        }
         init = new Init(hardwareMap);
         initializeHardwareAlliance();
 
@@ -81,6 +87,8 @@ public class FinalBotTeleBlue extends LinearOpMode {
         outake.startShooter();
 
         while (opModeIsActive()) {
+
+            blackboard.put(POSE_KEY, follower.getPose());
 
             for (LynxModule hub: allHubs){
                 hub.clearBulkCache();
