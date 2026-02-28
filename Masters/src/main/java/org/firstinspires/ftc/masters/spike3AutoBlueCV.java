@@ -82,7 +82,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
     int scored = 0;
 
     double run = 1;
-    double pick = 0.4;
+    double pick = 0.5;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
