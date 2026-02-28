@@ -67,6 +67,16 @@ public class Outake {
                 init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-20);
             }
 
+            if (follower.getPose().getY()<50){
+
+                init.getHoodLeftServo().setPosition(Constant.hoodFar);
+                init.getHoodRightServo().setPosition(Constant.hoodFar);
+            } else {
+
+                init.getHoodLeftServo().setPosition(Constant.hoodDown);
+                init.getHoodRightServo().setPosition(Constant.hoodDown);
+            }
+
         }
 
 
@@ -158,8 +168,6 @@ public class Outake {
 
 
 
-        init.getHoodLeftServo().setPosition(Constant.hoodDown);
-        init.getHoodRightServo().setPosition(Constant.hoodDown);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
         telemetry.addData("x", follower.getPose().getX());
