@@ -24,6 +24,9 @@ public class JustATapRight extends LinearOpMode {
     private PathChain moveOut;
 
 
+    public static final String POSE_KEY_X = "PoseX";
+    public static final String POSE_KEY_Y = "PoseY";
+    public static final String POSE_KEY_H = "PoseH";
     public void runOpMode() throws InterruptedException {
 
         follower = Constants.createFollower(hardwareMap);
@@ -39,6 +42,14 @@ public class JustATapRight extends LinearOpMode {
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
             autonomousPathUpdate();
+
+            blackboard.put(POSE_KEY_X, follower.getPose().getX());
+            blackboard.put(POSE_KEY_Y, follower.getPose().getY());
+            blackboard.put(POSE_KEY_H, follower.getPose().getHeading());
+            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
+            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
+            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
+
 
             // Feedback to Driver Hub for debugging
             telemetry.addData("path state", pathState);

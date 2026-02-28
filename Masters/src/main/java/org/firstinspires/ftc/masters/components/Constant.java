@@ -41,6 +41,8 @@ public class Constant {
 
     public static double redGoalX= 144-11.5;
 
+    public static int liftWait = 300;
+
     public enum AllianceColor {
         RED, BLUE
     }

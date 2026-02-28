@@ -57,7 +57,7 @@ public class spike3AutoRedCV extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(144-26, 130, Math.toRadians((90-55)+90));
+    private final Pose startPose = new Pose(144-26, 130, Math.toRadians(125));
 
     private final Pose tagPose = new Pose (144-55, 100, Math.toRadians(90));
 
@@ -87,6 +87,10 @@ public class spike3AutoRedCV extends LinearOpMode {
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
     ElapsedTime reverseWait = null;
+
+    public static final String POSE_KEY_X = "PoseX";
+    public static final String POSE_KEY_Y = "PoseY";
+    public static final String POSE_KEY_H = "PoseH";
 
     public static final String POSE_KEY = "Pose";
 
@@ -143,9 +147,12 @@ public class spike3AutoRedCV extends LinearOpMode {
             follower.update();
             autonomousPathUpdate(tagId);
 
-            if(!follower.isBusy()) {
-                blackboard.put(POSE_KEY, follower.getPose());
-            }
+            blackboard.put(POSE_KEY_X, follower.getPose().getX());
+            blackboard.put(POSE_KEY_Y, follower.getPose().getY());
+            blackboard.put(POSE_KEY_H, follower.getPose().getHeading());
+            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
+            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
+            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
 
             // Feedback to Driver Hub for debugging
             telemetry.addData("tagId", tagId);
@@ -282,8 +289,8 @@ public class spike3AutoRedCV extends LinearOpMode {
                 .build();
 
         spike1 = follower.pathBuilder()
-                .addPath(new BezierLine(startPose, pickup1Pose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), pickup1Pose.getHeading())
+                .addPath(new BezierLine(scorePose, pickup1Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
                 .build();
 
         pickup1 = follower.pathBuilder()

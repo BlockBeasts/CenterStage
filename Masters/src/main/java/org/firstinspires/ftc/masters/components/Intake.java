@@ -38,15 +38,15 @@ public class Intake {
 
     public void update() {
 
-        if (outake.has3Balls() && intakeOn && elapsedTime ==null){
-            intakeReverse();
-            elapsedTime = new ElapsedTime();
-        }
-
-        if (outake.has3Balls() && elapsedTime!=null &&     elapsedTime.milliseconds()>2000){
-            intakeOff();
-            elapsedTime = null;
-        }
+//        if (outake.has3Balls() && intakeOn && elapsedTime ==null){
+//            intakeReverse();
+//            elapsedTime = new ElapsedTime();
+//        }
+//
+//        if (outake.has3Balls() && elapsedTime!=null &&     elapsedTime.milliseconds()>2000){
+//            intakeOff();
+//            elapsedTime = null;
+//        }
     }
 
 

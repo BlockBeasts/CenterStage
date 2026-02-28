@@ -49,7 +49,9 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
     }
 
-    public static final String POSE_KEY = "Pose";
+    public static final String POSE_KEY_X = "PoseX";
+    public static final String POSE_KEY_Y = "PoseY";
+    public static final String POSE_KEY_H = "PoseH";
 
     public void runOpMode() throws InterruptedException {
 
@@ -63,9 +65,18 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
         follower = Constants.createFollower(hardwareMap);
 
-        Pose startingPosSaved = (Pose) blackboard.get(POSE_KEY);
-        if (startingPosSaved != null) {
-            follower.setStartingPose(startPose);
+        Double StartX = (Double) blackboard.get(POSE_KEY_X);
+        Double StartY = (Double) blackboard.get(POSE_KEY_Y);
+        Double StartH = (Double) blackboard.get(POSE_KEY_H);
+
+        Pose genPose = null;
+        if (StartX!=null && StartY !=null && StartH !=null) {
+
+            genPose = new Pose(StartX, StartY, StartH);
+        }
+
+        if (genPose != null) {
+            follower.setStartingPose(genPose);
         } else {
             follower.setStartingPose(startPose);
         }
@@ -88,7 +99,12 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            blackboard.put(POSE_KEY, follower.getPose());
+            blackboard.put(POSE_KEY_X, follower.getPose().getX());
+            blackboard.put(POSE_KEY_Y, follower.getPose().getY());
+            blackboard.put(POSE_KEY_H,  follower.getPose().getHeading());
+            telemetry.addData("saved pos x", follower.getPose().getX());
+            telemetry.addData("saved pos y", follower.getPose().getY());
+            telemetry.addData("saved pos h",Math.toDegrees(follower.getPose().getHeading()) );
 
             for (LynxModule hub: allHubs){
                 hub.clearBulkCache();
