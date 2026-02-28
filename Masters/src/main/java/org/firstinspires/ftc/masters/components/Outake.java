@@ -59,12 +59,12 @@ public class Outake {
             init.getShooterRight().setVelocity(0);
         } else {
             if (allianceColor == Constant.AllianceColor.BLUE) {
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-20);
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-20);
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-30);
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-30);
             }
             if (allianceColor == Constant.AllianceColor.RED){
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-20);
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-20);
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30);
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30);
             }
 
             if (follower.getPose().getY()<50){
