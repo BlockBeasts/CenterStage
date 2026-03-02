@@ -24,14 +24,17 @@ public class FootTest extends LinearOpMode {
         elapsedTime = new ElapsedTime();
         while (opModeIsActive()){
 
-            if (elapsedTime.milliseconds()<timeDelay){
+            if (gamepad1.dpad_up){
                 lift.lowerBot();
-            } else{
+            } else if (gamepad1.dpad_down){
+                lift.liftBot();
+            } else {
                 lift.stopLift();
             }
 
+            telemetry.addData("encoder position", init.getLift().getCurrentPosition());
+            telemetry.update();
+
         }
-
-
     }
 }
