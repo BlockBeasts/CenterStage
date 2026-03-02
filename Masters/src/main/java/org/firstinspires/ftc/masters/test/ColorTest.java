@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Color Test", group = "Test")
-public class ColorTest extends LinearOpMode {
+public class  ColorTest extends LinearOpMode {
 
 
     @Override

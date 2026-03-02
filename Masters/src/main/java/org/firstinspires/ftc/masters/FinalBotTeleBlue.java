@@ -41,7 +41,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
     boolean outakeToggle = true;
     boolean debounceLeft = false;
     boolean debounceRight = false;
-    private final Pose startPose = new Pose(9, 9, Math.toRadians(90));
+    private final Pose startPose = new Pose(8.5, 8.5, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
 
@@ -95,7 +95,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         backRight = init.getBackRight();
         waitForStart();
 
-        outake.startShooter();
+       // outake.startShooter();
 
         while (opModeIsActive()) {
 
@@ -128,17 +128,17 @@ public class FinalBotTeleBlue extends LinearOpMode {
             } else {
                 lift.stopLift();
             }
-            if (gamepad2.dpad_down){
-
-                if (!outakeToggle) {
-                    outakeToggle = true;
-                    outake.startShooter();
-
-                } else {
-                    outakeToggle = false;
-                    outake.stopShooter();
-                }
-            }
+//            if (gamepad2.dpad_down){
+//
+//                if (!outakeToggle) {
+//                    outakeToggle = true;
+//                    outake.startShooter();
+//
+//                } else {
+//                    outakeToggle = false;
+//                    outake.stopShooter();
+//                }
+//            }
             if (gamepad2.aWasPressed()) {
                 outake.shootAll();
             }
@@ -152,23 +152,23 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 outake.shootMiddle();
             }
 
-            if (gamepad2.left_bumper) {
-                if (!debounceLeft) {
-                    debounceLeft = true;
-                    outake.shootPurple();
-                }
-            } else {
-                debounceLeft = false;
-            }
+//            if (gamepad2.left_bumper) {
+//                if (!debounceLeft) {
+//                    debounceLeft = true;
+//                    outake.shootPurple();
+//                }
+//            } else {
+//                debounceLeft = false;
+//            }
 
-            if (gamepad2.right_bumper) {
-                if (!debounceRight) {
-                    debounceRight = true;
-                    outake.shootGreen();
-                }
-            } else {
-                debounceRight = false;
-            }
+//            if (gamepad2.right_bumper) {
+//                if (!debounceRight) {
+//                    debounceRight = true;
+//                    outake.shootGreen();
+//                }
+//            } else {
+//                debounceRight = false;
+//            }
 
             intake.update();
             outake.update();

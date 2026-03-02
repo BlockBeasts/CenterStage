@@ -57,18 +57,18 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private Follower follower;
 
-    private final Pose startPose = new Pose(26, 130, Math.toRadians(55));
+    private final Pose startPose = new Pose(20, 120.5, Math.toRadians(51));
 
-    private final Pose tagPose = new Pose (55, 100, Math.toRadians(90));
+    private final Pose tagPose = new Pose (45, 100, Math.toRadians(90));
 
-    private final Pose scorePose = new Pose(56, 88, Math.toRadians(135));
-    private final Pose pickup1Pose = new Pose(65, 64, Math.toRadians(150)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (40, 64, Math.toRadians(150));
-    private final Pose pickup2Pose = new Pose(65, 43, Math.toRadians(150)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(40, 43, Math.toRadians(150));
-    private final Pose pickup3Pose = new Pose(65, 24, Math.toRadians(150)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(40, 24, Math.toRadians(150));
-    private final Pose evilScore = new Pose(56, 88, Math.toRadians(145));
+    private final Pose scorePose = new Pose(54.5, 93.5, Math.toRadians(137));
+    private final Pose pickup1Pose = new Pose(45, 87.5, Math.toRadians(-157)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (13, 87.5, Math.toRadians(-157));
+    private final Pose pickup2Pose = new Pose(45, 87.5-24, Math.toRadians(-157)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(13, 87.5-24, Math.toRadians(-157));
+    private final Pose pickup3Pose = new Pose(45, 87.5-48, Math.toRadians(-157)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(13, 87.5-48, Math.toRadians(-157));
+    private final Pose evilScore = new Pose(54.5, 93.5, Math.toRadians(137));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
@@ -197,7 +197,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
                                 shootWait = new ElapsedTime();
 
                             }
-                            if ( shootWait!=null && shootWait.milliseconds() > 500) {
+                            if (shootWait!=null && shootWait.milliseconds() > 500) {
                                 elapsedTime = null;
                                 shootWait = null;
 

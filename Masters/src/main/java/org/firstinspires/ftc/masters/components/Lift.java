@@ -25,11 +25,11 @@ public class Lift {
 
     public void liftBot() {
 
-        init.getLift().setPower(-0.9);
+        init.getLift().setPower(-1);
     }
 
     public void lowerBot() {
-        init.getLift().setPower(0.9);
+        init.getLift().setPower(1);
     }
 
 

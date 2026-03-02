@@ -85,7 +85,7 @@ public class Tuning extends SelectableOpMode {
             follower = Constants.createFollower(hardwareMap);
         }
 
-        follower.setStartingPose(new Pose());
+        follower.setStartingPose(new Pose(8.5,8.5, Math.toRadians(90)));
 
         poseHistory = follower.getPoseHistory();
 
@@ -190,7 +190,7 @@ class ForwardTuner extends OpMode {
     /** This initializes the PoseUpdater as well as the Panels telemetry. */
     @Override
     public void init_loop() {
-        Tuning.telemetryM.debug("Pull your robot forward " + DISTANCE + " inches. Your forward ticks to inches will be shown on the telemetry.");
+        Tuning.telemetryM.debug("Pull your robot forward " + DISTANCE + " inches. Your fobe srward ticks to inches will hown on the telemetry.");
         Tuning.telemetryM.update(telemetry);
         Tuning.drawOnlyCurrent();
     }

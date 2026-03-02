@@ -14,7 +14,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.masters.components.Constant;
 import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
-import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
@@ -27,9 +26,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "lift test goal blue")
+@Autonomous(name = "TEST goal blue")
 
-public class LiftShootTest extends LinearOpMode {
+public class testAutoBlue extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -70,7 +69,8 @@ public class LiftShootTest extends LinearOpMode {
     private final Pose endPickup3 = new Pose(40, 24, Math.toRadians(150));
     private final Pose evilScore = new Pose(56, 88, Math.toRadians(145));
 
-    private final Pose endPose = new Pose (60, 85, Math.toRadians(135));
+    private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
+
     private PathChain scorePreload, readTag;
     private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
 
@@ -82,12 +82,9 @@ public class LiftShootTest extends LinearOpMode {
     double run = 1;
     double pick = 0.5;
 
-    Lift lift;
-
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
     ElapsedTime reverseWait = null;
-    ElapsedTime liftWait = null;
 
     public static final String POSE_KEY_X = "PoseX";
     public static final String POSE_KEY_Y = "PoseY";
@@ -98,8 +95,6 @@ public class LiftShootTest extends LinearOpMode {
         init = new Init(hardwareMap);
         outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
         intake = new Intake(init, outake, telemetry);
-        lift = new Lift(init);
-
 
         follower = Constants.createFollower(hardwareMap);
         outake.setFollower(follower);
@@ -151,16 +146,16 @@ public class LiftShootTest extends LinearOpMode {
             blackboard.put(POSE_KEY_X, follower.getPose().getX());
             blackboard.put(POSE_KEY_Y, follower.getPose().getY());
             blackboard.put(POSE_KEY_H, follower.getPose().getHeading());
-            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
-            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
-            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
+//            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
+//            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
+//            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
 
             // Feedback to Driver Hub for debugging
             telemetry.addData("tagId", tagId);
             telemetry.addData("path state", pathState);
             telemetry.addData("x", follower.getPose().getX());
             telemetry.addData("y", follower.getPose().getY());
-            telemetry.addData("heading", follower.getPose().getHeading());
+            telemetry.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
             telemetry.update();
 
             outake.update();
@@ -183,69 +178,56 @@ public class LiftShootTest extends LinearOpMode {
                 break;
             case ToTag:
                 if (!follower.isBusy()){
-                    outake.startShooter();
+                   // outake.startShooter();
                     follower.followPath(scorePreload);
                     pathState = State.ToGoal;
                 }
                 break;
             case ToGoal:
-                if(!follower.isBusy()) {
-
-
-                        if (elapsedTime ==null){
-                            reverseWait = null;
-                            elapsedTime= new ElapsedTime();
-                            intake.intakeOn();
-                        } else if (elapsedTime.milliseconds()>2000) {
-                            outake.shootAll();
-                            liftWait =null;
-                            if (shootWait ==null) {
-                                shootWait = new ElapsedTime();
-
-                            }
-                            if ( shootWait!=null && shootWait.milliseconds() > 500) {
-                                elapsedTime = null;
-                                shootWait = null;
-
-                                if (scored == 0) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike1, run, false);
-                                    pathState = State.ToSpike;
-                                } else if (scored == 1) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike2, run, false);
-                                    pathState = State.ToSpike;
-                                } else if (scored == 2) {
-                                    intake.intakeOn();
-                                    follower.followPath(spike3, run, false);
-                                    pathState = State.ToSpike;
-                                } else {
-                                    follower.followPath(end);
-                                    pathState = State.End;
-                                }
-                            }
-                        } else if (elapsedTime.milliseconds()>900 && elapsedTime.milliseconds()<1500){
-                            lift.lowerBot();
-                        }
-                        else if ( elapsedTime.milliseconds()>300 && elapsedTime.milliseconds()<900 ){
-                            lift.liftBot();
-                        } else if (elapsedTime.milliseconds()>1500 && elapsedTime.milliseconds()<2000){
-                            lift.stopLift();
-                        }
-
-
-
-
-
-                } else {
-                    if (reverseWait==null){
-                        reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3500){
-                        intake.intakeOff();
-                    } else if (reverseWait.milliseconds()>1500){
-                        intake.intakeReverse();
-                    }
-                }
+//                if(!follower.isBusy()) {
+//
+//                        if (elapsedTime ==null){
+//                            reverseWait = null;
+//                            elapsedTime= new ElapsedTime();
+//                            intake.intakeOn();
+//                        } else if (elapsedTime.milliseconds()>1500) {
+//                            outake.shootAll();
+//                            if (shootWait ==null) {
+//                                shootWait = new ElapsedTime();
+//
+//                            }
+//                            if ( shootWait!=null && shootWait.milliseconds() > 500) {
+//                                elapsedTime = null;
+//                                shootWait = null;
+//
+//                                if (scored == 0) {
+//                                    intake.intakeOn();
+//                                    follower.followPath(spike1, run, false);
+//                                    pathState = State.ToSpike;
+//                                } else if (scored == 1) {
+//                                    intake.intakeOn();
+//                                    follower.followPath(spike2, run, false);
+//                                    pathState = State.ToSpike;
+//                                } else if (scored == 2) {
+//                                    intake.intakeOn();
+//                                    follower.followPath(spike3, run, false);
+//                                    pathState = State.ToSpike;
+//                                } else {
+//                                    follower.followPath(end);
+//                                    pathState = State.End;
+//                                }
+//                            }
+//                        }
+//
+//                } else {
+//                    if (reverseWait==null){
+//                        reverseWait = new ElapsedTime();
+//                    } else if (reverseWait.milliseconds()>3500){
+//                        intake.intakeOff();
+//                    } else if (reverseWait.milliseconds()>2500){
+//                        intake.intakeReverse();
+//                    }
+//                }
 
                 break;
             case ToSpike:
@@ -303,8 +285,8 @@ public class LiftShootTest extends LinearOpMode {
                 .build();
 
         spike1 = follower.pathBuilder()
-                .addPath(new BezierLine(startPose, pickup1Pose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), pickup1Pose.getHeading())
+                .addPath(new BezierLine(scorePose, pickup1Pose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
                 .build();
 
         pickup1 = follower.pathBuilder()
