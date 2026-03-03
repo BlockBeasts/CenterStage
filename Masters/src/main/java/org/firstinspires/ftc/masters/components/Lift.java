@@ -32,6 +32,8 @@ public class Lift {
         init.getLift().setPower(1);
     }
 
-
+    public int getCurrentPosition(){
+        return  init.getLift().getCurrentPosition();
+    }
 
 }

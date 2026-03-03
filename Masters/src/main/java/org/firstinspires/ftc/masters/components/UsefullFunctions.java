@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.masters.components;
 
 import com.qualcomm.hardware.rev.RevColorSensorV3;
+import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -18,6 +19,7 @@ public class UsefullFunctions {
 //            int red= (argb >>16) & 0xFF;
 //            int green = (argb >>8) & 0xFF;
 //            int blue = (argb & 0xFF);
+            NormalizedRGBA colors = sensor.
 
             int blue = sensor.blue();
             int green = sensor.green();

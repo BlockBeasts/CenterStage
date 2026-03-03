@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp(name="Color Test", group = "Test")
 public class  ColorTest extends LinearOpMode {
 
@@ -13,42 +15,34 @@ public class  ColorTest extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         RevColorSensorV3 color = hardwareMap.get(RevColorSensorV3.class, "leftColor");
+        RevColorSensorV3 colorMid = hardwareMap.get(RevColorSensorV3.class, "middleColor");
+        RevColorSensorV3 colorRight = hardwareMap.get(RevColorSensorV3.class, "rightColor");
 
         waitForStart();
 
-        color.getNormalizedColors().toColor();
 
         int checkColorCount =0;
         int MAX_COUNT = 10;
         double redTotal=0, blueTotal=0, greenTotal=0;
 
         while(opModeIsActive()){
-            if (checkColorCount<MAX_COUNT){
-                redTotal+=color.red();
-                blueTotal+=color.blue();
-                greenTotal+=color.green();
-                checkColorCount++;
 
-                telemetry.addData("red total", redTotal);
-                telemetry.addData("green total", greenTotal);
-                telemetry.addData("blue total", blueTotal);
-                telemetry.addData("count", checkColorCount);
-            } else {
+            String left = "Left distance: "+color.getDistance(DistanceUnit.MM)+" raw:"+color.rawOptical();
+            String leftColor = " red:"+color.red()+" green:"+ color.green()+" blue:"+color.blue();
 
-                if (redTotal>blueTotal && redTotal> greenTotal){
-                    telemetry.addData("Color", "Red");
-                }
-                else if (greenTotal>blueTotal && greenTotal>redTotal){
-                    telemetry.addData("Color", "yellow");
-                } else if (blueTotal>greenTotal && blueTotal>redTotal){
-                    telemetry.addData("Color", "Blue");
-                }
-            }
+            String middle = "Middle distance: "+colorMid.getDistance(DistanceUnit.MM)+" raw:"+colorMid.rawOptical();
+            String colorMiddle = " red:"+colorMid.red()+" green:"+ colorMid.green()+" blue:"+colorMid.blue();
 
-            telemetry.addData("raw", color.rawOptical());
-            telemetry.addData("red", color.red());
-            telemetry.addData("blue", color.blue());
-            telemetry.addData("green", color.green());
+            String right = " Left distance: "+colorRight.getDistance(DistanceUnit.MM)+" raw:"+colorRight.rawOptical();
+            String rightcolor = " red:"+colorRight.red()+" green:"+ colorRight.green()+" blue:"+colorRight.blue();
+
+
+           telemetry.addLine(left);
+           telemetry.addLine(leftColor);
+           telemetry.addLine(middle);
+           telemetry.addLine(colorMiddle);
+           telemetry.addLine(right);
+           telemetry.addLine(rightcolor);
             telemetry.update();
         }
     }

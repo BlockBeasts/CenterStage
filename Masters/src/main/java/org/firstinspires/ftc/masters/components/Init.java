@@ -48,6 +48,8 @@ public class Init {
 
         lift = hardwareMap.dcMotor.get("lift");
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lift.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         outakeTrayLeft = hardwareMap.get(Servo.class, "trayLeftServo");
         outakeTrayMiddle = hardwareMap.get(Servo.class, "trayMiddleServo");
@@ -79,7 +81,6 @@ public class Init {
         shooterRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
 
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
-        //pinpoint.resetPosAndIMU();
 
     }
 
