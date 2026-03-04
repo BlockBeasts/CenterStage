@@ -23,13 +23,35 @@ public class Lift {
         init.getLift().setPower(0);
     }
 
-    public void liftBot() {
-
+    public void lowerBot(double power){
         init.getLift().setPower(-1);
     }
 
-    public void lowerBot() {
+    public void liftBot(double power){
         init.getLift().setPower(1);
+    }
+
+    public void lowerBot() {
+
+        if (init.getLift().getCurrentPosition()>0) {
+            init.getLift().setPower(-1);
+        } else {
+            init.getLift().setPower(0);
+        }
+    }
+
+    public void liftRobot() {
+        if (init.getLift().getCurrentPosition()<1800) {
+            init.getLift().setPower(1);
+        } else {
+            init.getLift().setPower(0);
+        }
+    }
+
+    public void update(){
+        if (init.getLift().getCurrentPosition()>1800 || init.getLift().getCurrentPosition()<0){
+            stopLift();
+        }
     }
 
     public int getCurrentPosition(){

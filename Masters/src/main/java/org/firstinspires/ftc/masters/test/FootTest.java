@@ -25,9 +25,9 @@ public class FootTest extends LinearOpMode {
         while (opModeIsActive()){
 
             if (gamepad1.dpad_up){
-                lift.lowerBot();
+                lift.liftBot(1.0);
             } else if (gamepad1.dpad_down){
-                lift.liftBot();
+                lift.lowerBot(1);
             } else {
                 lift.stopLift();
             }

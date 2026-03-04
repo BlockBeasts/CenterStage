@@ -47,6 +47,9 @@ public class Constant {
         RED, BLUE
     }
 
+    public static int liftShootLimit = 1200;
+    public static int liftDriveLimit = 300;
+
 
 
 

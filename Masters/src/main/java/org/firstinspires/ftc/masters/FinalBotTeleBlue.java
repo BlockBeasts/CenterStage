@@ -95,7 +95,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         backRight = init.getBackRight();
         waitForStart();
 
-       // outake.startShooter();
+        outake.startShooter();
 
         while (opModeIsActive()) {
 
@@ -121,10 +121,10 @@ public class FinalBotTeleBlue extends LinearOpMode {
             }
             if (gamepad1.dpad_up) {
                 outake.stopShooter();
-                lift.liftBot();
+                lift.lowerBot();
             }
             else if (gamepad1.dpad_down){
-                lift.lowerBot();
+                lift.liftRobot();
             } else {
                 lift.stopLift();
             }

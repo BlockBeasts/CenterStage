@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
-import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -63,14 +62,14 @@ public class spike3AutoRedCV extends LinearOpMode {
     private final Pose tagPose = new Pose(100, 110, Math.toRadians(90));
 
     private final Pose scorePose = new Pose(86.5, 101, Math.toRadians(34));
-    private final Pose pickup1Pose = new Pose(96, 86.5, Math.toRadians(-36)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (122, 86.5, Math.toRadians(-36));
-    private final Pose pickup2Pose = new Pose(96, 86.5-24, Math.toRadians(-36)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(122, 86.5-24, Math.toRadians(-36));
-    private final Pose pickup3Pose = new Pose(96, 86.5-48, Math.toRadians(-36)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(122, 86.5-48, Math.toRadians(-36));
+    private final Pose pickup1Pose = new Pose(95, 82, Math.toRadians(23)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (122, 77, Math.toRadians(23));
+    private final Pose pickup2Pose = new Pose(95, 82-24, Math.toRadians(23)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(122, 77-24, Math.toRadians(23));
+    private final Pose pickup3Pose = new Pose(95, 82-48, Math.toRadians(23)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(122, 77-48, Math.toRadians(23));
 
-    private final Pose evilScore =  new Pose(90, 90, Math.toRadians(40));
+    private final Pose evilScore =  new Pose(90, 80, Math.toRadians(45));
 
     private final Pose endPose = new Pose (144-60, 85, Math.toRadians(180-135)); // need to change values to get off the line
 
@@ -83,7 +82,7 @@ public class spike3AutoRedCV extends LinearOpMode {
     int scored = 0;
 
     double run = 0.95;
-    double pick = 0.5;
+    double pick = 0.4;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
@@ -167,6 +166,7 @@ public class spike3AutoRedCV extends LinearOpMode {
             telemetry.update();
 
             outake.update();
+            lift.update();
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -175,6 +175,8 @@ public class spike3AutoRedCV extends LinearOpMode {
         }
 
     }
+
+    boolean beforeShoot = true;
 
     public void autonomousPathUpdate(int tagId) {
         switch (pathState) {
@@ -194,26 +196,23 @@ public class spike3AutoRedCV extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
-                    if (elapsedTime ==null){
-                        reverseWait = null;
-                        elapsedTime= new ElapsedTime();
-                        lift.lowerBot();
-                        //intake.intakeOn();
-                    } else if (elapsedTime.milliseconds()>750) {
-                        outake.shootAll();
-
-                        if (shootWait ==null) {
-                            shootWait = new ElapsedTime();
-
+                    if (beforeShoot){
+                        if (lift.getCurrentPosition()<Constant.liftShootLimit){
+                            lift.liftRobot();
+                        } else {
+                            outake.shootAll();
+                            if (shootWait ==null) {
+                                shootWait = new ElapsedTime();
+                                beforeShoot = false;
+                            }
                         }
-                        if (shootWait!=null && shootWait.milliseconds()>100){
-                            lift.liftBot();
+                    } else {
+                        if (shootWait!=null && shootWait.milliseconds()>250){
+                            this.lift.lowerBot();
                         }
-                        if ( shootWait!=null && shootWait.milliseconds() > 800) {
-                            elapsedTime = null;
-                            shootWait = null;
-                            lift.stopLift();
-
+                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
+                            shootWait =null;
+                            beforeShoot = true;
                             if (scored == 0) {
                                 intake.intakeOn();
                                 follower.followPath(spike1, run, false);
@@ -233,14 +232,53 @@ public class spike3AutoRedCV extends LinearOpMode {
                         }
                     }
 
-//                } else {
-//                    if (reverseWait==null){
-//                        reverseWait = new ElapsedTime();
-//                    } else if (reverseWait.milliseconds()>3500){
-//                        intake.intakeOff();
-//                    } else if (reverseWait.milliseconds()>2500){
-//                        intake.intakeReverse();
+//                    if (elapsedTime ==null){
+//                        reverseWait = null;
+//                        elapsedTime= new ElapsedTime();
+//                        lift.liftRobot();
+//                        //intake.intakeOn();
+//                    } else if (elapsedTime.milliseconds()>750) {
+//                        outake.shootAll();
+//
+//                        if (shootWait ==null) {
+//                            shootWait = new ElapsedTime();
+//
+//                        }
+//                        if (shootWait!=null && shootWait.milliseconds()>100){
+//                            lift.lowerBot();
+//                        }
+//                        if ( shootWait!=null && shootWait.milliseconds() > 800) {
+//                            elapsedTime = null;
+//                            shootWait = null;
+//                            lift.stopLift();
+//
+//                            if (scored == 0) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike1, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 1) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike2, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 2) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike3, run, false);
+//                                pathState = State.ToSpike;
+//                            } else {
+//                                follower.followPath(end);
+//                                pathState = State.End;
+//                            }
+//                        }
 //                    }
+
+                } else {
+                    if (reverseWait==null){
+                        reverseWait = new ElapsedTime();
+                    } else if (reverseWait.milliseconds()>3000){
+                        intake.intakeOn();
+                    } else if (reverseWait.milliseconds()>2000){
+                        intake.intakeReverse();
+                    }
                 }
 
                 break;

@@ -225,10 +225,10 @@ public class LiftShootTest extends LinearOpMode {
                                 }
                             }
                         } else if (elapsedTime.milliseconds()>900 && elapsedTime.milliseconds()<1500){
-                            lift.lowerBot();
+                            lift.liftRobot();
                         }
                         else if ( elapsedTime.milliseconds()>300 && elapsedTime.milliseconds()<900 ){
-                            lift.liftBot();
+                            lift.lowerBot();
                         } else if (elapsedTime.milliseconds()>1500 && elapsedTime.milliseconds()<2000){
                             lift.stopLift();
                         }

@@ -59,12 +59,12 @@ public class Outake {
             init.getShooterRight().setVelocity(0);
         } else {
             if (allianceColor == Constant.AllianceColor.BLUE) {
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-30);
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-30);
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-20);
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose())-20);
             }
             if (allianceColor == Constant.AllianceColor.RED){
-                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30);
-                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30);
+                init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-20);
+                init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-20);
             }
 
             if (follower.getPose().getY()<50){
@@ -77,18 +77,21 @@ public class Outake {
                 init.getHoodRightServo().setPosition(Constant.hoodDown);
             }
 
+//            init.getShooterLeft().setVelocity(Constant.shooterMin);
+//            init.getShooterRight().setVelocity(Constant.shooterMin);
+
         }
 
 
         if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            leftColor = UsefullFunctions.getColor(init.getColorLeft());
+            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
         }
         if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-            middleColor = UsefullFunctions.getColor(init.getColorMiddle());
+            middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
         }
 
         if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-            rightColor = UsefullFunctions.getColor(init.getColorRight());
+            rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
         }
 
         if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
