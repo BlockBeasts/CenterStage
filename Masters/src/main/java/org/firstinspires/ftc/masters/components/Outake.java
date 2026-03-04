@@ -53,6 +53,13 @@ public class Outake {
         muteShoot = false;
     }
 
+    public void updateConstant(){
+        init.getShooterLeft().setVelocity (Constant.shooterMin);
+        init.getShooterRight().setVelocity(Constant.shooterMin);
+        init.getHoodLeftServo().setPosition(Constant.hoodDown);
+        init.getHoodRightServo().setPosition(Constant.hoodDown);
+    }
+
     public void update() {
         if (muteShoot) {
             init.getShooterLeft().setVelocity(0);
