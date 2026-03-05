@@ -100,6 +100,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
         init = new Init(hardwareMap);
         outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
         intake = new Intake(init, outake, telemetry);
+        outake.setIntake(intake);
 
         follower = Constants.createFollower(hardwareMap);
         outake.setFollower(follower);

@@ -62,12 +62,12 @@ public class spike3AutoRedCV extends LinearOpMode {
     private final Pose tagPose = new Pose(100, 110, Math.toRadians(90));
 
     private final Pose scorePose = new Pose(86.5, 101, Math.toRadians(34));
-    private final Pose pickup1Pose = new Pose(95, 82, Math.toRadians(23)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (122, 77, Math.toRadians(23));
-    private final Pose pickup2Pose = new Pose(95, 82-24, Math.toRadians(23)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(122, 77-24, Math.toRadians(23));
-    private final Pose pickup3Pose = new Pose(95, 82-48, Math.toRadians(23)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(122, 77-48, Math.toRadians(23));
+    private final Pose pickup1Pose = new Pose(95, 86, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (124, 86, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(95, 86-24, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(124, 86-24, Math.toRadians(0));
+    private final Pose pickup3Pose = new Pose(95, 86-48, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(124, 86-48, Math.toRadians(0));
 
     private final Pose evilScore =  new Pose(90, 80, Math.toRadians(45));
 
@@ -82,7 +82,7 @@ public class spike3AutoRedCV extends LinearOpMode {
     int scored = 0;
 
     double run = 0.95;
-    double pick = 0.4;
+    double pick = 0.5;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
@@ -101,6 +101,7 @@ public class spike3AutoRedCV extends LinearOpMode {
         init = new Init(hardwareMap);
         outake = new Outake(init, telemetry, Constant.AllianceColor.RED);
         intake = new Intake(init, outake, telemetry);
+        outake.setIntake(intake);
         lift = new Lift(init);
 
         follower = Constants.createFollower(hardwareMap);
