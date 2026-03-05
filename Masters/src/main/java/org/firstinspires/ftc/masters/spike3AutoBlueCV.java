@@ -19,6 +19,10 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -338,6 +342,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
         if (detections!=null) {
             for (AprilTagDetection tag : detections) {
+                Orientation rot = Orientation.getOrientation(tag.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
                 if (tag.id == 21 || tag.id == 22 || tag.id == 23) {
                     return tag.id;
                 }
@@ -346,6 +351,5 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
         return -1;
     }
-
 
 }

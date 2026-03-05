@@ -285,8 +285,9 @@ public class Outake {
     }
 
 
-
-
+    public boolean upToSpeed() {
+        return (UsefullMath.getVelocityBlue(follower.getPose()) - 20) <= init.getShooterRight().getVelocity();
+    }
 
 
 }

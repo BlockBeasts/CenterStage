@@ -49,5 +49,9 @@ public class Intake {
 //        }
     }
 
+//    public boolean upToRumble() {
+//        return init.getIntakeMotor().getPower() == -.5;
+//    }
+
 
 }

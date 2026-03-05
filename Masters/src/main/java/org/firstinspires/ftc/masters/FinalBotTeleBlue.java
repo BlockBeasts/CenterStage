@@ -16,6 +16,11 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
+import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraFactory;
+import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.List;
 
@@ -33,6 +38,19 @@ public class FinalBotTeleBlue extends LinearOpMode {
     DcMotorEx backLeft;
     DcMotorEx frontRight;
     DcMotorEx backRight;
+
+    double fx = 822.317;
+    double fy = 822.317;
+    double cx = 319.495;
+    double cy = 242.502;
+    double tagsize = 0.166; // In meters
+
+    // Tag detection settings
+    int numFramesWithoutDetection = 0;
+    final float DECIMATION_HIGH = 3;
+    final float DECIMATION_LOW = 2;
+    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
+    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     Constant.AllianceColor allianceColor;
     private Follower follower;
@@ -55,6 +73,25 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+        camera.setPipeline(aprilTagDetectionPipeline);
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
+        {
+            @Override
+            public void onOpened()
+            {
+                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
+            }
+
+            @Override
+            public void onError(int errorCode)
+            {
+
+            }
+        });
+
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
@@ -76,7 +113,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         }
 
         if (genPose != null) {
-            follower.setStartingPose(genPose);
+            follower.setStartingPose(startPose);
         } else {
             follower.setStartingPose(startPose);
         }
@@ -110,20 +147,21 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 hub.clearBulkCache();
             }
 
-            if (gamepad2.right_bumper) {
+            if (gamepad2.dpad_right) {
                 intake.intakeOn();
             }
             if (gamepad2.dpad_left) {
                 intake.intakeReverse();
+                gamepad2.rumble(100);
             }
             if (gamepad2.dpad_up) {
                 intake.intakeOff();
             }
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_down) {
                 outake.stopShooter();
                 lift.lowerBot();
             }
-            else if (gamepad1.dpad_down){
+            else if (gamepad1.dpad_up){
                 lift.liftRobot();
             } else {
                 lift.stopLift();
@@ -152,22 +190,30 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 outake.shootMiddle();
             }
 
-//            if (gamepad2.left_bumper) {
-//                if (!debounceLeft) {
-//                    debounceLeft = true;
-//                    outake.shootPurple();
-//                }
-//            } else {
-//                debounceLeft = false;
-//            }
+            if (gamepad2.left_bumper) {
+                if (!debounceLeft) {
+                    debounceLeft = true;
+                    outake.shootPurple();
+                }
+            } else {
+                debounceLeft = false;
+            }
 
-//            if (gamepad2.right_bumper) {
-//                if (!debounceRight) {
-//                    debounceRight = true;
-//                    outake.shootGreen();
-//                }
-//            } else {
-//                debounceRight = false;
+            if (gamepad2.right_bumper) {
+                if (!debounceRight) {
+                    debounceRight = true;
+                    outake.shootGreen();
+                }
+            } else {
+                debounceRight = false;
+            }
+
+            if(outake.upToSpeed()){
+                gamepad2.setLedColor(0, 255, 0, 750);
+            }
+
+//            if(intake.upToRumble()){
+//                gamepad2.rumble(750);
 //            }
 
             intake.update();
