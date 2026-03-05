@@ -28,38 +28,22 @@ public class UsefullFunctions {
             else if (green >=blue){
                 return "green";
             }
-        } else if (distance < 115){
-//            int argb = sensor.argb();
-//            int red= (argb >>16) & 0xFF;
-//            int green = (argb >>8) & 0xFF;
-//            int blue = (argb & 0xFF);
+        } else if (distance < getDistance(position)){
 
-//            int red = sensor.red();
-//            if (red>70){
-//                return "purple";
-//            } else
-//                return "green";
             return "unknown";
         }
 
             return "nothing";
-//        if (isInRange(green, Constant.minnothingColor, Constant.maxnothingColor)) {
-//            return "nothing";
-//        } else if (isInRange(green, Constant.minpurpleColor, Constant.maxpurpleColor)) {
-//            return "purple";
-//        } else if (isInRange(green, Constant.mingreenColor, Constant.maxgreenColor)) {
-//            return "green";
-//        }
-//        return "nothing";
+
     }
 
-    public int getDistance (String position){
+    public static int getDistance (String position){
         if ("left".equals(position)){
             return 115;
         } else if ("middle".equals(position)){
-            return 68;
+            return 80;
         } else {
-            return 78;
+            return 85;
         }
     }
 }
