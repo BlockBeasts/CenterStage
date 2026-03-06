@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class Outake {
     Init init;
+    Intake intake;
 
     Telemetry telemetry;
 
@@ -20,6 +21,10 @@ public class Outake {
         this.allianceColor = allianceColor;
     }
 
+    public void setIntake(Intake intake){
+        this.intake = intake;
+    }
+
     public void setFollower(Follower follower){
         this.follower = follower;
     }
@@ -27,6 +32,8 @@ public class Outake {
     public static int motorVel = 1000;
 
     public static double hoodServoPos = 0;
+
+    boolean calledIntake = false;
 
 
 
@@ -87,6 +94,13 @@ public class Outake {
 //            init.getShooterLeft().setVelocity(Constant.shooterMin);
 //            init.getShooterRight().setVelocity(Constant.shooterMin);
 
+        }
+
+        if (has3Balls() && !calledIntake){
+            if (intake!=null){
+                intake.reverseForBalls();
+                calledIntake = true;
+            }
         }
 
 
@@ -177,8 +191,6 @@ public class Outake {
         init.outakeTrayRight.setPosition(liftRightPos);
 
 
-
-
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
@@ -222,6 +234,7 @@ public class Outake {
             liftLeftPos = Constant.leftTrayTop;
             shootLeftDelay = new ElapsedTime();
             resetLeftColor();
+            calledIntake = false;
         }
     }
 
@@ -230,6 +243,7 @@ public class Outake {
             liftMiddlePos = Constant.middleTrayTop;
             shootMiddleDelay = new ElapsedTime();
             resetMiddleColor();
+            calledIntake = false;
         }
     }
 
@@ -238,6 +252,7 @@ public class Outake {
             liftRightPos = Constant.rightTrayTop;
             shootRightDelay = new ElapsedTime();
             resetRightColor();
+            calledIntake = false;
         }
     }
 
@@ -245,6 +260,7 @@ public class Outake {
         shootLeft();
         shootMiddle();
         shootRight();
+        calledIntake = false;
     }
 //    public void reset() {
 //        liftLeftPos = Constant.leftTrayBottom;
