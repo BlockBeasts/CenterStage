@@ -64,12 +64,12 @@ public class spike3AutoRedCV extends LinearOpMode {
     private final Pose scorePose = new Pose(86.5, 101, Math.toRadians(34));
     private final Pose pickup1Pose = new Pose(95, 86, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (124, 86, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(95, 86-24, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(124, 86-24, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(95, 86-28, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(124, 86-28, Math.toRadians(0));
     private final Pose pickup3Pose = new Pose(95, 86-48, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose endPickup3 = new Pose(124, 86-48, Math.toRadians(0));
 
-    private final Pose evilScore =  new Pose(90, 80, Math.toRadians(45));
+    private final Pose evilScore =  new Pose(90, 80, Math.toRadians(30));
 
     private final Pose endPose = new Pose (144-60, 85, Math.toRadians(180-135)); // need to change values to get off the line
 
@@ -81,8 +81,8 @@ public class spike3AutoRedCV extends LinearOpMode {
 
     int scored = 0;
 
-    double run = 0.95;
-    double pick = 0.5;
+    double run = 1;
+    double pick = 0.6;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;

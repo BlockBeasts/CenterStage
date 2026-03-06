@@ -42,7 +42,7 @@ public class Constants {
             .yVelocity(50.76);
 
 
-    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.9, 1);
+    public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.8, 1);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
 
@@ -63,26 +63,5 @@ public class Constants {
                 .build();
     }
 
-//        public static Follower createFollower(HardwareMap hardwareMap) {
-//        return new FollowerBuilder(followerConstants, hardwareMap)
-//                .twoWheelLocalizer(localizerConstants)
-//                .mecanumDrivetrain(driveConstants)
-//                .pathConstraints(pathConstraints)
-//                .build();
-//    }
-
-//public static TwoWheelConstants localizerConstants= new TwoWheelConstants()
-//        .forwardEncoder_HardwareMapName("backLeft")
-//        .strafeEncoder_HardwareMapName("backRight")
-//            .strafePodX(4.2)
-//            .forwardPodY(-7.5)
-//        .IMU_HardwareMapName("imu")
-//        .IMU_Orientation(new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,RevHubOrientationOnRobot.UsbFacingDirection.FORWARD))
-//        .forwardEncoderDirection(Encoder.REVERSE)
-//            .strafeEncoderDirection(Encoder.FORWARD).
-//        strafeTicksToInches(0.0020111)
-//        ;
-//
-//}
 
 }

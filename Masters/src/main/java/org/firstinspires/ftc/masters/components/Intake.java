@@ -36,7 +36,7 @@ public class Intake {
     }
 
     public void intakeReverse() {
-        init.getIntakeMotor().setPower(-0.5);
+        init.getIntakeMotor().setPower(-0.6);
         intakeOn = false;
         intakeReverse = true;
 
@@ -50,27 +50,27 @@ public class Intake {
 
     public void update() {
 
-        if (intakeReverse){
-            init.getIntakeMotor().setPower(-0.5);
-            if (elapsedTime!=null && elapsedTime.milliseconds>1000){
-                elapsedTime =null;
-                init.getIntakeMotor().setPower(1);
-            }
-        } else if (intakeOn){
-            init.getIntakeMotor().setPower(1);
-        } else {
-            intakeOff();
-        }
-
-        if (outake.has3Balls() && intakeOn && elapsedTime ==null){
-            intakeReverse();
-            elapsedTime = new ElapsedTime();
-        }
-
-        if (outake.has3Balls() && elapsedTime!=null &&     elapsedTime.milliseconds()>1000){
-            intakeOff();
-            elapsedTime = null;
-        }
+//        if (intakeReverse){
+//            init.getIntakeMotor().setPower(-0.5);
+//            if (elapsedTime!=null && elapsedTime.milliseconds()>1000){
+//                elapsedTime =null;
+//                init.getIntakeMotor().setPower(1);
+//            }
+//        } else if (intakeOn){
+//            init.getIntakeMotor().setPower(1);
+//        } else {
+//            intakeOff();
+//        }
+//
+//        if (outake.has3Balls() && intakeOn && elapsedTime ==null){
+//            intakeReverse();
+//            elapsedTime = new ElapsedTime();
+//        }
+//
+//        if (outake.has3Balls() && elapsedTime!=null &&     elapsedTime.milliseconds()>1000){
+//            intakeOff();
+//            elapsedTime = null;
+//        }
     }
 
 //    public boolean upToRumble() {

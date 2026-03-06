@@ -133,7 +133,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         backRight = init.getBackRight();
         waitForStart();
 
-      //  outake.startShooter();
+       outake.startShooter();
 
         while (opModeIsActive()) {
 
