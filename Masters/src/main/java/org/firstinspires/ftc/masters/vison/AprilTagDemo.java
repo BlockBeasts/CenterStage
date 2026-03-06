@@ -41,7 +41,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @TeleOp
-@Disabled
 public class AprilTagDemo extends LinearOpMode
 {
 
@@ -136,7 +135,7 @@ public class AprilTagDemo extends LinearOpMode
 
                     for(AprilTagDetection detection : detections)
                     {
-                        Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.INTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
+                        Orientation rot = Orientation.getOrientation(detection.pose.R, AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES);
 
                         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
                         telemetry.addLine(String.format("Translation X: %.2f CM", detection.pose.x*100));

@@ -4,7 +4,9 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
+import com.pedropathing.paths.HeadingInterpolator;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,11 +19,20 @@ import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,18 +50,17 @@ public class FinalBotTeleBlue extends LinearOpMode {
     DcMotorEx frontRight;
     DcMotorEx backRight;
 
-    double fx = 822.317;
-    double fy = 822.317;
-    double cx = 319.495;
-    double cy = 242.502;
-    double tagsize = 0.166; // In meters
+    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
 
-    // Tag detection settings
-    int numFramesWithoutDetection = 0;
-    final float DECIMATION_HIGH = 3;
-    final float DECIMATION_LOW = 2;
-    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
-    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
+    /**
+     * The variable to store our instance of the AprilTag processor.
+     */
+    private AprilTagProcessor aprilTag;
+
+    /**
+     * The variable to store our instance of the vision portal.
+     */
+    private VisionPortal visionPortal;
 
     Constant.AllianceColor allianceColor;
     private Follower follower;
@@ -73,25 +83,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-        camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
-
+        initAprilTag();
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
@@ -135,6 +127,8 @@ public class FinalBotTeleBlue extends LinearOpMode {
         outake.startShooter();
 
         while (opModeIsActive()) {
+
+            List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> currentDetections = aprilTag.getDetections();
 
             blackboard.put(POSE_KEY_X, follower.getPose().getX());
             blackboard.put(POSE_KEY_Y, follower.getPose().getY());
@@ -212,9 +206,23 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 gamepad2.setLedColor(0, 255, 0, 750);
             }
 
-//            if(intake.upToRumble()){
-//                gamepad2.rumble(750);
-//            }
+            if(gamepad2.startWasPressed()){
+                double currentTag = getRotations(currentDetections);
+                Pose currentPos = follower.getPose();
+                Pose newPos = new Pose(currentPos.getX() + .1, currentPos.getY() + .1, currentPos.getHeading()+Math.toRadians(currentTag));
+                if (currentTag != -1) {
+                    follower.followPath(
+                            follower.pathBuilder()
+                                    .addPath(new BezierLine(currentPos, newPos))
+                                    .setLinearHeadingInterpolation(currentPos.getHeading(), Math.toRadians(currentTag))
+                                    .build()
+                    );
+                }
+            }
+
+            if (currentDetections != null) {
+                telemetry.addData("Heading? ", getRotations(currentDetections));
+            }
 
             intake.update();
             outake.update();
@@ -253,6 +261,35 @@ public class FinalBotTeleBlue extends LinearOpMode {
         frontRight.setPower(rightFrontPower);
         backRight.setPower(rightRearPower);
     }
+
+    protected double getRotations(List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> detections){
+
+        if (detections!=null) {
+            for (org.firstinspires.ftc.vision.apriltag.AprilTagDetection tag : detections) {
+                if (tag.id == 20) {
+                    return tag.ftcPose.bearing;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private void initAprilTag() {
+
+        // Create the AprilTag processor the easy way.
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+        // Create the vision portal the easy way.
+        if (USE_WEBCAM) {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+        } else {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    BuiltinCameraDirection.BACK, aprilTag);
+        }
+
+    }   // end method initAprilTag()
 
 
 }
