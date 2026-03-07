@@ -65,13 +65,13 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
     private final Pose tagPose = new Pose(44, 110, Math.toRadians(90));
     private final Pose scorePose = new Pose(144-86.5, 101, Math.toRadians(180-34));
-    private final Pose pickup1Pose = new Pose(49, 86, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (20, 86, Math.toRadians(180));
-    private final Pose pickup2Pose = new Pose(49, 86-28, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(20, 86-28, Math.toRadians(180));
-    private final Pose pickup3Pose = new Pose(49, 86-48, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(20, 86-48, Math.toRadians(180));
-    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(150));
+    private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (16, 83, Math.toRadians(180));
+    private final Pose pickup2Pose = new Pose(49, 86-29, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(16, 86-29, Math.toRadians(180));
+    private final Pose pickup3Pose = new Pose(49, 83-50, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(16, 83-50, Math.toRadians(180));
+    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(135));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
@@ -98,7 +98,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
-        outake = new Outake(init, telemetry, Constant.AllianceColor.RED);
+        outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
         intake = new Intake(init, outake, telemetry);
         outake.setIntake(intake);
         lift = new Lift(init);
@@ -163,9 +163,10 @@ public class spike3AutoBlueCV extends LinearOpMode {
             telemetry.addData("x", follower.getPose().getX());
             telemetry.addData("y", follower.getPose().getY());
             telemetry.addData("heading", follower.getPose().getHeading());
+            telemetry.addData("velocity", init.getShooterLeft().getVelocity());
             telemetry.update();
 
-            outake.update();
+            outake.updateAuto();
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -180,14 +181,13 @@ public class spike3AutoBlueCV extends LinearOpMode {
     public void autonomousPathUpdate(int tagId) {
         switch (pathState) {
             case Start:
-
+                outake.startShooter();
                 follower.followPath(readTag);
                 pathState= State.ToTag;
 
                 break;
             case ToTag:
                 if (!follower.isBusy()){
-                    outake.startShooter();
                     follower.followPath(scorePreload);
                     pathState = State.ToGoal;
                 }

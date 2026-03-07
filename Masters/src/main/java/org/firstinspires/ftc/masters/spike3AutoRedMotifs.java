@@ -27,9 +27,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal auto red")
+@Autonomous(name = "goal auto red MOTIFS")
 
-public class spike3AutoRedCV extends LinearOpMode {
+public class spike3AutoRedMotifs extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -55,6 +55,10 @@ public class spike3AutoRedCV extends LinearOpMode {
     final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
+    final String[] tag23=new String[]{"purple", "purple", "green"};
+    final String[] tag21 = new String[]{"green", "purple", "purple"};
+    final String[] tag22 = new String[]{"purple", "green", "purple"};
+
     private Follower follower;
 
     private final Pose startPose = new Pose(121.5, 120, Math.toRadians(123));
@@ -78,6 +82,8 @@ public class spike3AutoRedCV extends LinearOpMode {
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
+
+
 
     int scored = 0;
 
@@ -201,11 +207,23 @@ public class spike3AutoRedCV extends LinearOpMode {
                         if (lift.getCurrentPosition()<Constant.liftShootLimit){
                             lift.liftRobot();
                         } else {
-                            outake.shootAll();
-                            if (shootWait ==null) {
+                            if (shootWait==null) {
+                                outake.shootGreen();
+                                shootWait= new ElapsedTime();
+                            } else if (shootWait!=null && shootWait.milliseconds()>300 && shootWait.milliseconds()<600){
+                                outake.shootPurple();
+                            } else if (shootWait.milliseconds()>600){
+                                outake.shootAll();
                                 shootWait = new ElapsedTime();
                                 beforeShoot = false;
                             }
+
+//
+//                            outake.shootAll();
+//                            if (shootWait ==null) {
+//                                shootWait = new ElapsedTime();
+//                                beforeShoot = false;
+//                            }
                         }
                     } else {
                         if (shootWait!=null && shootWait.milliseconds()>250){

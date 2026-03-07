@@ -18,7 +18,7 @@ public class Constant {
     public static double middleTrayTop = 0.6;
     public static double rightTrayTop = 0.35;
 
-    public static int shooterMin = 1440;
+    public static int shooterMin = 1410;
     public static int shooterFar = 1830;
 
     public static double minnothingColor = 0;

@@ -6,11 +6,13 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 
 @Autonomous(name = "Auto Wall Red")
+@Disabled
 public class JustATapRight extends LinearOpMode {
 
     private Follower follower;

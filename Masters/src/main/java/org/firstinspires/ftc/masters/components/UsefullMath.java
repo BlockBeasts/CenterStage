@@ -24,10 +24,11 @@ public  class UsefullMath {
             velocity = Constant.shooterFar;
         } else {
             double distance = Math.sqrt(((x - Constant.blueGoalX) * (x - Constant.blueGoalX)) + ((y - Constant.goalY) * (y - Constant.goalY)));
-            if (distance<=32){
+            if (distance<=50){
                 velocity = Constant.shooterMin;
             } else {
-                velocity = (int) (Constant.m * distance + Constant.b);
+                velocity = (int) (-0.0057* distance*distance+6.0251*distance + 1131.1);
+
             }
         }
 
@@ -47,7 +48,7 @@ public  class UsefullMath {
             if (distance <= 32) {
                 velocity = Constant.shooterMin;
             } else {
-                velocity = (int) (Constant.m * distance + Constant.b);
+                velocity = (int) (-0.0057* distance*distance+6.0251*distance + 1131.1);
             }
         }
 

@@ -7,6 +7,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
+import com.pedropathing.paths.Path;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -105,7 +106,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
         }
 
         if (genPose != null) {
-            follower.setStartingPose(startPose);
+            follower.setStartingPose(genPose);
         } else {
             follower.setStartingPose(startPose);
         }
@@ -208,17 +209,23 @@ public class FinalBotTeleBlue extends LinearOpMode {
 
             if(gamepad2.startWasPressed()){
                 double currentTag = getRotations(currentDetections);
-                Pose currentPos = follower.getPose();
-                Pose newPos = new Pose(currentPos.getX() + .1, currentPos.getY() + .1, currentPos.getHeading()+Math.toRadians(currentTag));
-                if (currentTag != -1) {
-                    follower.followPath(
-                            follower.pathBuilder()
-                                    .addPath(new BezierLine(currentPos, newPos))
-                                    .setLinearHeadingInterpolation(currentPos.getHeading(), Math.toRadians(currentTag))
-                                    .build()
-                    );
-                }
+
+                Path  forwards = new Path(new BezierLine(new Pose(0,0), new Pose(40,0)));
+                forwards.setConstantHeadingInterpolation(45);
+
+                follower.followPath(forwards);
+//                Pose currentPos = follower.getPose();
+//                Pose newPos = new Pose(currentPos.getX() + 1, currentPos.getY() + 1, currentPos.getHeading()+Math.toRadians(currentTag));
+//                if (currentTag != -1) {
+//                    follower.followPath(
+//                            follower.pathBuilder()
+//                                    .addPath(new BezierLine(currentPos, newPos))
+//                                    .setLinearHeadingInterpolation(currentPos.getHeading(), currentPos.getHeading()+Math.toRadians(currentTag))
+//                                    .build(),1,false
+//                    );
+//                }
             }
+
 
             if (currentDetections != null) {
                 telemetry.addData("Heading? ", getRotations(currentDetections));

@@ -8,6 +8,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.PathChain;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.masters.components.Constant;
@@ -22,7 +23,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Auto Wall Blue")
+@Autonomous(name = "Auto Wall Blue TEST")
+@Disabled
 public class JustATapLeft extends LinearOpMode {
 
     Init init;
@@ -58,7 +60,7 @@ public class JustATapLeft extends LinearOpMode {
     public int moveDistance = 24;
 
     private final Pose startPose = new Pose(72-8.5, 8.5, Math.toRadians(90));
-    private final Pose stopPose = new Pose(72-moveDistance, 72+3, Math.toRadians(90));
+  //  private final Pose stopPose = new Pose(72-moveDistance, 72+3, Math.toRadians(90));
     private PathChain moveOut;
 
     public static final String POSE_KEY_X = "PoseX";
@@ -74,7 +76,7 @@ public class JustATapLeft extends LinearOpMode {
         follower = Constants.createFollower(hardwareMap);
 
         outake.setFollower(follower);
-        buildPaths();
+       // buildPaths();
         follower.setStartingPose(startPose);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -103,22 +105,23 @@ public class JustATapLeft extends LinearOpMode {
         telemetry.setMsTransmissionInterval(50);
 
         setPathState(0);
+        follower.turn(Math.toRadians(90));
 
         while (opModeIsActive()){
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
-            outake.update();
-            intake.update();
+           // outake.update();
+          //  intake.update();
 
-            autonomousPathUpdate();
+           // autonomousPathUpdate();
 
             blackboard.put(POSE_KEY_X, follower.getPose().getX());
             blackboard.put(POSE_KEY_Y, follower.getPose().getY());
             blackboard.put(POSE_KEY_H, follower.getPose().getHeading());
-            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
-            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
-            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
+//            telemetry.addData("saved pos x", blackboard.get(POSE_KEY_X));
+//            telemetry.addData("saved pos y", blackboard.get(POSE_KEY_Y));
+//            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
 
             // Feedback to Driver Hub for debugging
             telemetry.addData("path state", pathState);
@@ -131,33 +134,33 @@ public class JustATapLeft extends LinearOpMode {
 
     }
 
-    public void autonomousPathUpdate() {
-        switch (pathState) {
-            case 0:
-                if(!follower.isBusy()) {
-                    follower.followPath(moveOut,true);
-                    setPathState(1);
-                }
-                break;
-            case 1:
-                if(!follower.isBusy()) {
-                    setPathState(-1);
-                }
-                break;
-        }
-    }
+//    public void autonomousPathUpdate() {
+//        switch (pathState) {
+//            case 0:
+//                if(!follower.isBusy()) {
+//                    follower.followPath(moveOut,true);
+//                    setPathState(1);
+//                }
+//                break;
+//            case 1:
+//                if(!follower.isBusy()) {
+//                    setPathState(-1);
+//                }
+//                break;
+//        }
+//    }
 
     public void setPathState(int pState) {
         pathState = pState;
     }
 
-    public void buildPaths() {
-
-        moveOut = follower.pathBuilder()
-                .addPath(new BezierLine(startPose, stopPose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), stopPose.getHeading())
-                .build();
-
-    }
+//    public void buildPaths() {
+//
+//        moveOut = follower.pathBuilder()
+//                .addPath(new BezierLine(startPose, stopPose))
+//                .setLinearHeadingInterpolation(startPose.getHeading(), stopPose.getHeading())
+//                .build();
+//
+//    }
 
 }

@@ -27,9 +27,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal auto red")
+@Autonomous(name = "far auto blue")
 
-public class spike3AutoRedCV extends LinearOpMode {
+public class farAutoBlueCV extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -56,25 +56,21 @@ public class spike3AutoRedCV extends LinearOpMode {
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     private Follower follower;
+    private final Pose startPose = new Pose(56, 8.8, Math.toRadians(90));
+    private final Pose scorePose = new Pose(55.3, 20.4, Math.toRadians(112));
 
-    private final Pose startPose = new Pose(121.5, 120, Math.toRadians(123));
+    private final Pose pickupPlayer = new Pose (34, 14, Math.toRadians(180 ));
+    private final Pose pickupPlayer2 = new Pose (10.8, 11.1, Math.toRadians(-161));
+    private final Pose pickup2Pose = new Pose(49, 86-28, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(20, 86-28, Math.toRadians(180));
+    private final Pose pickup3Pose = new Pose(49, 86-48, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(20, 86-48, Math.toRadians(180));
+    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(150));
 
-    private final Pose tagPose = new Pose(100, 110, Math.toRadians(90));
+    private final Pose endPose = new Pose (34, 12, Math.toRadians(90)); // need to change values to get off the line
 
-    private final Pose scorePose = new Pose(86.5, 101, Math.toRadians(34));
-    private final Pose pickup1Pose = new Pose(95, 86, Math.toRadians(0)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (118, 86, Math.toRadians(0));
-    private final Pose pickup2Pose = new Pose(92, 86-28, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(122, 86-28, Math.toRadians(0));
-    private final Pose pickup3Pose = new Pose(92, 86-48, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(122, 86-48, Math.toRadians(0));
-
-    private final Pose evilScore =  new Pose(90, 82, Math.toRadians(40));
-    private final Pose evilScore1 =  new Pose(90, 82, Math.toRadians(30));
-
-    private final Pose endPose = new Pose (144-60, 85, Math.toRadians(180-135)); // need to change values to get off the line
-
-    private PathChain scorePreload, readTag;private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
+    private PathChain scorePreload, readTag;
+    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, pickupFromBox, pickupFromBoxEnd;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
@@ -91,15 +87,12 @@ public class spike3AutoRedCV extends LinearOpMode {
     public static final String POSE_KEY_X = "PoseX";
     public static final String POSE_KEY_Y = "PoseY";
     public static final String POSE_KEY_H = "PoseH";
-
-    public static final String POSE_KEY = "Pose";
-
     public Lift lift;
 
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
-        outake = new Outake(init, telemetry, Constant.AllianceColor.RED);
+        outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
         intake = new Intake(init, outake, telemetry);
         outake.setIntake(intake);
         lift = new Lift(init);
@@ -163,11 +156,10 @@ public class spike3AutoRedCV extends LinearOpMode {
             telemetry.addData("path state", pathState);
             telemetry.addData("x", follower.getPose().getX());
             telemetry.addData("y", follower.getPose().getY());
-            telemetry.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
+            telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
-            outake.updateAuto();
-            lift.update();
+            outake.update();
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -183,103 +175,41 @@ public class spike3AutoRedCV extends LinearOpMode {
         switch (pathState) {
             case Start:
                 outake.startShooter();
-                follower.followPath(readTag);
-                pathState = State.ToTag;
+                follower.followPath(scorePreload);
+                pathState= State.ToGoal;
 
-                break;
-            case ToTag:
-                if (!follower.isBusy()){
-//                    outake.startShooter();
-                    follower.followPath(scorePreload);
-                    pathState = State.ToGoal;
-                }
                 break;
             case ToGoal:
-                if(!follower.isBusy()) {
+                if(!follower.isBusy() && init.getShooterLeft().getVelocity()>1820) {
 
                     if (beforeShoot){
-                        if (lift.getCurrentPosition()<Constant.liftShootLimit){
-                            lift.liftRobot();
-                        } else {
+
                             outake.shootAll();
                             if (shootWait ==null) {
                                 shootWait = new ElapsedTime();
                                 beforeShoot = false;
                             }
-                        }
+
                     } else {
-                        if (shootWait!=null && shootWait.milliseconds()>250){
-                            this.lift.lowerBot();
-                        }
-                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
+                        if (shootWait!=null && shootWait.milliseconds()>500){
+
                             shootWait =null;
                             beforeShoot = true;
                             if (scored == 0) {
                                 intake.intakeOn();
-                                follower.followPath(spike1, run, false);
+                                follower.followPath(pickupFromBox, run, false);
                                 pathState = State.ToSpike;
-                            } else if (scored == 1) {
-                                intake.intakeOn();
-                                follower.followPath(spike2, run, false);
-                                pathState = State.ToSpike;
-                            } else if (scored == 2) {
-                                intake.intakeOn();
-                                follower.followPath(spike3, run, false);
-                                pathState = State.ToSpike;
-                            } else {
-                                follower.followPath(end);
+                            } else
+//
+                            {
+                                follower.followPath(end, run, true);
                                 pathState = State.End;
                             }
+                           // }
                         }
                     }
 
-//                    if (elapsedTime ==null){
-//                        reverseWait = null;
-//                        elapsedTime= new ElapsedTime();
-//                        lift.liftRobot();
-//                        //intake.intakeOn();
-//                    } else if (elapsedTime.milliseconds()>750) {
-//                        outake.shootAll();
-//
-//                        if (shootWait ==null) {
-//                            shootWait = new ElapsedTime();
-//
-//                        }
-//                        if (shootWait!=null && shootWait.milliseconds()>100){
-//                            lift.lowerBot();
-//                        }
-//                        if ( shootWait!=null && shootWait.milliseconds() > 800) {
-//                            elapsedTime = null;
-//                            shootWait = null;
-//                            lift.stopLift();
-//
-//                            if (scored == 0) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike1, run, false);
-//                                pathState = State.ToSpike;
-//                            } else if (scored == 1) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike2, run, false);
-//                                pathState = State.ToSpike;
-//                            } else if (scored == 2) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike3, run, false);
-//                                pathState = State.ToSpike;
-//                            } else {
-//                                follower.followPath(end);
-//                                pathState = State.End;
-//                            }
-//                        }
-//                    }
 
-                } else {
-                    if (reverseWait==null){
-                        reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3000){
-                        intake.intakeOn();
-                    } else if (reverseWait.milliseconds()>2000){
-                        intake.intakeReverse();
-                    }
                 }
 
                 break;
@@ -289,13 +219,7 @@ public class spike3AutoRedCV extends LinearOpMode {
                     intake.intakeOn();
                     if (scored == 0){
                         intake.intakeOn();
-                        follower.followPath(pickup1, pick, false);
-                    } else if (scored ==1){
-                        intake.intakeOn();
-                        follower.followPath(pickup2, pick, false);
-                    } else if (scored ==2 ){
-                        intake.intakeOn();
-                        follower.followPath(pickup3, pick, false);
+                        follower.followPath(pickupFromBoxEnd, pick, false);
                     }
                     pathState= State.Pickup;
 
@@ -306,11 +230,11 @@ public class spike3AutoRedCV extends LinearOpMode {
                     //intake.intakeReverse();
                     //elapsedTime = new ElapsedTime();
                     if (scored == 0){
-                        follower.followPath(score1, run, false);
-                    } else if (scored ==1){
-                        follower.followPath(score2, run, false);
-                    } else if (scored ==2 ){
-                        follower.followPath(score3, run, false);
+                        follower.followPath(score1, pick, false);
+//                    } else if (scored ==1){
+//                        follower.followPath(score2, run, false);
+//                    } else if (scored ==2 ){
+//                        follower.followPath(score3, run, false);
                     }
                     scored++;
                     pathState = State.ToGoal;
@@ -327,29 +251,25 @@ public class spike3AutoRedCV extends LinearOpMode {
 
     public void buildPaths() {
 
-        readTag = follower.pathBuilder()
-                .addPath (new BezierLine(startPose, tagPose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), tagPose.getHeading())
-                .build();
 
         scorePreload= follower.pathBuilder()
-                .addPath(new BezierLine(tagPose, scorePose))
-                .setLinearHeadingInterpolation(tagPose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
 
-        spike1 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup1Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup1Pose.getHeading())
+        pickupFromBox = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, pickupPlayer))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickupPlayer.getHeading())
                 .build();
 
-        pickup1 = follower.pathBuilder()
-                .addPath( new BezierLine(pickup1Pose, endPickup1))
-                .setLinearHeadingInterpolation(pickup1Pose.getHeading(), endPickup1.getHeading())
+        pickupFromBoxEnd = follower.pathBuilder()
+                .addPath(new BezierLine(pickupPlayer, pickupPlayer2))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), pickupPlayer2.getHeading())
                 .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(endPickup1, evilScore1))
-                .setLinearHeadingInterpolation(endPickup1.getHeading(), evilScore1.getHeading())
+                .addPath(new BezierLine(pickupPlayer2, scorePose))
+                .setLinearHeadingInterpolation(pickupPlayer2.getHeading(), scorePose.getHeading())
                 .build();
 
         spike2 = follower.pathBuilder()
@@ -381,8 +301,8 @@ public class spike3AutoRedCV extends LinearOpMode {
                 .build();
 
         end = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
+                .addPath(new BezierLine(scorePose, endPose))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), endPose.getHeading())
                 .build();
     }
 
