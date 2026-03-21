@@ -449,6 +449,157 @@ public class Outake {
 //        telemetry.addData("left argb", init.getColorLeft().argb());
 //        telemetry.addData("left distance", init.getColorLeft().getDistance(DistanceUnit.MM));
     }
+
+    public void updateAutoMotifs() {
+        if (muteShoot) {
+            init.getShooterLeft().setVelocity(0);
+            init.getShooterRight().setVelocity(0);
+        } else {
+            if (allianceColor == Constant.AllianceColor.BLUE) {
+                if(follower.getPose().getY() > 90){
+                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) -50 );
+                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) -50 );
+                }else {
+                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) - 80);
+                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) - 80);
+                }
+            }
+            if (allianceColor == Constant.AllianceColor.RED){
+                if(follower.getPose().getY() > 90){
+                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30 );
+                    init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose())-30);
+                }else {
+                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose()) - 80);
+                    init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose()) - 80);
+                }
+            }
+
+            if (follower.getPose().getY()<50){
+
+                init.getHoodLeftServo().setPosition(Constant.hoodFar);
+                init.getHoodRightServo().setPosition(Constant.hoodFar);
+            } else {
+
+                init.getHoodLeftServo().setPosition(Constant.hoodDown);
+                init.getHoodRightServo().setPosition(Constant.hoodDown);
+            }
+
+//            init.getShooterLeft().setVelocity(Constant.shooterMin);
+//            init.getShooterRight().setVelocity(Constant.shooterMin);
+
+        }
+
+        if (has3Balls() && !calledIntake){
+            if (intake!=null){
+                intake.reverseForBalls();
+                calledIntake = true;
+            }
+        }
+
+
+        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
+            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+        }
+        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
+            middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
+        }
+
+        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
+            rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
+        }
+
+        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
+            liftLeftPos = Constant.leftTrayBottom;
+            shootLeftDelay = null;
+        }
+        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
+            liftMiddlePos = Constant.middleTrayBottom;
+            shootMiddleDelay = null;
+        }
+        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
+            liftRightPos = Constant.rightTrayBottom;
+            shootRightDelay = null;
+        }
+
+        switch (leftColor) {
+            case ("nothing"): {
+                init.getLeftLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getLeftLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getLeftLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getLeftLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+        switch (middleColor) {
+            case ("nothing"): {
+                init.getMiddleLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getMiddleLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getMiddleLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getMiddleLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+        switch (rightColor) {
+            case ("nothing"): {
+                init.getRightLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getRightLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getRightLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getRightLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+
+        init.outakeTrayLeft.setPosition(liftLeftPos);
+        init.outakeTrayMiddle.setPosition(liftMiddlePos);
+        init.outakeTrayRight.setPosition(liftRightPos);
+
+
+        telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
+        telemetry.addData("x", follower.getPose().getX());
+        telemetry.addData("y", follower.getPose().getY());
+//        telemetry.addData("left color", leftColor);
+//        telemetry.addData("middle color", middleColor);
+//        telemetry.addData("right color", rightColor);
+//
+//        telemetry.addData("left green", init.getColorLeft().green());
+//        telemetry.addData("middle green", init.getColorMiddle().green());
+//        telemetry.addData("right green", init.getColorRight().green());
+//        telemetry.addData("left red", init.getColorLeft().red());
+//        telemetry.addData("left blue", init.getColorLeft().blue());
+//        telemetry.addData("left raw", init.getColorLeft().rawOptical());
+//        telemetry.addData("left argb", init.getColorLeft().argb());
+//        telemetry.addData("left distance", init.getColorLeft().getDistance(DistanceUnit.MM));
+    }
     public void shootGreen() {
         if ("green".equals(leftColor)){
             shootLeft();
