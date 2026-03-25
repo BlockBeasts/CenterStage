@@ -21,7 +21,8 @@ public class testRotation extends LinearOpMode {
 
     private PathChain scorePreload;
 
-
+    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
+    private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
     public void runOpMode() throws InterruptedException {
         follower = Constants.createFollower(hardwareMap);
       //  buildPaths();
@@ -33,8 +34,8 @@ public class testRotation extends LinearOpMode {
         while (opModeIsActive()){
             switch (pathState) {
                 case Start:
+                    follower.followPath(scorePreload);
 
-                    follower.turnTo(Math.toRadians(45));
                     pathState = State.End;
 
                     break;
@@ -43,10 +44,10 @@ public class testRotation extends LinearOpMode {
         }
     }
 
-//    public void buildPaths() {
-//        scorePreload= follower.pathBuilder()
-//                .addPath(new BezierLine(startPose, scorePose))
-//                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
-//                .build();
-//    }
+    public void buildPaths() {
+        scorePreload = follower.pathBuilder()
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .build();
+    }
 }
