@@ -25,7 +25,7 @@ public class testRotation extends LinearOpMode {
     private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
     public void runOpMode() throws InterruptedException {
         follower = Constants.createFollower(hardwareMap);
-      //  buildPaths();
+        buildPaths();
 
         pathState = State.Start;
         waitForStart();
