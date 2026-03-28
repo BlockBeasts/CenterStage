@@ -16,30 +16,46 @@ import org.firstinspires.ftc.masters.pedroPathing.Constants;
 public class testRotation extends LinearOpMode {
     private Follower follower;
 
-    public enum State {Start, End};
+    public enum State {Start, Turn, End};
     private State pathState;
 
     private PathChain scorePreload;
 
-    private final Pose startPose = new Pose(28.5, 128, Math.toRadians(180));
-    private final Pose scorePose = new Pose(60, 85, Math.toRadians(135));
+    private final Pose startPose = new Pose(144-56, 8.8, Math.toRadians(90));
+    private final Pose scorePose = new Pose(88.6, 17.4, Math.toRadians(67.9));
+
+
     public void runOpMode() throws InterruptedException {
         follower = Constants.createFollower(hardwareMap);
+        follower.setStartingPose(startPose);
         buildPaths();
 
         pathState = State.Start;
         waitForStart();
 
-
+        follower.followPath(scorePreload);
         while (opModeIsActive()){
             switch (pathState) {
                 case Start:
-                    follower.followPath(scorePreload);
 
-                    pathState = State.End;
+                    if (!follower.isBusy()) {
+
+                        follower.turnTo(Math.toRadians(55));
+                        pathState = State.Turn;
+                    }
 
                     break;
+
+                case Turn:
+
+
+                    pathState = State.End;
+                    break;
+
+
             }
+
+
             follower.update();
         }
     }
