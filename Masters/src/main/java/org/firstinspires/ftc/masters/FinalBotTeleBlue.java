@@ -105,11 +105,11 @@ public class FinalBotTeleBlue extends LinearOpMode {
             genPose = new Pose(StartX, StartY, StartH);
         }
 
-        if (genPose != null) {
-            follower.setStartingPose(genPose);
-        } else {
+       // if (genPose != null) {
+         //   follower.setStartingPose(genPose);
+        //} else {
             follower.setStartingPose(startPose);
-        }
+        //}
         init = new Init(hardwareMap);
         initializeHardwareAlliance();
 
@@ -123,9 +123,12 @@ public class FinalBotTeleBlue extends LinearOpMode {
         frontRight = init.getFrontRight();
         backLeft = init.getBackLeft();
         backRight = init.getBackRight();
+
+        double turnTo = 0;
+
         waitForStart();
 
-        outake.startShooter();
+      //  outake.startShooter();
 
         while (opModeIsActive()) {
 
@@ -142,97 +145,108 @@ public class FinalBotTeleBlue extends LinearOpMode {
                 hub.clearBulkCache();
             }
 
-            if (gamepad2.dpad_right) {
-                intake.intakeOn();
-            }
-            if (gamepad2.dpad_left) {
-                intake.intakeReverse();
-                gamepad2.rumble(100);
-            }
-            if (gamepad2.dpad_up) {
-                intake.intakeOff();
-            }
-            if (gamepad1.dpad_down) {
-                outake.stopShooter();
-                lift.lowerBot();
-            }
-            else if (gamepad1.dpad_up){
-                lift.liftRobot();
-            } else {
-                lift.stopLift();
-            }
-//            if (gamepad2.dpad_down){
-//
-//                if (!outakeToggle) {
-//                    outakeToggle = true;
-//                    outake.startShooter();
-//
-//                } else {
-//                    outakeToggle = false;
-//                    outake.stopShooter();
-//                }
+//            if (gamepad2.dpad_right) {
+//                intake.intakeOn();
 //            }
-            if (gamepad2.aWasPressed()) {
-                outake.shootAll();
-            }
-            if (gamepad2.left_stick_x <= -0.9) {
-                outake.shootLeft();
-            }
-            if (gamepad2.left_stick_x >= 0.9) {
-                outake.shootRight();
-            }
-            if (gamepad2.left_stick_y <= -0.9) {
-                outake.shootMiddle();
-            }
-
-            if (gamepad2.left_bumper) {
-                if (!debounceLeft) {
-                    debounceLeft = true;
-                    outake.shootPurple();
-                }
-            } else {
-                debounceLeft = false;
-            }
-
-            if (gamepad2.right_bumper) {
-                if (!debounceRight) {
-                    debounceRight = true;
-                    outake.shootGreen();
-                }
-            } else {
-                debounceRight = false;
-            }
-
-            if(outake.upToSpeed()){
-                gamepad2.setLedColor(0, 255, 0, 750);
+//            if (gamepad2.dpad_left) {
+//                intake.intakeReverse();
+//                gamepad2.rumble(100);
+//            }
+//            if (gamepad2.dpad_up) {
+//                intake.intakeOff();
+//            }
+//            if (gamepad1.dpad_down) {
+//                outake.stopShooter();
+//                lift.lowerBot();
+//            }
+//            else if (gamepad1.dpad_up){
+//                lift.liftRobot();
+//            } else {
+//                lift.stopLift();
+//            }
+////            if (gamepad2.dpad_down){
+////
+////                if (!outakeToggle) {
+////                    outakeToggle = true;
+////                    outake.startShooter();
+////
+////                } else {
+////                    outakeToggle = false;
+////                    outake.stopShooter();
+////                }
+////            }
+//            if (gamepad2.aWasPressed()) {
+//                outake.shootAll();
+//            }
+//            if (gamepad2.left_stick_x <= -0.9) {
+//                outake.shootLeft();
+//            }
+//            if (gamepad2.left_stick_x >= 0.9) {
+//                outake.shootRight();
+//            }
+//            if (gamepad2.left_stick_y <= -0.9) {
+//                outake.shootMiddle();
+//            }
+//
+//            if (gamepad2.left_bumper) {
+//                if (!debounceLeft) {
+//                    debounceLeft = true;
+//                    outake.shootPurple();
+//                }
+//            } else {
+//                debounceLeft = false;
+//            }
+//
+//            if (gamepad2.right_bumper) {
+//                if (!debounceRight) {
+//                    debounceRight = true;
+//                    outake.shootGreen();
+//                }
+//            } else {
+//                debounceRight = false;
+//            }
+//
+//            if(outake.upToSpeed()){
+//                gamepad2.setLedColor(0, 255, 0, 750);
+//            }
+            if (!follower.isBusy()){
+                follower.breakFollowing();
             }
 
             if(gamepad2.startWasPressed()){
                 double currentTag = getRotations(currentDetections);
+                telemetry.addData("current heading", currentTag);
 
-                Path  forwards = new Path(new BezierLine(new Pose(0,0), new Pose(40,0)));
-                forwards.setConstantHeadingInterpolation(45);
+                if (currentTag !=0) {
 
-                follower.followPath(forwards);
-//                Pose currentPos = follower.getPose();
-//                Pose newPos = new Pose(currentPos.getX() + 1, currentPos.getY() + 1, currentPos.getHeading()+Math.toRadians(currentTag));
-//                if (currentTag != -1) {
-//                    follower.followPath(
-//                            follower.pathBuilder()
-//                                    .addPath(new BezierLine(currentPos, newPos))
-//                                    .setLinearHeadingInterpolation(currentPos.getHeading(), currentPos.getHeading()+Math.toRadians(currentTag))
-//                                    .build(),1,false
-//                    );
-//                }
+                    turnTo = Math.toDegrees(follower.getPose().getHeading())+currentTag;
+                    follower.turn(Math.toRadians(currentTag));
+
+                    //follower.turnTo(Math.toRadians(Math.toDegrees(follower.getPose().getHeading())+currentTag));
+//                    Path forwards = new Path(new BezierLine(new Pose(0, 0), new Pose(40, 0)));
+//                    forwards.setConstantHeadingInterpolation(45);
+//
+//                    follower.followPath(forwards);
+//                    Pose currentPos = follower.getPose();
+//                    Pose newPos = new Pose(currentPos.getX() + 1, currentPos.getY() + 1, currentPos.getHeading() + Math.toRadians(currentTag));
+//                    if (currentTag != -1) {
+//                        follower.followPath(
+//                                follower.pathBuilder()
+//                                        .addPath(new BezierLine(currentPos, newPos))
+//                                        .setLinearHeadingInterpolation(currentPos.getHeading(), currentPos.getHeading() + Math.toRadians(currentTag))
+//                                        .build(), 1, false
+//                        );
+//                    }
+                }
             }
 
-
+            telemetry.addData("turnTo:", turnTo);
             if (currentDetections != null) {
                 telemetry.addData("Heading? ", getRotations(currentDetections));
             }
 
-            intake.update();
-            outake.update();
+           // intake.update();
+           // outake.update();
             follower.update();
             telemetry.update();
 
@@ -279,7 +293,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
             }
         }
 
-        return -1;
+        return 0;
     }
 
     private void initAprilTag() {
