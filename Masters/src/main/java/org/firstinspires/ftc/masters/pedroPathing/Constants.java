@@ -18,13 +18,19 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+
 public class Constants {
+
+    public static double headingP = 2.5;
+    public static double headingI = 0.0;
+    public static double headingD = 0.01;
+    public static double headingF = 0.0;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(15)
             .lateralZeroPowerAcceleration(-85.01)
             .forwardZeroPowerAcceleration(-50.7)
             .translationalPIDFCoefficients(new PIDFCoefficients(0.25, 0, 0.01, 0))
-            .headingPIDFCoefficients(new PIDFCoefficients(2.5, 0.0, 0.01, 0))
+            .headingPIDFCoefficients(new PIDFCoefficients(headingP, headingI, headingD, headingF))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.02, 0.0, 0.00001, 0.6, 0))
             .centripetalScaling(0.00095);
 

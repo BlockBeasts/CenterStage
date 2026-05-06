@@ -2,12 +2,22 @@ package org.firstinspires.ftc.masters.components;
 
 import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import org.firstinspires.ftc.masters.components.Constant;
 
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class UsefullFunctions {
+
+    Constants constants;
     public static boolean isInRange(double value, double min, double max) {
         return (value >= min && value <= max);
+    }
+
+    public void changeHeadingConstants(double P, double I, double D) {
+        constants.headingP = P;
+        constants.headingI = I;
+        constants.headingD = D;
     }
     public static String getColor(RevColorSensorV3 sensor, String position) {
 

@@ -17,6 +17,7 @@ import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.masters.components.UsefullFunctions;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
@@ -43,6 +44,8 @@ public class spike3AutoBlueCV extends LinearOpMode {
     Init init;
     Intake intake;
     Outake outake;
+
+    UsefullFunctions usefullFunctions;
     private VisionPortal visionPortal;
     private AprilTagProcessor aprilTag;
     static final double FEET_PER_METER = 3.28084;
@@ -74,6 +77,9 @@ public class spike3AutoBlueCV extends LinearOpMode {
     private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
 
     public enum State {Start, ToTag,  ToGoal, Aim ,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
+
+    private double[] normal = {2.5, 0.0, 0.01, 0.0};
+    private double[] aim = {9, 0.0, 0.01, 0.0};
     private State pathState;
 
     int scored = 0;
@@ -185,7 +191,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
 
                     if (beforeShoot) {
 
-
+                        usefullFunctions.changeHeadingConstants(aim[0], aim[1],aim[2]);
                         aimToGoal();
                         pathState = State.Aim;
 
