@@ -17,19 +17,24 @@ import org.firstinspires.ftc.masters.components.Init;
 import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.masters.components.UsefullFunctions;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.openftc.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Config
 @Autonomous(name = "goal auto blue")
@@ -40,9 +45,9 @@ public class spike3AutoBlueCV extends LinearOpMode {
     Intake intake;
     Outake outake;
 
-    OpenCvCamera camera;
-    AprilTagDetectionPipeline aprilTagDetectionPipeline;
-
+    UsefullFunctions usefullFunctions;
+    private VisionPortal visionPortal;
+    private AprilTagProcessor aprilTag;
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 822.317;
@@ -50,15 +55,8 @@ public class spike3AutoBlueCV extends LinearOpMode {
     double cx = 319.495;
     double cy = 242.502;
 
-    // UNITS ARE METERS
-    double tagsize = 0.166;
+    private static final boolean USE_WEBCAM = true;
 
-    int numFramesWithoutDetection = 0;
-
-    final float DECIMATION_HIGH = 3;
-    final float DECIMATION_LOW = 2;
-    final float THRESHOLD_HIGH_DECIMATION_RANGE_METERS = 1.0f;
-    final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     private Follower follower;
     private final Pose startPose = new Pose(144-121.5, 120, Math.toRadians(180-126));
@@ -78,7 +76,10 @@ public class spike3AutoBlueCV extends LinearOpMode {
     private PathChain scorePreload, readTag;
     private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
 
-    public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
+    public enum State {Start, ToTag,  ToGoal, Aim ,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
+
+    private double[] normal = {2.5, 0.0, 0.01, 0.0};
+    private double[] aim = {9, 0.0, 0.01, 0.0};
     private State pathState;
 
     int scored = 0;
@@ -86,6 +87,10 @@ public class spike3AutoBlueCV extends LinearOpMode {
     double run = 1;
     double pick = 0.6;
 
+
+    double turnTo = 0;
+
+    ElapsedTime turnCutOff = null;
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
     ElapsedTime reverseWait = null;
@@ -96,6 +101,8 @@ public class spike3AutoBlueCV extends LinearOpMode {
     public Lift lift;
 
     public void runOpMode() throws InterruptedException {
+
+        initAprilTag();
 
         init = new Init(hardwareMap);
         outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
@@ -109,26 +116,10 @@ public class spike3AutoBlueCV extends LinearOpMode {
         follower.setStartingPose(startPose);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
-            }
 
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
 
         waitForStart();
 
@@ -140,11 +131,6 @@ public class spike3AutoBlueCV extends LinearOpMode {
         //sleep(5500);
 
         while (opModeIsActive()){
-
-            if (tagId==-1) {
-                ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-                tagId = getTag(detections);
-            }
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
@@ -172,6 +158,14 @@ public class spike3AutoBlueCV extends LinearOpMode {
 //                intake.intakeReverse();
 //            }
 
+            if (turnCutOff != null) {
+                if (turnCutOff.milliseconds() > 500){
+                    follower.breakFollowing();
+                    turnCutOff = null;
+                }
+
+            }
+
         }
 
     }
@@ -195,39 +189,47 @@ public class spike3AutoBlueCV extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
 
-                    if (beforeShoot){
-                        if (lift.getCurrentPosition()<Constant.liftShootLimit){
-                            lift.liftRobot();
-                        } else {
-                            outake.shootAll();
-                            if (shootWait ==null) {
-                                shootWait = new ElapsedTime();
-                                beforeShoot = false;
-                            }
-                        }
+                    if (beforeShoot) {
+
+                        usefullFunctions.changeHeadingConstants(aim[0], aim[1],aim[2]);
+                        aimToGoal();
+                        pathState = State.Aim;
+
+//                        if (turnCutOff == null) {
+//                            if (lift.getCurrentPosition()<Constant.liftShootLimit){
+//                                lift.liftRobot();
+//                            } else {
+//                                outake.shootAll();
+//                                if (shootWait ==null) {
+//                                    shootWait = new ElapsedTime();
+//                                    beforeShoot = false;
+//                                }
+//                            }
+//                        }
+//
                     } else {
-                        if (shootWait!=null && shootWait.milliseconds()>250){
-                            this.lift.lowerBot();
-                        }
-                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
-                            shootWait =null;
-                            beforeShoot = true;
-                            if (scored == 0) {
-                                intake.intakeOn();
-                                follower.followPath(spike1, run, false);
-                                pathState = State.ToSpike;
-                            } else if (scored == 1) {
-                                intake.intakeOn();
-                                follower.followPath(spike2, run, false);
-                                pathState = State.ToSpike;
-                            } else if (scored == 2) {
-                                intake.intakeOn();
-                                follower.followPath(spike3, run, false);
-                                pathState = State.ToSpike;
-                            } else {
-                                follower.followPath(end);
-                                pathState = State.End;
-                            }
+//                        if (shootWait!=null && shootWait.milliseconds()>250){
+//                            this.lift.lowerBot();
+//                        }
+//                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
+//                            shootWait =null;
+//                            beforeShoot = true;
+//                            if (scored == 0) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike1, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 1) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike2, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 2) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike3, run, false);
+//                                pathState = State.ToSpike;
+//                            } else {
+//                                follower.followPath(end);
+//                                pathState = State.End;
+//                            }
                         }
                     }
 
@@ -270,15 +272,23 @@ public class spike3AutoBlueCV extends LinearOpMode {
 //                        }
 //                    }
 
-                } else {
-                    if (reverseWait==null){
-                        reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3000){
-                        intake.intakeOn();
-                    } else if (reverseWait.milliseconds()>2000){
-                        intake.intakeReverse();
-                    }
-                }
+//                } else {
+//                    if (reverseWait==null){
+//                        reverseWait = new ElapsedTime();
+//                    } else if (reverseWait.milliseconds()>3000){
+//                        intake.intakeOn();
+//                    } else if (reverseWait.milliseconds()>2000){
+//                        intake.intakeReverse();
+//                    }
+//                }
+
+                break;
+
+            case  Aim:
+
+
+
+
 
                 break;
             case ToSpike:
@@ -384,18 +394,51 @@ public class spike3AutoBlueCV extends LinearOpMode {
                 .build();
     }
 
-    protected int getTag(ArrayList<AprilTagDetection> detections){
+    private void initAprilTag() {
+
+        // Create the AprilTag processor the easy way.
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+        // Create the vision portal the easy way.
+        if (USE_WEBCAM) {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+        } else {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    BuiltinCameraDirection.BACK, aprilTag);
+        }
+
+    }
+
+
+    protected void aimToGoal() {
+        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
+
+
+        double currentTag = getRotations(currentDetections);
+        telemetry.addData("current heading", currentTag);
+
+        if (currentTag !=0) {
+
+            turnTo = Math.toDegrees(follower.getPose().getHeading())+currentTag;
+            follower.turn(Math.toRadians(currentTag));
+            turnCutOff = new ElapsedTime();
+
+
+        }
+    }
+
+    protected double getRotations(List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> detections){
 
         if (detections!=null) {
-            for (AprilTagDetection tag : detections) {
-                if (tag.id == 21 || tag.id == 22 || tag.id == 23) {
-                    return tag.id;
+            for (org.firstinspires.ftc.vision.apriltag.AprilTagDetection tag : detections) {
+                if (tag.id == 20) {
+
+                    return tag.ftcPose.bearing;
                 }
             }
         }
 
-        return -1;
+        return 0;
     }
-
-
 }

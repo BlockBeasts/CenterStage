@@ -5,6 +5,8 @@ package org.firstinspires.ftc.masters.components;
 
 import com.pedropathing.geometry.Pose;
 
+import org.firstinspires.ftc.masters.pedroPathing.Constants;
+
 public  class UsefullMath {
     public static int angleToTicks(double angle, double ppr) {
         return (int) ((angle/360) * ppr);
@@ -12,6 +14,8 @@ public  class UsefullMath {
     public static double ticksToAngle(double ticks, double ppr) {
         return (ticks/ppr) * 360;
     }
+
+    Constants constants;
 
     public static int getVelocityBlue (Pose pose2D){
         double x, y;

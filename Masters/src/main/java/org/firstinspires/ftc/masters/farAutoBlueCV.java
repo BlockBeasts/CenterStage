@@ -18,13 +18,17 @@ import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Config
 @Autonomous(name = "far auto blue")
@@ -35,8 +39,12 @@ public class farAutoBlueCV extends LinearOpMode {
     Intake intake;
     Outake outake;
 
-    OpenCvCamera camera;
-    AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    private VisionPortal visionPortal;
+
+
+    private AprilTagProcessor aprilTag;
+
+
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -47,6 +55,8 @@ public class farAutoBlueCV extends LinearOpMode {
 
     // UNITS ARE METERS
     double tagsize = 0.166;
+
+    private static final boolean USE_WEBCAM = true;
 
     int numFramesWithoutDetection = 0;
 
@@ -80,16 +90,24 @@ public class farAutoBlueCV extends LinearOpMode {
     double run = 1;
     double pick = 0.6;
 
+    double turnTo = 0;
+
+    ElapsedTime turnCutOff = null;
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
     ElapsedTime reverseWait = null;
+
+
 
     public static final String POSE_KEY_X = "PoseX";
     public static final String POSE_KEY_Y = "PoseY";
     public static final String POSE_KEY_H = "PoseH";
     public Lift lift;
 
+
+
     public void runOpMode() throws InterruptedException {
+        initAprilTag();
 
         init = new Init(hardwareMap);
         outake = new Outake(init, telemetry, Constant.AllianceColor.BLUE);
@@ -102,27 +120,8 @@ public class farAutoBlueCV extends LinearOpMode {
         buildPaths();
         follower.setStartingPose(startPose);
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
-            @Override
-            public void onOpened()
-            {
-                camera.startStreaming(640,480, OpenCvCameraRotation.UPRIGHT);
-            }
-
-            @Override
-            public void onError(int errorCode)
-            {
-
-            }
-        });
 
         waitForStart();
 
@@ -135,10 +134,11 @@ public class farAutoBlueCV extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            if (tagId==-1) {
-                ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-                tagId = getTag(detections);
-            }
+
+//            if (tagId==-1) {
+//                ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
+//                tagId = getTag(detections);
+//            }
 
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
@@ -165,6 +165,14 @@ public class farAutoBlueCV extends LinearOpMode {
 //                intake.intakeReverse();
 //            }
 
+            if (turnCutOff != null) {
+                if (turnCutOff.milliseconds() > 500){
+                    follower.breakFollowing();
+                    turnCutOff = null;
+                }
+
+            }
+
         }
 
     }
@@ -180,15 +188,20 @@ public class farAutoBlueCV extends LinearOpMode {
 
                 break;
             case ToGoal:
-                if(!follower.isBusy() && init.getShooterLeft().getVelocity()>1820) {
+                if(!follower.isBusy() && init.getShooterLeft().getVelocity()>100) {
 
                     if (beforeShoot){
 
+                        aimToGoal();
+
+                        if (turnCutOff == null) {
                             outake.shootAll();
                             if (shootWait ==null) {
                                 shootWait = new ElapsedTime();
                                 beforeShoot = false;
                             }
+                        }
+
 
                     } else {
                         if (shootWait!=null && shootWait.milliseconds()>500){
@@ -306,17 +319,54 @@ public class farAutoBlueCV extends LinearOpMode {
                 .build();
     }
 
-    protected int getTag(ArrayList<AprilTagDetection> detections){
+    private void initAprilTag() {
+
+        // Create the AprilTag processor the easy way.
+        aprilTag = AprilTagProcessor.easyCreateWithDefaults();
+
+        // Create the vision portal the easy way.
+        if (USE_WEBCAM) {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    hardwareMap.get(WebcamName.class, "Webcam 1"), aprilTag);
+        } else {
+            visionPortal = VisionPortal.easyCreateWithDefaults(
+                    BuiltinCameraDirection.BACK, aprilTag);
+        }
+
+    }
+
+
+    protected void aimToGoal() {
+        List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> currentDetections = aprilTag.getDetections();
+
+
+        double currentTag = getRotations(currentDetections);
+        telemetry.addData("current heading", currentTag);
+
+        if (currentTag !=0) {
+
+            turnTo = Math.toDegrees(follower.getPose().getHeading())+currentTag;
+            follower.turn(Math.toRadians(currentTag));
+            turnCutOff = new ElapsedTime();
+
+
+        }
+    }
+
+
+
+    protected double getRotations(List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> detections){
 
         if (detections!=null) {
-            for (AprilTagDetection tag : detections) {
-                if (tag.id == 21 || tag.id == 22 || tag.id == 23) {
-                    return tag.id;
+            for (org.firstinspires.ftc.vision.apriltag.AprilTagDetection tag : detections) {
+                if (tag.id == 20) {
+
+                    return tag.ftcPose.bearing;
                 }
             }
         }
 
-        return -1;
+        return 0;
     }
 
 
