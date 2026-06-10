@@ -59,7 +59,38 @@ public class Outake {
     public void startShooter() {
         muteShoot = false;
     }
+    protected void colorLeft() {
+        leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+    }
 
+    protected void colorMiddle() {
+        middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
+    }
+
+    protected void colorRight() {
+        rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
+    }
+
+    protected void delayLeft() {
+        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
+            liftLeftPos = Constant.leftTrayBottom;
+            shootLeftDelay = null;
+        }
+    }
+
+    protected void delayMiddle() {
+        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
+            liftMiddlePos = Constant.middleTrayBottom;
+            shootMiddleDelay = null;
+        }
+    }
+
+    protected void delayRight() {
+        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
+            liftRightPos = Constant.rightTrayBottom;
+            shootRightDelay = null;
+        }
+    }
     public void updateConstant(){
         init.getShooterLeft().setVelocity (Constant.shooterMin);
         init.getShooterRight().setVelocity(Constant.shooterMin);
@@ -68,28 +99,21 @@ public class Outake {
 
 
 //        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+            colorLeft();
 //        }
 //        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-            middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
+            colorMiddle();
 //        }
 //
 //        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-            rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
+            colorRight();
       //  }
 
-        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
-            liftLeftPos = Constant.leftTrayBottom;
-            shootLeftDelay = null;
-        }
-        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
-            liftMiddlePos = Constant.middleTrayBottom;
-            shootMiddleDelay = null;
-        }
-        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
-            liftRightPos = Constant.rightTrayBottom;
-            shootRightDelay = null;
-        }
+        delayLeft();
+
+        delayMiddle();
+
+        delayRight();
 
         switch (leftColor) {
             case ("nothing"): {
@@ -196,28 +220,21 @@ public class Outake {
 
 
 //        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+            colorLeft();
 //        }
 //        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-            middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
+            colorMiddle();
 //        }
 //
 //        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-            rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
+            colorRight();
        // }
 
-        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
-            liftLeftPos = Constant.leftTrayBottom;
-            shootLeftDelay = null;
-        }
-        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
-            liftMiddlePos = Constant.middleTrayBottom;
-            shootMiddleDelay = null;
-        }
-        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
-            liftRightPos = Constant.rightTrayBottom;
-            shootRightDelay = null;
-        }
+        delayLeft();
+
+        delayMiddle();
+
+        delayRight();
 
         switch (leftColor) {
             case ("nothing"): {
@@ -347,28 +364,21 @@ public class Outake {
 
 
         if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+            colorLeft();
         }
         if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-            middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
+            colorMiddle();
         }
 
         if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-            rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
+            colorRight();
         }
 
-        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
-            liftLeftPos = Constant.leftTrayBottom;
-            shootLeftDelay = null;
-        }
-        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
-            liftMiddlePos = Constant.middleTrayBottom;
-            shootMiddleDelay = null;
-        }
-        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
-            liftRightPos = Constant.rightTrayBottom;
-            shootRightDelay = null;
-        }
+        delayLeft();
+
+        delayMiddle();
+
+        delayRight();
 
         switch (leftColor) {
             case ("nothing"): {
@@ -498,7 +508,7 @@ public class Outake {
 
 
         if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
+            colorLeft();
         }
         if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
             middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
