@@ -91,9 +91,29 @@ public class Outake {
             shootRightDelay = null;
         }
     }
+
+    protected void updateShooter() {
+        if (init.getShooterLeft().getVelocity() < Constant.shooterMin) {
+            init.getShooterLeft().setPower(1);
+        } else if (init.getShooterLeft().getVelocity() > Constant.shooterMin) {
+            init.getShooterLeft().setPower(0);
+        }
+
+        if (init.getShooterRight().getVelocity() < Constant.shooterMin) {
+            init.getShooterRight().setPower(1);
+        } else if (init.getShooterRight().getVelocity() > Constant.shooterMin) {
+            init.getShooterRight().setPower(0);
+        }
+    }
+
+
     public void updateConstant(){
         init.getShooterLeft().setVelocity (Constant.shooterMin);
         init.getShooterRight().setVelocity(Constant.shooterMin);
+
+
+
+
         init.getHoodLeftServo().setPosition(Constant.hoodDown);
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
@@ -183,6 +203,7 @@ public class Outake {
     }
 
     public void update() {
+        updateShooter();
         if (muteShoot) {
             init.getShooterLeft().setVelocity(0);
             init.getShooterRight().setVelocity(0);

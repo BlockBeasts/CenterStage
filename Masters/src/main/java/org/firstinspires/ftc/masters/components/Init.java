@@ -76,9 +76,7 @@ public class Init {
         shooterLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         shooterRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        PIDFCoefficients coef = new PIDFCoefficients(p,0,0,f);
-        shooterLeft.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
-        shooterRight.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, coef);
+
 
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
 
