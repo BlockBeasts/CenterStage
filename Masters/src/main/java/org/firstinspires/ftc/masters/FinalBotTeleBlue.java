@@ -246,7 +246,7 @@ public class FinalBotTeleBlue extends LinearOpMode {
             }
 
             intake.update();
-            outake.update();
+            outake.update(0, 0);
 //            follower.update();
             telemetry.update();
 

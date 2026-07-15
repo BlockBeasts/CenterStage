@@ -166,7 +166,7 @@ public class spike3AutoRedCV extends LinearOpMode {
             telemetry.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
             telemetry.update();
 
-            outake.updateAuto();
+            outake.update(-50, -50);
             lift.update();
 
 //            if (outake.has3Balls()){

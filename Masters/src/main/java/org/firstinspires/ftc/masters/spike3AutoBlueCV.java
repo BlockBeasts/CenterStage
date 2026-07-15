@@ -152,7 +152,7 @@ public class spike3AutoBlueCV extends LinearOpMode {
             telemetry.addData("velocity", init.getShooterLeft().getVelocity());
             telemetry.update();
 
-            outake.updateAuto();
+            outake.update(-50, -50);
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
