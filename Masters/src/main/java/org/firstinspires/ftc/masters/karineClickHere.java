@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 @TeleOp(group="Demo", name = "Karine Click Here")
 @Disabled
 public class karineClickHere extends LinearOpMode {
-
+    //yay karine clicked here and found it!
     private boolean sheepFound;
 
     private int test;
@@ -38,7 +38,7 @@ public class karineClickHere extends LinearOpMode {
         frontRight.setDirection(DcMotor.Direction.FORWARD);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
-
+        //we setting a lot of powerbehavior
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,7 +63,7 @@ public class karineClickHere extends LinearOpMode {
             if (Math.abs(x) < 0.2) {
                 x = 0;
             }
-
+            //ewwww math i hate math
             double leftFrontPower = y + x + rx;
             double leftRearPower = y - x + rx;
             double rightFrontPower = y - x - rx;
@@ -100,3 +100,4 @@ public class karineClickHere extends LinearOpMode {
         }
     }
 }
+//that was a lot of code... how many was tha- ONE HUNDRED AND THREE LINES *faints from pure shock and the fact i got two hours of sleep*

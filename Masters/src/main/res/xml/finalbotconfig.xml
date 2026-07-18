@@ -2,58 +2,81 @@
 <Robot type="FirstInspires-FTC">
 
     <LynxUsbDevice name="Possably final Bot Config :3" serialNumber="(embedded)" parentModuleAddress="173">
+        <!-- what do you mean "Possibly"???-->
 
         <!--Control Hub, Don't ask why it's port 173-->
+        <!--if you ask i will hit you with a hammer-->
         <LynxModule name="Control Hub" port="173">
 
-            <!--Motors-->
-            <goBILDA5202SeriesMotor name="leftMotor" port="3" />
-            <goBILDA5202SeriesMotor name="intakeMotor" port="2" />
+            <!--Motor Colors-->
 
+            <!--light blue--><!--flourescent yellow-->
+            <goBILDA5202SeriesMotor name="leftMotor" port="3" />
+
+            <goBILDA5202SeriesMotor name="intakeMotor" port="2" />
+            <!--yellow-->
             <goBILDA5202SeriesMotor name="frontLeft" port="0" />
+            <!--fuscia or Hot Pink either name works-->
             <goBILDA5202SeriesMotor name="backLeft" port="1" />
 
 
-            <!--Servos-->
+
+            <!--Servo Colors-->
+
+            <!--purple-->
             <Servo name="trayLeftServo" port="0" />
 
+            <!--translucent-->
             <Servo name="leftLed" port="1" />
-            <Servo name="middleLed" port="3" />
-            <Servo name="rightLed" port="4" />
 
 
+            <!--Shiny Gold-->
             <Servo name="leftServo" port="5" />
+            <!--gold-->
             <Servo name="trayMiddleServo" port="2" />
+
 
 
             <!--Other-->
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-            <RevColorSensorV3 name="leftColor" port="0" bus="1" />
-            <RevColorSensorV3 name="middleColor" port="0" bus="2" />
-            <RevColorSensorV3 name="rightColor" port="1" bus="0" />
+            <RevColorSensorV3 name="leftColor" port="0" bus="1" /> <!--brown-->
+            <RevColorSensorV3 name="middleColor" port="0" bus="2" /> <!--fluro-->
+            <RevColorSensorV3 name="rightColor" port="1" bus="0" /> <!--orange-->
             <goBILDAPinpoint name="pinpoint" port="0" bus="3" />
         </LynxModule>
 
 
         <!--Expansion Hub, No witty comment here-->
+        <!--is what i would say if there were no witty comment here-->
+
         <LynxModule name="Expansion Hub" port="2">
 
             <goBILDA5202SeriesMotor name="frontRight" port="1" />
+            <!--orange-->
             <goBILDA5202SeriesMotor name="backRight" port="0" />
+            <!--red-->
 
             <goBILDA5202SeriesMotor name="lift" port="2" />
+            <!--pink-->
 
             <!--Motors-->
             <goBILDA5202SeriesMotor name="rightMotor" port="3" />
 
             <!--Servos-->
 
+            <!--Light Cerulean-->
             <Servo name="rightServo" port="0" />
+
+            <!--orange-->
+            <!--orange ya glad we named it that-->
             <Servo name="trayRightServo" port="5" />
+            <!--dark green-->
+            <Servo name="middleLed" port="3" />
+            <!--Light Cerulean-->
+            <Servo name="rightLed" port="4" />
+
 
             <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-
-
 
 
         </LynxModule>
