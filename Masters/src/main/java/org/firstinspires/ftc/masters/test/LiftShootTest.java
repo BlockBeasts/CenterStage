@@ -163,7 +163,7 @@ public class LiftShootTest extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
-            outake.update();
+            outake.update(0,0);
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();

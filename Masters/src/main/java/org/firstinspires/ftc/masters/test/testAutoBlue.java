@@ -160,7 +160,7 @@ public class testAutoBlue extends LinearOpMode {
             telemetry.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
             telemetry.update();
 
-            outake.update();
+            outake.update(0,0);
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();

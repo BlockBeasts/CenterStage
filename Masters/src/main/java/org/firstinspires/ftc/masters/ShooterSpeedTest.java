@@ -158,7 +158,7 @@ public class ShooterSpeedTest extends LinearOpMode {
             }
 
             intake.update();
-            outake.updateConstant();
+            outake.updateShooter();
             follower.update();
             telemetry.update();
 
