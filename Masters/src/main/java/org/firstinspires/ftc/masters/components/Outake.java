@@ -12,6 +12,7 @@ public class Outake {
     Intake intake;
 
     Telemetry telemetry;
+    int shooterVelocity = 0;
 
     Constant.AllianceColor allianceColor= null;
     Follower follower;
@@ -54,6 +55,8 @@ public class Outake {
     private boolean muteShoot = true;
 
     public void stopShooter() {
+        init.getShooterLeft().setPower(0);
+        init.getShooterRight().setPower(0);
         muteShoot = true;
     }
     public void startShooter() {
@@ -94,19 +97,17 @@ public class Outake {
 
     public void updateShooter() {
         if (muteShoot == false) {
-            if (init.getShooterLeft().getVelocity() < Constant.shooterMin) {
-                init.getShooterLeft().setPower(1);
-            } else if (init.getShooterLeft().getVelocity() >= Constant.shooterMin) {
-                init.getShooterLeft().setPower(0);
-            }
+            double leftVel = init.getShooterLeft().getVelocity();
 
-            if (init.getShooterRight().getVelocity() < Constant.shooterMin) {
+            if (leftVel < shooterVelocity) {
+                init.getShooterLeft().setPower(1);
                 init.getShooterRight().setPower(1);
-            } else if (init.getShooterRight().getVelocity() >= Constant.shooterMin) {
+            } else {
+                init.getShooterLeft().setPower(0);
                 init.getShooterRight().setPower(0);
             }
-        }
 
+        }
 
     }
 
@@ -206,28 +207,29 @@ public class Outake {
         telemetry.addData("shooter velocity Right", init.getShooterRight().getVelocity());
     }
 
-    public void update(double offsetLeft, double offsetRight) {
+    public void update(int offsetLeft, int offsetRight) {
         updateShooter();
         if (muteShoot) {
-            init.getShooterLeft().setVelocity(0);
-            init.getShooterRight().setVelocity(0);
+            shooterVelocity =0;
+//            init.getShooterLeft().setVelocity(0);
+//            init.getShooterRight().setVelocity(0);
         } else {
             if (allianceColor == Constant.AllianceColor.BLUE) {
                 if(follower.getPose().getY() > 90){
-                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
-                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
+                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose());
+//                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
+//                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
                 }else {
-                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) + offsetLeft);
-                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()) + offsetRight);
+                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose()) + offsetLeft;
                 }
             }
             if (allianceColor == Constant.AllianceColor.RED){
                 if(follower.getPose().getY() > 90){
-                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose()) );
-                    init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose()));
+                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose());
+
                 }else {
-                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityRed(follower.getPose()) + offsetLeft);
-                    init.getShooterRight().setVelocity(UsefullMath.getVelocityRed(follower.getPose()) + offsetRight);
+
+                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose())+ offsetLeft;
                 }
             }
 
