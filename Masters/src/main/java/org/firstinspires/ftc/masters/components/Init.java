@@ -73,8 +73,8 @@ public class Init {
         outakeTrayMiddle.setPosition(Constant.middleTrayBottom);
         outakeTrayRight.setPosition(Constant.rightTrayBottom);
 
-        shooterLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        shooterRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
