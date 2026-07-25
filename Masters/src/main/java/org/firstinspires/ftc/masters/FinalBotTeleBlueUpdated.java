@@ -135,15 +135,14 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
                 hub.clearBulkCache();
             }
 
-            if (gamepad1.dpad_right) {
+            if (gamepad1.dpad_left) {
                 intake.intakeOn();
             }
-            if (gamepad1.dpad_left) {
+            if (gamepad1.dpad_right) {
                 intake.intakeReverse();
                 gamepad1.rumble(100);
             }
             if (gamepad1.dpad_down) {
-                outake.stopShooter();
                 lift.lowerBot();
             }
             else if (gamepad1.dpad_up){
@@ -163,7 +162,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 //                }
 //            }
             if (gamepad1.crossWasPressed()) {
-                outake.shootAll();
+                outake.shootMiddle();
             }
             if (gamepad1.squareWasPressed()) {
                 outake.shootLeft();
@@ -172,7 +171,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
                 outake.shootRight();
             }
             if (gamepad1.triangleWasPressed()) {
-                outake.shootMiddle();
+                outake.shootAll();
             }
 
             if (gamepad1.left_bumper) {
