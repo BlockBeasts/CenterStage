@@ -90,6 +90,7 @@ public class ShooterSpeedTest extends LinearOpMode {
             blackboard.put(POSE_KEY_H,  follower.getPose().getHeading());
             telemetry.addData("saved pos x", follower.getPose().getX());
             telemetry.addData("saved pos y", follower.getPose().getY());
+            telemetry.addData("Speed", init.getShooterLeft().getVelocity());
             telemetry.addData("saved pos h",Math.toDegrees(follower.getPose().getHeading()) );
 
             for (LynxModule hub: allHubs){
@@ -158,7 +159,8 @@ public class ShooterSpeedTest extends LinearOpMode {
             }
 
             intake.update();
-            outake.updateShooter();
+            outake.setShooterVelocity(Constant.shooterMin);
+            outake.update(0,0);
             follower.update();
             telemetry.update();
 

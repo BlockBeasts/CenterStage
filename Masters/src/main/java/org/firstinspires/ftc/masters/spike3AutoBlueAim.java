@@ -28,7 +28,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal auto aim blue")
+@Autonomous(name = "goal blue LOBSTER")
 
 public class spike3AutoBlueAim extends LinearOpMode {
 
@@ -62,7 +62,7 @@ public class spike3AutoBlueAim extends LinearOpMode {
     private final Pose tagPose = new Pose(44, 110, Math.toRadians(90));
     private final Pose scorePose = new Pose(144-86.5, 101, Math.toRadians(180-34));
     private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (16, 83, Math.toRadians(180));
+    private final Pose endPickup1 = new Pose (24 , 83, Math.toRadians(180));
     private final Pose pickup2Pose = new Pose(49, 86-29, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose endPickup2 = new Pose(16, 86-29, Math.toRadians(180));
     private final Pose pickup3Pose = new Pose(49, 83-50, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -193,8 +193,6 @@ public class spike3AutoBlueAim extends LinearOpMode {
 
                     if (beforeShoot){
 
-
-
                         if (lift.getCurrentPosition()<Constant.liftShootLimit){
                             lift.liftRobot();
                         } else {
@@ -213,16 +211,16 @@ public class spike3AutoBlueAim extends LinearOpMode {
                             beforeShoot = true;
                             if (scored == 0) {
                                 intake.intakeOn();
-                                follower.followPath(spike1, run, false);
+                                follower.followPath(spike2, run, false);
                                 pathState = State.ToSpike;
                             } else if (scored == 1) {
                                 intake.intakeOn();
                                 follower.followPath(spike2, run, false);
                                 pathState = State.ToSpike;
                             } else if (scored == 2) {
-                                intake.intakeOn();
-                                follower.followPath(spike3, run, false);
-                                pathState = State.ToSpike;
+//                                intake.intakeOn();
+//                                follower.followPath(spike3, run, false);
+//                                pathState = State.ToSpike;
                             } else {
                                 follower.followPath(end);
                                 pathState = State.End;
@@ -286,7 +284,7 @@ public class spike3AutoBlueAim extends LinearOpMode {
                     intake.intakeOn();
                     if (scored == 0){
                         intake.intakeOn();
-                        follower.followPath(pickup1, pick, false);
+                        follower.followPath(pickup2, pick, false);
                     } else if (scored ==1){
                         intake.intakeOn();
                         follower.followPath(pickup2, pick, false);

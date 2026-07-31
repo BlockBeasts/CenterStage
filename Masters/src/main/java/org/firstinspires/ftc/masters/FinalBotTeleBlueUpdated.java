@@ -26,7 +26,7 @@ import java.util.List;
 
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "Decode Teleop Blue")
+@TeleOp(name = "Decode Teleop Blue updated")
 public class FinalBotTeleBlueUpdated extends LinearOpMode {
     protected final FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -58,6 +58,10 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
     boolean outakeToggle = true;
     boolean debounceLeft = false;
     boolean debounceRight = false;
+
+    boolean touchpadFirstPressed = false;
+
+    boolean touchpadPressed = false;
     private final Pose startPose = new Pose(8.5, 8.5, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
@@ -136,11 +140,10 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             }
 
             if (gamepad1.dpad_left) {
-                intake.intakeOn();
+                outake.shootGreen();
             }
             if (gamepad1.dpad_right) {
-                intake.intakeReverse();
-                gamepad1.rumble(100);
+                outake.shootPurple();
             }
             if (gamepad1.dpad_down) {
                 lift.lowerBot();
@@ -150,17 +153,23 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             } else {
                 lift.stopLift();
             }
-//            if (gamepad2.dpad_down){
-//
-//                if (!outakeToggle) {
-//                    outakeToggle = true;
-//                    outake.startShooter();
-//
-//                } else {
-//                    outakeToggle = false;
-//                    outake.stopShooter();
-//                }
-//            }
+            if (gamepad2.leftStickButtonWasPressed() & gamepad2.rightStickButtonWasPressed()){
+                if (!outakeToggle) {
+                    outakeToggle = true;
+                    outake.startShooter();
+
+                } else {
+                    outakeToggle = false;
+                    outake.stopShooter();
+                }
+            }
+            if (gamepad2.touchpadWasPressed()){
+                touchpadFirstPressed = true;
+            }
+            if (touchpadPressed) {
+                if (gamepad2.right_stick_y>1)
+                {}
+            }
             if (gamepad1.crossWasPressed()) {
                 outake.shootMiddle();
             }
@@ -177,7 +186,8 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             if (gamepad1.left_bumper) {
                 if (!debounceLeft) {
                     debounceLeft = true;
-                    outake.shootGreen();
+                    intake.intakeReverse();
+                    gamepad1.rumble(100);
                 }
             } else {
                 debounceLeft = false;
@@ -186,10 +196,14 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             if (gamepad1.right_bumper) {
                 if (!debounceRight) {
                     debounceRight = true;
-                    outake.shootPurple();
+                    intake.intakeOn();
                 }
             } else {
                 debounceRight = false;
+            }
+
+            if (!gamepad1.right_bumper && !gamepad1.left_bumper) {
+                intake.intakeOff();
             }
 
             if(outake.upToSpeed()){
@@ -238,7 +252,18 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         }
     }
 
+    protected void emergencyLaunching(double y) {
+        if (Math.abs(y) < 0.2) {
+            y = 0;
+        }
+        if (touchpadFirstPressed & touchpadPressed) {
+            outake.setShooterVelocity(0);
+        }
+        else{
+//            outake.hood adjust here
 
+        }
+    }
     public void cartesianDrive(double x, double y, double t) {
 
         if (Math.abs(y) < 0.2) {

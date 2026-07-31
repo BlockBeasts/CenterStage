@@ -76,9 +76,6 @@
             <Servo name="rightLed" port="4" />
 
 
-            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
-
-
         </LynxModule>
 
     </LynxUsbDevice>

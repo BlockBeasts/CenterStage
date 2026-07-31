@@ -116,9 +116,6 @@ public class Outake {
         init.getShooterLeft().setVelocity (Constant.shooterMin);
         init.getShooterRight().setVelocity(Constant.shooterMin);
 
-
-
-
         init.getHoodLeftServo().setPosition(Constant.hoodDown);
         init.getHoodRightServo().setPosition(Constant.hoodDown);
 
@@ -209,39 +206,40 @@ public class Outake {
 
     public void update(int offsetLeft, int offsetRight) {
         updateShooter();
+        shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose());
         if (muteShoot) {
             shooterVelocity =0;
 //            init.getShooterLeft().setVelocity(0);
 //            init.getShooterRight().setVelocity(0);
-        } else {
-            if (allianceColor == Constant.AllianceColor.BLUE) {
-                if(follower.getPose().getY() > 90){
-                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose());
-//                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
-//                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
-                }else {
-                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose()) + offsetLeft;
-                }
-            }
-            if (allianceColor == Constant.AllianceColor.RED){
-                if(follower.getPose().getY() > 90){
-                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose());
-
-                }else {
-
-                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose())+ offsetLeft;
-                }
-            }
-
-            if (follower.getPose().getY()<50){
-
-                init.getHoodLeftServo().setPosition(Constant.hoodFar);
-                init.getHoodRightServo().setPosition(Constant.hoodFar);
-            } else {
-
-                init.getHoodLeftServo().setPosition(Constant.hoodDown);
-                init.getHoodRightServo().setPosition(Constant.hoodDown);
-            }
+//        } else {
+//            if (allianceColor == Constant.AllianceColor.BLUE) {
+//                if(follower.getPose().getY() > 90){
+//                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose());
+////                    init.getShooterLeft().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
+////                    init.getShooterRight().setVelocity(UsefullMath.getVelocityBlue(follower.getPose()));
+//                }else {
+//                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose()) + offsetLeft;
+//                }
+//            }
+//            if (allianceColor == Constant.AllianceColor.RED){
+//                if(follower.getPose().getY() > 90){
+//                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose());
+//
+//                }else {
+//
+//                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose())+ offsetLeft;
+//                }
+//            }
+//
+//            if (follower.getPose().getY()<50){
+//
+//                init.getHoodLeftServo().setPosition(Constant.hoodFar);
+//                init.getHoodRightServo().setPosition(Constant.hoodFar);
+//            } else {
+//
+//                init.getHoodLeftServo().setPosition(Constant.hoodDown);
+//                init.getHoodRightServo().setPosition(Constant.hoodDown);
+//            }
 
 //            init.getShooterLeft().setVelocity(Constant.shooterMin);
 //            init.getShooterRight().setVelocity(Constant.shooterMin);
@@ -740,6 +738,9 @@ public class Outake {
         init.getHoodRightServo().setPosition(Constant.hoodDown);
     }
 
+    public void setShooterVelocity(int shooterVelocity) {
+        this.shooterVelocity = shooterVelocity;
+    }
 
     public boolean upToSpeed() {
         return (UsefullMath.getVelocityBlue(follower.getPose()) - 20) <= init.getShooterRight().getVelocity();
