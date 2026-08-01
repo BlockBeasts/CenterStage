@@ -42,9 +42,7 @@ public class Init {
         shooterLeft = hardwareMap.get(DcMotorEx.class, "leftMotor");
         shooterRight = hardwareMap.get(DcMotorEx.class, "rightMotor");
 
-
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
-
 
         lift = hardwareMap.dcMotor.get("lift");
         lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -75,8 +73,6 @@ public class Init {
 
         shooterLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         shooterRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-
 
         pinpoint = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
 

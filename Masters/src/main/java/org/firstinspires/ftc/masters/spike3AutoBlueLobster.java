@@ -30,7 +30,7 @@ import java.util.ArrayList;
 @Config
 @Autonomous(name = "goal blue LOBSTER")
 
-public class spike3AutoBlueAim extends LinearOpMode {
+public class spike3AutoBlueLobster extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -63,6 +63,8 @@ public class spike3AutoBlueAim extends LinearOpMode {
     private final Pose scorePose = new Pose(144-86.5, 101, Math.toRadians(180-34));
     private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (24 , 83, Math.toRadians(180));
+
+    private final Pose gatePoint = new Pose(20, 60, Math.toRadians(135));
     private final Pose pickup2Pose = new Pose(49, 86-29, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
     private final Pose endPickup2 = new Pose(16, 86-29, Math.toRadians(180));
     private final Pose pickup3Pose = new Pose(49, 83-50, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
@@ -71,14 +73,13 @@ public class spike3AutoBlueAim extends LinearOpMode {
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
-    private PathChain scorePreload, readTag;
-    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end;
+    private PathChain scorePreload;
+    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, toGate, gateToScore;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
 
     int scored = 0;
-
     double run = 1;
     double pick = 0.6;
 
@@ -128,7 +129,7 @@ public class spike3AutoBlueAim extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.setMsTransmissionInterval(50);
+        telemetry.setMsTransmissionInterval(100);
 
         pathState = State.Start;
         int tagId = -1;
@@ -178,18 +179,14 @@ public class spike3AutoBlueAim extends LinearOpMode {
         switch (pathState) {
             case Start:
                 outake.startShooter();
-                follower.followPath(readTag);
-                pathState= State.ToTag;
+                follower.followPath(scorePreload);
+                pathState = State.ToGoal;
 
                 break;
-            case ToTag:
-                if (!follower.isBusy()){
-                    follower.followPath(scorePreload);
-                    pathState = State.ToGoal;
-                }
-                break;
+
             case ToGoal:
                 if(!follower.isBusy()) {
+                    reverseWait = null;
 
                     if (beforeShoot){
 
@@ -228,51 +225,12 @@ public class spike3AutoBlueAim extends LinearOpMode {
                         }
                     }
 
-//                    if (elapsedTime ==null){
-//                        reverseWait = null;
-//                        elapsedTime= new ElapsedTime();
-//                        lift.liftRobot();
-//                        //intake.intakeOn();
-//                    } else if (elapsedTime.milliseconds()>750) {
-//                        outake.shootAll();
-//
-//                        if (shootWait ==null) {
-//                            shootWait = new ElapsedTime();
-//
-//                        }
-//                        if (shootWait!=null && shootWait.milliseconds()>100){
-//                            lift.lowerBot();
-//                        }
-//                        if ( shootWait!=null && shootWait.milliseconds() > 800) {
-//                            elapsedTime = null;
-//                            shootWait = null;
-//                            lift.stopLift();
-//
-//                            if (scored == 0) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike1, run, false);
-//                                pathState = State.ToSpike;
-//                            } else if (scored == 1) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike2, run, false);
-//                                pathState = State.ToSpike;
-//                            } else if (scored == 2) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike3, run, false);
-//                                pathState = State.ToSpike;
-//                            } else {
-//                                follower.followPath(end);
-//                                pathState = State.End;
-//                            }
-//                        }
-//                    }
-
                 } else {
                     if (reverseWait==null){
                         reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3000){
-                        intake.intakeOn();
                     } else if (reverseWait.milliseconds()>2000){
+                        intake.intakeOn();
+                    } else if (reverseWait.milliseconds()>1000){
                         intake.intakeReverse();
                     }
                 }
@@ -322,14 +280,10 @@ public class spike3AutoBlueAim extends LinearOpMode {
 
     public void buildPaths() {
 
-        readTag = follower.pathBuilder()
-                .addPath (new BezierLine(startPose, tagPose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), tagPose.getHeading())
-                .build();
 
         scorePreload= follower.pathBuilder()
-                .addPath(new BezierLine(tagPose, scorePose))
-                .setLinearHeadingInterpolation(tagPose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(startPose, scorePose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
                 .build();
 
         spike1 = follower.pathBuilder()
@@ -345,6 +299,16 @@ public class spike3AutoBlueAim extends LinearOpMode {
         score1 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickup1, evilScore))
                 .setLinearHeadingInterpolation(endPickup1.getHeading(), evilScore.getHeading())
+                .build();
+
+        toGate = follower.pathBuilder()
+                .addPath(new BezierLine(scorePose, gatePoint))
+                .setLinearHeadingInterpolation(scorePose.getHeading(), gatePoint.getHeading())
+                .build();
+
+        gateToScore = follower.pathBuilder()
+                .addPath(new BezierLine(gatePoint, scorePose))
+                .setLinearHeadingInterpolation(gatePoint.getHeading(), scorePose.getHeading())
                 .build();
 
         spike2 = follower.pathBuilder()
