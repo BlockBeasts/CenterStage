@@ -59,7 +59,6 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
     boolean debounceLeft = false;
     boolean debounceRight = false;
 
-    boolean touchpadFirstPressed = false;
 
     boolean touchpadPressed = false;
     private final Pose startPose = new Pose(8.5, 8.5, Math.toRadians(90));
@@ -158,17 +157,17 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
                     outakeToggle = true;
                     outake.startShooter();
 
-                } else {
+                }
+                else {
                     outakeToggle = false;
                     outake.stopShooter();
                 }
             }
             if (gamepad2.touchpadWasPressed()){
-                touchpadFirstPressed = true;
+                touchpadPressed = true;
             }
             if (touchpadPressed) {
-                if (gamepad2.right_stick_y>1)
-                {}
+                emergencyLaunching(gamepad2.right_stick_y);
             }
             if (gamepad1.crossWasPressed()) {
                 outake.shootMiddle();
@@ -256,13 +255,9 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         if (Math.abs(y) < 0.2) {
             y = 0;
         }
-        if (touchpadFirstPressed & touchpadPressed) {
-            outake.setShooterVelocity(0);
-        }
-        else{
-//            outake.hood adjust here
-
-        }
+            outake.disableAutoAim();
+            if (2000>=outake.shooterVelocity & outake.shooterVelocity>=1400)
+                outake.setShooterVelocity(outake.shooterVelocity + (int) (Math.round(y*10)));
     }
     public void cartesianDrive(double x, double y, double t) {
 

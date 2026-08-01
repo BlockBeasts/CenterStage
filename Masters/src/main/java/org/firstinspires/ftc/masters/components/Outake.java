@@ -12,7 +12,7 @@ public class Outake {
     Intake intake;
 
     Telemetry telemetry;
-    int shooterVelocity = 0;
+    public int shooterVelocity = 0;
 
     Constant.AllianceColor allianceColor= null;
     Follower follower;
@@ -54,6 +54,10 @@ public class Outake {
     ElapsedTime shootMiddleDelay = null;
 
     private boolean muteShoot = true;
+
+    public void disableAutoAim() {
+        muteShoot = true;
+    }
 
     public void stopShooter() {
         init.getShooterLeft().setPower(0);
