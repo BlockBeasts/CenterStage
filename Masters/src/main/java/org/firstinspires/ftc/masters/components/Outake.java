@@ -12,7 +12,7 @@ public class Outake {
     Intake intake;
 
     Telemetry telemetry;
-    public int shooterVelocity = 0;
+    public int shooterVelocity = 1500;
 
     Constant.AllianceColor allianceColor= null;
     Follower follower;
@@ -258,6 +258,93 @@ public class Outake {
 //        telemetry.addData("left distance", init.getColorLeft().getDistance(DistanceUnit.MM));
     }
 
+    public void updateTest(){
+        updateShooter();
+
+
+//        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
+        colorLeft();
+//        }
+//        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
+        colorMiddle();
+//        }
+//
+//        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
+        colorRight();
+        // }
+
+        delayLeft();
+
+        delayMiddle();
+
+        delayRight();
+
+        switch (leftColor) {
+            case ("nothing"): {
+                init.getLeftLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getLeftLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getLeftLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getLeftLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+        switch (middleColor) {
+            case ("nothing"): {
+                init.getMiddleLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getMiddleLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getMiddleLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getMiddleLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+        switch (rightColor) {
+            case ("nothing"): {
+                init.getRightLight().setPosition(0);
+                break;
+            }
+            case ("green"): {
+                init.getRightLight().setPosition(Constant.greenLed);
+                break;
+            }
+            case ("purple"): {
+                init.getRightLight().setPosition(Constant.purpleLed);
+                break;
+            }
+            case ("unknown"):{
+                init.getRightLight().setPosition(Constant.orangeLed);
+                break;
+            }
+        }
+
+        init.outakeTrayLeft.setPosition(liftLeftPos);
+        init.outakeTrayMiddle.setPosition(liftMiddlePos);
+        init.outakeTrayRight.setPosition(liftRightPos);
+
+        telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
+        telemetry.addData("x", follower.getPose().getX());
+        telemetry.addData("y", follower.getPose().getY());
+    }
+
 
     public void shootGreen() {
         if ("green".equals(leftColor)){
@@ -357,6 +444,12 @@ public class Outake {
 
     public boolean upToSpeed() {
         return (UsefullMath.getVelocityBlue(follower.getPose()) - 20) <= init.getShooterRight().getVelocity();
+    }
+
+    public void updateHood(){
+        telemetry.addData("hood position", Constant.hoodDown);
+        init.getHoodLeftServo().setPosition(Constant.hoodDown);
+        init.getHoodRightServo().setPosition(Constant.hoodDown);
     }
 
 

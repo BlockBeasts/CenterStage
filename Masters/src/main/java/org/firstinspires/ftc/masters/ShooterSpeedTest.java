@@ -160,7 +160,8 @@ public class ShooterSpeedTest extends LinearOpMode {
 
             intake.update();
             outake.setShooterVelocity(Constant.shooterMin);
-            outake.update(0,0);
+            outake.updateTest();
+            outake.updateHood();
             follower.update();
             telemetry.update();
 

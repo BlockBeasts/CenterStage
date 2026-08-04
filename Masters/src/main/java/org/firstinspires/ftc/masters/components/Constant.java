@@ -8,7 +8,7 @@ public class Constant {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
-    public static double hoodDown = 0;
+    public static double hoodDown = 0.1;
     public static double hoodFar = 0.15;
 
     public static double leftTrayBottom = 0.95;

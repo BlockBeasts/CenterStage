@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.masters;
 
-import android.nfc.TagLostException;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
@@ -21,7 +19,6 @@ import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 
@@ -29,8 +26,8 @@ import java.util.List;
 
 
 @Config // Enables FTC Dashboard
-@TeleOp(name = "Decode Teleop Blue updated")
-public class FinalBotTeleBlueUpdated extends LinearOpMode {
+@TeleOp(name = "Decode Teleop Blue test")
+public class FinalBotTeleBlueDrive extends LinearOpMode {
     protected final FtcDashboard dashboard = FtcDashboard.getInstance();
 
     Init init;
@@ -64,8 +61,6 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 
 
     boolean touchpadPressed = false;
-
-    int emergencyOffset=0;
     private final Pose startPose = new Pose(8.5, 8.5, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
@@ -101,18 +96,18 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             genPose = new Pose(StartX, StartY, StartH);
         }
 
-       // if (genPose != null) {
-         //   follower.setStartingPose(genPose);
-        //} else {
+        if (genPose != null) {
+            follower.setStartingPose(genPose);
+        } else {
             follower.setStartingPose(startPose);
-        //}
+        }
         init = new Init(hardwareMap);
         initializeHardwareAlliance();
 
         outake = new Outake(init, telemetry, allianceColor);
         outake.setFollower(follower);
         intake = new Intake(init, outake, telemetry);
-
+//
         lift = new Lift(init);
 
         frontLeft = init.getFrontLeft();
@@ -169,10 +164,10 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
                 }
             }
             if (gamepad2.touchpadWasPressed()){
-                touchpadPressed = !touchpadPressed;
+                touchpadPressed = true;
             }
             if (touchpadPressed) {
-                emergencyOffset = emergencyOffset- (int) (Math.round(gamepad2.right_stick_y)*10);
+                emergencyLaunching(gamepad2.right_stick_y);
             }
             if (gamepad1.crossWasPressed()) {
                 outake.shootMiddle();
@@ -186,7 +181,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             if (gamepad1.triangleWasPressed()) {
                 outake.shootAll();
             }
-
+//
             if (gamepad1.left_bumper) {
                 if (!debounceLeft) {
                     debounceLeft = true;
@@ -210,9 +205,11 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
                 intake.intakeOff();
             }
 
-            if(outake.upToSpeed()){
-                gamepad1.setLedColor(0, 255, 0, 750);
-            }
+          //  outake.updateShooter();
+//
+//            if(outake.upToSpeed()){
+//                gamepad1.setLedColor(0, 255, 0, 750);
+//            }
 //            if (!follower.isBusy()){
 //                follower.breakFollowing();
 //            }
@@ -223,7 +220,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 //                }
 //
 //            }
-
+//
 //            if(gamepad1.startWasPressed()){
 //                double currentTag = getRotations(currentDetections);
 //                telemetry.addData("current heading", currentTag);
@@ -239,16 +236,16 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 //            }
 //
 //            telemetry.addData("turnTo:", turnTo);
-//            if (currentDetections != null) {
-//                telemetry.addData("Heading? ", getRotations(currentDetections));
-//            }
-//            if (currentDetections != null) {
-//                telemetry.addData("Distance? ", getDistance(currentDetections));
-//            }
-
+            if (currentDetections != null) {
+                telemetry.addData("Heading? ", getRotations(currentDetections));
+            }
+            if (currentDetections != null) {
+                telemetry.addData("Distance? ", getDistance(currentDetections));
+            }
+//
             intake.update();
-            outake.update(emergencyOffset, emergencyOffset);
-               follower.update();
+          outake.update(0, 0);
+            follower.update();
             telemetry.update();
 
 
@@ -256,58 +253,39 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         }
     }
 
+    protected void emergencyLaunching(double y) {
+        if (Math.abs(y) < 0.2) {
+            y = 0;
+        }
+            //outake.disableAutoAim();
+            if (2000>=outake.shooterVelocity & outake.shooterVelocity>=1400)
+                outake.setShooterVelocity(outake.shooterVelocity + (int) (Math.round(y*10)));
+    }
     public void cartesianDrive(double x, double y, double t) {
 
-        if (gamepad1.options) {
-            init.getPinpoint().setYawScalar(0);
+        if (Math.abs(y) < 0.2) {
+            y = 0;
+        }
+        if (Math.abs(x) < 0.2) {
+            x = 0;
         }
 
-        double botHeading = init.getPinpoint().getHeading(AngleUnit.RADIANS);
+        double leftFrontPower = y + x + t;
+        double leftRearPower = y - x + t;
+        double rightFrontPower = y - x - t;
+        double rightRearPower = y + x - t;
 
-        // Rotate the movement direction counter to the bot's rotation
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
 
-        rotX = rotX * 1.1;  // Counteract imperfect strafing
+        leftFrontPower /= denominator;
+        leftRearPower /= denominator;
+        rightFrontPower /= denominator;
+        rightRearPower /= denominator;
 
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(t), 1);
-        double frontLeftPower = (rotY + rotX + t) / denominator;
-        double backLeftPower = (rotY - rotX + t) / denominator;
-        double frontRightPower = (rotY - rotX - t) / denominator;
-        double backRightPower = (rotY + rotX - t) / denominator;
-
-        frontLeft.setPower(frontLeftPower);
-        backLeft.setPower(backLeftPower);
-        frontRight.setPower(frontRightPower);
-        backRight.setPower(backRightPower);
-
-
-//        if (Math.abs(y) < 0.2) {
-//            y = 0;
-//        }
-//        if (Math.abs(x) < 0.2) {
-//            x = 0;
-//        }
-//
-//        double leftFrontPower = y + x + t;
-//        double leftRearPower = y - x + t;
-//        double rightFrontPower = y - x - t;
-//        double rightRearPower = y + x - t;
-//
-//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
-//
-//        leftFrontPower /= denominator;
-//        leftRearPower /= denominator;
-//        rightFrontPower /= denominator;
-//        rightRearPower /= denominator;
-
-//        frontLeft.setPower(leftFrontPower);
-//        backLeft.setPower(leftRearPower);
-//        frontRight.setPower(rightFrontPower);
-//        backRight.setPower(rightRearPower);
+        frontLeft.setPower(leftFrontPower);
+        backLeft.setPower(leftRearPower);
+        frontRight.setPower(rightFrontPower);
+        backRight.setPower(rightRearPower);
     }
 
     protected double getRotations(List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> detections){
