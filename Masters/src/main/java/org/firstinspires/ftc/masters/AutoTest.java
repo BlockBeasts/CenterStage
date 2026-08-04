@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
-import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -29,9 +28,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal blue LOBSTER")
+@Autonomous(name = "Auto Test 1")
 
-public class spike3AutoBlueLobster extends LinearOpMode {
+public class AutoTest extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -40,8 +39,6 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    public static int offsetNear = -50;
-    public static int offsetFar = -50;
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 822.317;
@@ -60,9 +57,9 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     private Follower follower;
-    private final Pose startPose = new Pose(144-121.5, 120, Math.toRadians(180-126));
+    private final Pose startPose = new Pose(0, 0, Math.toRadians(90));
 
-    private final Pose tagPose = new Pose(44, 110, Math.toRadians(90));
+    private final Pose tagPose = new Pose(72, 0, Math.toRadians(90));
     private final Pose scorePose = new Pose(144-86.5, 101, Math.toRadians(180-34));
     private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (24 , 83, Math.toRadians(180));
@@ -171,7 +168,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
             telemetry.addData("velocity", init.getShooterLeft().getVelocity());
             telemetry.update();
 
-            outake.update(offsetNear, offsetFar);
+            outake.update(-50, -50);
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -187,123 +184,124 @@ public class spike3AutoBlueLobster extends LinearOpMode {
         switch (pathState) {
             case Start:
                 outake.startShooter();
+                intake.intakeOn();
                 follower.followPath(scorePreload);
                 pathState = State.ToGoal;
 
                 break;
 
             case ToGoal:
-                if(!follower.isBusy()) {
-                    reverseWait = null;
-
-                    if (beforeShoot){
-
-                        if (lift.getCurrentPosition()<Constant.liftShootLimit){
-                            lift.liftRobot();
-                        } else {
-                            outake.shootAll();
-                            if (shootWait ==null) {
-                                shootWait = new ElapsedTime();
-                                beforeShoot = false;
-                            }
-                        }
-                    } else {
-                        if (shootWait!=null && shootWait.milliseconds()>250){
-                            this.lift.lowerBot();
-                        }
-                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
-                            shootWait =null;
-                            beforeShoot = true;
-                            if (scored == 0) {
-                                intake.intakeOn();
-                                follower.followPath(spike2, run, false);
-                                pathState = State.ToSpike;
-                            } else if (scored == 1) {
-                                intake.intakeOn();
-                                follower.followPath(spike3, run, false);
-                                pathState = State.ToSpike;
-                            } else if (scored == 2) {
-                                intake.intakeOn();
-                                follower.followPath(spike1, run, false);
-                                pathState = State.ToSpike;
-                            } else {
-                                follower.followPath(end);
-                                pathState = State.End;
-                            }
-                        }
-                    }
-
-                } else {
-                    if (reverseWait==null){
-                        reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3000){
-                        intake.intakeOn();
-                    } else if (reverseWait.milliseconds()>1000){
-                        intake.intakeReverse();
-                    }
-                }
-
-                break;
-            case ToSpike:
-                if(!follower.isBusy()) {
-                    //pick up
-                    intake.intakeOn();
-                    if (scored == 0){
-                        intake.intakeOn();
-                        follower.followPath(pickup2, pick, false);
-                    } else if (scored ==1){
-                        intake.intakeOn();
-                        follower.followPath(pickup3, pick, false);
-                    } else if (scored ==2 ){
-                        intake.intakeOn();
-                        follower.followPath(pickup1, pick, false);
-                    }
-                    pathState= State.Pickup;
-
-                }
-                break;
-            case Pickup:
-                if(!follower.isBusy()) {
-                    //intake.intakeReverse();
-                    //elapsedTime = new ElapsedTime();
-                    if (scored == 0){
-                        follower.followPath(pickup2ToGate, run, false);
-                        elapsedTime= new ElapsedTime();
-                        pathState = State.Gate;
-                    } else if (scored ==1){
-                        follower.followPath(score3, run, false);
-                        pathState = State.ToGoal;
-                    } else if (scored ==2 ){
-                        follower.followPath(score1, run, false);
-                        pathState = State.ToGoal;
-                    }
-                    scored++;
-
-
-                }
-                break;
-            case Gate:
-                if (elapsedTime.milliseconds()>700 && elapsedTime.milliseconds()<1000){
-                    intake.intakeReverse();
-                } else if (elapsedTime.milliseconds()>1000){
-                    intake.intakeOff();
-                }
-                if (!follower.isBusy()){
-                    if (gateWait ==null){
-                        gateWait = new ElapsedTime();
-                    }
-                    if (gateWait!=null && gateWait.milliseconds()>500){
-                        follower.followPath(gateToScore, run, false);
-                        pathState = State.ToGoal;
-                    }
-                }
-
-                break;
-            case End:
-                if (!follower.isBusy()){
-                    intake.intakeOff();
-                    outake.stopShooter();
-                }
+//                if(!follower.isBusy()) {
+//                    reverseWait = null;
+//
+//                    if (beforeShoot){
+//
+//                        if (lift.getCurrentPosition()<Constant.liftShootLimit){
+//                            lift.liftRobot();
+//                        } else {
+//                            outake.shootAll();
+//                            if (shootWait ==null) {
+//                                shootWait = new ElapsedTime();
+//                                beforeShoot = false;
+//                            }
+//                        }
+//                    } else {
+//                        if (shootWait!=null && shootWait.milliseconds()>250){
+//                            this.lift.lowerBot();
+//                        }
+//                        if (lift.getCurrentPosition()<Constant.liftDriveLimit){
+//                            shootWait =null;
+//                            beforeShoot = true;
+//                            if (scored == 0) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike2, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 1) {
+//                                intake.intakeOn();
+//                                follower.followPath(spike3, run, false);
+//                                pathState = State.ToSpike;
+//                            } else if (scored == 2) {
+////                                intake.intakeOn();
+////                                follower.followPath(spike3, run, false);
+////                                pathState = State.ToSpike;
+//                            } else {
+//                                follower.followPath(end);
+//                                pathState = State.End;
+//                            }
+//                        }
+//                    }
+//
+//                } else {
+//                    if (reverseWait==null){
+//                        reverseWait = new ElapsedTime();
+//                    } else if (reverseWait.milliseconds()>2000){
+//                        intake.intakeOn();
+//                    } else if (reverseWait.milliseconds()>1000){
+//                        intake.intakeReverse();
+//                    }
+//                }
+//
+//                break;
+//            case ToSpike:
+//                if(!follower.isBusy()) {
+//                    //pick up
+//                    intake.intakeOn();
+//                    if (scored == 0){
+//                        intake.intakeOn();
+//                        follower.followPath(pickup2, pick, false);
+//                    } else if (scored ==1){
+//                        intake.intakeOn();
+//                        follower.followPath(pickup3, pick, false);
+//                    } else if (scored ==2 ){
+//                        intake.intakeOn();
+//                        follower.followPath(pickup3, pick, false);
+//                    }
+//                    pathState= State.Pickup;
+//
+//                }
+//                break;
+//            case Pickup:
+//                if(!follower.isBusy()) {
+//                    //intake.intakeReverse();
+//                    //elapsedTime = new ElapsedTime();
+//                    if (scored == 0){
+//                        follower.followPath(pickup2ToGate, run, false);
+//                        elapsedTime= new ElapsedTime();
+//                        pathState = State.Gate;
+//                    } else if (scored ==1){
+//                        follower.followPath(score3, run, false);
+//                        pathState = State.ToGoal;
+//                    } else if (scored ==2 ){
+//                        follower.followPath(score3, run, false);
+//                        pathState = State.ToGoal;
+//                    }
+//                    scored++;
+//
+//
+//                }
+//                break;
+//            case Gate:
+//                if (elapsedTime.milliseconds()>700 && elapsedTime.milliseconds()<1000){
+//                    intake.intakeReverse();
+//                } else if (elapsedTime.milliseconds()>1000){
+//                    intake.intakeOff();
+//                }
+//                if (!follower.isBusy()){
+//                    if (gateWait ==null){
+//                        gateWait = new ElapsedTime();
+//                    }
+//                    if (gateWait!=null && gateWait.milliseconds()>500){
+//                        follower.followPath(gateToScore, run, false);
+//                        pathState = State.ToGoal;
+//                    }
+//                }
+//
+//                break;
+//            case End:
+//                if (!follower.isBusy()){
+//                    intake.intakeOff();
+//                    outake.stopShooter();
+//                }
         }
     }
 
@@ -311,8 +309,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
 
 
         scorePreload= follower.pathBuilder()
-                .addPath(new BezierLine(startPose, scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(startPose, tagPose))
+                .setLinearHeadingInterpolation(startPose.getHeading(), tagPose.getHeading())
                 .build();
 
         spike1 = follower.pathBuilder()
@@ -336,8 +334,10 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 .build();
 
         gateToScore = follower.pathBuilder()
-                .addPath(new BezierCurve(gatePoint, new Pose(54, 66), evilScore))
-                .setLinearHeadingInterpolation(gatePoint.getHeading(), evilScore.getHeading())
+                .addPath(new BezierLine(gatePoint, intermediate))
+                .setLinearHeadingInterpolation(gatePoint.getHeading(), intermediate.getHeading())
+                .addPath(new BezierLine(intermediate, evilScore))
+                .setLinearHeadingInterpolation(intermediate.getHeading(), evilScore.getHeading())
                 .build();
 
         spike2 = follower.pathBuilder()
