@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
+import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
@@ -39,6 +40,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
+    public static int offsetNear = -50;
+    public static int offsetFar = -50;
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 822.317;
@@ -163,7 +166,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
             telemetry.addData("velocity", init.getShooterLeft().getVelocity());
             telemetry.update();
 
-            outake.update(-50, -50);
+            outake.update(offsetNear, offsetFar);
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -212,12 +215,12 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                                 pathState = State.ToSpike;
                             } else if (scored == 1) {
                                 intake.intakeOn();
-                                follower.followPath(spike2, run, false);
+                                follower.followPath(spike3, run, false);
                                 pathState = State.ToSpike;
                             } else if (scored == 2) {
-//                                intake.intakeOn();
-//                                follower.followPath(spike3, run, false);
-//                                pathState = State.ToSpike;
+                                intake.intakeOn();
+                                follower.followPath(spike1, run, false);
+                                pathState = State.ToSpike;
                             } else {
                                 follower.followPath(end);
                                 pathState = State.End;
@@ -228,7 +231,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 } else {
                     if (reverseWait==null){
                         reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>2000){
+                    } else if (reverseWait.milliseconds()>3000){
                         intake.intakeOn();
                     } else if (reverseWait.milliseconds()>1000){
                         intake.intakeReverse();
@@ -245,10 +248,10 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                         follower.followPath(pickup2, pick, false);
                     } else if (scored ==1){
                         intake.intakeOn();
-                        follower.followPath(pickup2, pick, false);
+                        follower.followPath(pickup3, pick, false);
                     } else if (scored ==2 ){
                         intake.intakeOn();
-                        follower.followPath(pickup3, pick, false);
+                        follower.followPath(pickup1, pick, false);
                     }
                     pathState= State.Pickup;
 
@@ -259,11 +262,11 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                     //intake.intakeReverse();
                     //elapsedTime = new ElapsedTime();
                     if (scored == 0){
-                        follower.followPath(score1, run, false);
-                    } else if (scored ==1){
                         follower.followPath(score2, run, false);
-                    } else if (scored ==2 ){
+                    } else if (scored ==1){
                         follower.followPath(score3, run, false);
+                    } else if (scored ==2 ){
+                        follower.followPath(score1, run, false);
                     }
                     scored++;
                     pathState = State.ToGoal;
@@ -307,8 +310,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 .build();
 
         gateToScore = follower.pathBuilder()
-                .addPath(new BezierLine(gatePoint, scorePose))
-                .setLinearHeadingInterpolation(gatePoint.getHeading(), scorePose.getHeading())
+                .addPath(new BezierCurve(gatePoint, new Pose(54, 66), evilScore))
+                .setLinearHeadingInterpolation(gatePoint.getHeading(), evilScore.getHeading())
                 .build();
 
         spike2 = follower.pathBuilder()
