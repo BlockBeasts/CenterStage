@@ -40,7 +40,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    public static int offsetNear = -50;
+    public static int offsetNear = -20;
     public static int offsetFar = -50;
     static final double FEET_PER_METER = 3.28084;
 
@@ -67,16 +67,16 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
     private final Pose endPickup1 = new Pose (24 , 83, Math.toRadians(180));
 
-    private final Pose gatePoint = new Pose(22, 65, Math.toRadians(170));
+    private final Pose gatePoint = new Pose(23, 67, Math.toRadians(160));
     private final Pose intermediate = new Pose (50, 72, Math.toRadians(150));
     private final Pose pickup2Pose = new Pose(49, 86-29, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(20, 86-29, Math.toRadians(180));
+    private final Pose endPickup2 = new Pose(23, 86-29, Math.toRadians(180));
 
     private final Pose backPickup2 = new Pose(30, 86-29, Math.toRadians(180));
 
     private final Pose pickup3Pose = new Pose(49, 83-50, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(16, 83-50, Math.toRadians(180));
-    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(135));
+    private final Pose endPickup3 = new Pose(23, 83-50, Math.toRadians(180));
+    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(130));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
@@ -169,9 +169,11 @@ public class spike3AutoBlueLobster extends LinearOpMode {
             telemetry.addData("y", follower.getPose().getY());
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.addData("velocity", init.getShooterLeft().getVelocity());
+            telemetry.addData("lift", lift.getCurrentPosition());
             telemetry.update();
 
             outake.update(offsetNear, offsetFar);
+            lift.update();
 
 //            if (outake.has3Balls()){
 //                intake.intakeReverse();
@@ -195,6 +197,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
             case ToGoal:
                 if(!follower.isBusy()) {
                     reverseWait = null;
+                    intake.intakeOn();
 
                     if (beforeShoot){
 
@@ -220,7 +223,7 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                                 pathState = State.ToSpike;
                             } else if (scored == 1) {
                                 intake.intakeOn();
-                                follower.followPath(spike3, run, false);
+                                follower.followPath(spike3, 1, false);
                                 pathState = State.ToSpike;
                             } else if (scored == 2) {
                                 intake.intakeOn();
@@ -236,9 +239,9 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 } else {
                     if (reverseWait==null){
                         reverseWait = new ElapsedTime();
-                    } else if (reverseWait.milliseconds()>3000){
-                        intake.intakeOn();
-                    } else if (reverseWait.milliseconds()>1000){
+//                    } else if (reverseWait.milliseconds()>3000){
+//                        intake.intakeOn();
+                    } else if (reverseWait.milliseconds()>500){
                         intake.intakeReverse();
                     }
                 }
@@ -292,8 +295,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                     if (gateWait ==null){
                         gateWait = new ElapsedTime();
                     }
-                    if (gateWait!=null && gateWait.milliseconds()>500){
-                        follower.followPath(gateToScore, run, false);
+                    if (gateWait!=null && gateWait.milliseconds()>1300){
+                        follower.followPath(gateToScore, run, true);
                         pathState = State.ToGoal;
                     }
                 }
@@ -341,8 +344,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 .build();
 
         spike2 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
+                .addPath(new BezierLine(evilScore, pickup2Pose))
+                .setLinearHeadingInterpolation(evilScore.getHeading(), pickup2Pose.getHeading())
                 .build();
         pickup2 = follower.pathBuilder()
                 .addPath( new BezierLine(pickup2Pose, endPickup2))
@@ -362,8 +365,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 .build();
 
         spike3 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup3Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading())
+                .addPath(new BezierLine(evilScore, pickup3Pose))
+                .setLinearHeadingInterpolation(evilScore.getHeading(), pickup3Pose.getHeading())
                 .build();
         pickup3 = follower.pathBuilder()
                 .addPath( new BezierLine(pickup3Pose, endPickup3))
@@ -376,8 +379,8 @@ public class spike3AutoBlueLobster extends LinearOpMode {
                 .build();
 
         end = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
+                .addPath(new BezierLine(evilScore, pickup2Pose))
+                .setLinearHeadingInterpolation(evilScore.getHeading(), pickup2Pose.getHeading())
                 .build();
     }
 

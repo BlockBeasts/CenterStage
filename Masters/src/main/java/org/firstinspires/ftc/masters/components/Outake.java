@@ -111,9 +111,7 @@ public class Outake {
                 init.getShooterLeft().setPower(0);
                 init.getShooterRight().setPower(0);
             }
-
         }
-
     }
 
 

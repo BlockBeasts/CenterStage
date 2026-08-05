@@ -165,13 +165,13 @@ public class farAutoBlueCV extends LinearOpMode {
 //                intake.intakeReverse();
 //            }
 
-            if (turnCutOff != null) {
-                if (turnCutOff.milliseconds() > 500){
-                    follower.breakFollowing();
-                    turnCutOff = null;
-                }
-
-            }
+//            if (turnCutOff != null) {
+//                if (turnCutOff.milliseconds() > 500){
+//                    follower.breakFollowing();
+//                    turnCutOff = null;
+//                }
+//
+//            }
 
         }
 
@@ -192,15 +192,13 @@ public class farAutoBlueCV extends LinearOpMode {
 
                     if (beforeShoot){
 
-                        aimToGoal();
 
-                        if (turnCutOff == null) {
                             outake.shootAll();
                             if (shootWait ==null) {
                                 shootWait = new ElapsedTime();
                                 beforeShoot = false;
                             }
-                        }
+
 
 
                     } else {
