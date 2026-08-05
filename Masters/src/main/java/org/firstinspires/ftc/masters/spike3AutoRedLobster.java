@@ -29,9 +29,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "goal blue LOBSTER")
+@Autonomous(name = "goal red LOBSTER")
 
-public class spike3AutoBlueLobster extends LinearOpMode {
+public class spike3AutoRedLobster extends LinearOpMode {
 
     Init init;
     Intake intake;
@@ -60,25 +60,24 @@ public class spike3AutoBlueLobster extends LinearOpMode {
     final int THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION = 4;
 
     private Follower follower;
-    private final Pose startPose = new Pose(144-121.5, 120, Math.toRadians(180-126));
+    private final Pose startPose = new Pose(121.5, 120, Math.toRadians(123));
 
-    private final Pose tagPose = new Pose(44, 110, Math.toRadians(90));
-    private final Pose scorePose = new Pose(144-86.5, 101, Math.toRadians(180-34));
-    private final Pose pickup1Pose = new Pose(49, 83, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup1 = new Pose (24 , 83, Math.toRadians(180));
+    private final Pose tagPose = new Pose(100, 110, Math.toRadians(90));
 
-    private final Pose gatePoint = new Pose(23, 67, Math.toRadians(160));
-    private final Pose intermediate = new Pose (50, 72, Math.toRadians(150));
-    private final Pose pickup2Pose = new Pose(49, 86-29, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(23, 86-29, Math.toRadians(180));
+    private final Pose scorePose = new Pose(86.5, 101, Math.toRadians(34));
+    private final Pose pickup1Pose = new Pose(144-49, 86, Math.toRadians(180)); // Highest (First Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup1 = new Pose (144-24 , 86, Math.toRadians(180));
 
-    private final Pose backPickup2 = new Pose(30, 86-29, Math.toRadians(180));
+    private final Pose gatePoint = new Pose(144-23, 67, Math.toRadians(160));
+    private final Pose intermediate = new Pose (144-50, 72, Math.toRadians(150));
+    private final Pose pickup2Pose = new Pose(144-49, 86-28, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(144-23, 86-28, Math.toRadians(180));
 
-    private final Pose pickup3Pose = new Pose(49, 83-50, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(23, 83-50, Math.toRadians(180));
-    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(130));
+    private final Pose pickup3Pose = new Pose(144-49, 86-48, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup3 = new Pose(144-23, 86-48, Math.toRadians(180));
+    private final Pose evilScore = new Pose(144-90, 82, Math.toRadians(40));
 
-    private final Pose scoreLast = new Pose(144-90, 80, Math.toRadians(130));
+    private final Pose scoreLast  = new Pose(144-90, 82, Math.toRadians(40));
 
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 

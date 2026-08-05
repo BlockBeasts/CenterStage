@@ -17,21 +17,15 @@ import org.firstinspires.ftc.masters.components.Intake;
 import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
-import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
-import org.openftc.apriltag.AprilTagDetection;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvCameraFactory;
-import org.openftc.easyopencv.OpenCvCameraRotation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Config
-@Autonomous(name = "far auto blue")
+@Autonomous(name = "far auto blue LOBSTER")
 
 public class farAutoBlueCV extends LinearOpMode {
 
@@ -70,18 +64,15 @@ public class farAutoBlueCV extends LinearOpMode {
     private final Pose scorePose = new Pose(55.3, 20.4, Math.toRadians(112));
 
     private final Pose scorePose2 = new Pose( 48, 20.4, Math.toRadians(112));
+    private final Pose scorePose3 = new Pose (55, 20.4, Math.toRadians(112));
 
     private final Pose pickupPlayer = new Pose (24, 13, Math.toRadians(180 ));
-    private final Pose pickupPlayer2 = new Pose (12, 13, Math.toRadians(175));
-
-    private final Pose pickup3Pose = new Pose(49, 86-48, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(20, 86-48, Math.toRadians(180));
-    private final Pose evilScore = new Pose(144-90, 80, Math.toRadians(150));
+    private final Pose endPickupPlayer = new Pose (12, 13, Math.toRadians(175));
 
     private final Pose endPose = new Pose (34, 12, Math.toRadians(90)); // need to change values to get off the line
 
-    private PathChain scorePreload, readTag;
-    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, pickupFromBox, pickupFromBoxEnd;
+    private PathChain scorePreload;
+    private PathChain  score1,  score2, end, pickupFromBox, pickupFromBoxEnd, score3;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
@@ -98,13 +89,10 @@ public class farAutoBlueCV extends LinearOpMode {
     ElapsedTime shootWait =null;
     ElapsedTime reverseWait = null;
 
-
-
     public static final String POSE_KEY_X = "PoseX";
     public static final String POSE_KEY_Y = "PoseY";
     public static final String POSE_KEY_H = "PoseH";
     public Lift lift;
-
 
 
     public void runOpMode() throws InterruptedException {
@@ -135,12 +123,6 @@ public class farAutoBlueCV extends LinearOpMode {
 
         while (opModeIsActive()){
 
-
-//            if (tagId==-1) {
-//                ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getDetectionsUpdate();
-//                tagId = getTag(detections);
-//            }
-
             // These loop the movements of the robot, these must be called continuously in order to work
             follower.update();
             autonomousPathUpdate(tagId);
@@ -162,17 +144,9 @@ public class farAutoBlueCV extends LinearOpMode {
 
             outake.update(0, 0);
 
-//            if (outake.has3Balls()){
-//                intake.intakeReverse();
-//            }
-
-//            if (turnCutOff != null) {
-//                if (turnCutOff.milliseconds() > 500){
-//                    follower.breakFollowing();
-//                    turnCutOff = null;
-//                }
-//
-//            }
+            if (outake.has3Balls()){
+                intake.intakeReverse();
+            }
 
         }
 
@@ -192,16 +166,12 @@ public class farAutoBlueCV extends LinearOpMode {
                 if(!follower.isBusy() && init.getShooterLeft().getVelocity()>1880) {
 
                     if (beforeShoot){
-
                             outake.shootAll();
-                            if (shootWait ==null) {
-                                shootWait = new ElapsedTime();
-                                beforeShoot = false;
-                            }
+                            shootWait = new ElapsedTime();
+                            beforeShoot = false;
 
                     } else {
                         if (shootWait!=null && shootWait.milliseconds()>500){
-
                             shootWait =null;
                             beforeShoot = true;
                             if (scored == 0 || scored ==1 || scored ==2) {
@@ -212,11 +182,8 @@ public class farAutoBlueCV extends LinearOpMode {
                                 follower.followPath(end, run, true);
                                 pathState = State.End;
                             }
-                           // }
                         }
                     }
-
-
                 }
 
                 break;
@@ -224,10 +191,7 @@ public class farAutoBlueCV extends LinearOpMode {
                 if(!follower.isBusy()) {
                     //pick up
                     intake.intakeOn();
-                    if (scored == 0 || scored ==1){
-                        intake.intakeOn();
-                        follower.followPath(pickupFromBoxEnd, pick, false);
-                    }
+                    follower.followPath(pickupFromBoxEnd, pick, false);
                     pathState= State.Pickup;
 
                 }
@@ -238,14 +202,14 @@ public class farAutoBlueCV extends LinearOpMode {
                         elapsedTime = new ElapsedTime();
                     }
                     if (elapsedTime.milliseconds()>2000) {
-                        //intake.intakeReverse();
-                        //elapsedTime = new ElapsedTime();
+
                         if (scored == 0 ) {
                             follower.followPath(score1, pick, false);
-                        } else if (scored ==1 || scored ==2){
+                        } else if (scored ==1){
                             follower.followPath(score2, pick, false)
-;                        }
-
+;                        } else if (scored ==2){
+                            follower.followPath(score3, pick, false);
+                        }
 
                         scored++;
                         pathState = State.ToGoal;
@@ -276,42 +240,25 @@ public class farAutoBlueCV extends LinearOpMode {
                 .build();
 
         pickupFromBoxEnd = follower.pathBuilder()
-                .addPath(new BezierLine(pickupPlayer, pickupPlayer2))
-                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), pickupPlayer2.getHeading())
+                .addPath(new BezierLine(pickupPlayer, endPickupPlayer))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), endPickupPlayer.getHeading())
                 .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(pickupPlayer2, scorePose))
-                .setLinearHeadingInterpolation(pickupPlayer2.getHeading(), scorePose.getHeading())
+                .addPath(new BezierLine(endPickupPlayer, scorePose))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose.getHeading())
                 .build();
 
-//        spike2 = follower.pathBuilder()
-//                .addPath(new BezierLine(scorePose, pickup2Pose))
-//                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
-//                .build();
-//        pickup2 = follower.pathBuilder()
-//                .addPath( new BezierLine(pickup2Pose, endPickup2))
-//                .setLinearHeadingInterpolation(pickup2Pose.getHeading(), endPickup2.getHeading())
-//                .build();
 
         score2 = follower.pathBuilder()
-                .addPath(new BezierLine(pickupPlayer2, scorePose2))
-                .setLinearHeadingInterpolation(pickupPlayer2.getHeading(), scorePose2.getHeading())
+                .addPath(new BezierLine(endPickupPlayer, scorePose2))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose2.getHeading())
                 .build();
 
-//        spike3 = follower.pathBuilder()
-//                .addPath(new BezierLine(scorePose, pickup3Pose))
-//                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading())
-//                .build();
-//        pickup3 = follower.pathBuilder()
-//                .addPath( new BezierLine(pickup3Pose, endPickup3))
-//                .setLinearHeadingInterpolation(pickup3Pose.getHeading(), endPickup3.getHeading())
-//                .build();
-//
-//        score3 = follower.pathBuilder()
-//                .addPath(new BezierLine(pickup3Pose, evilScore))
-//                .setLinearHeadingInterpolation(endPickup3.getHeading(), evilScore.getHeading())
-//                .build();
+        score3 = follower.pathBuilder()
+                .addPath(new BezierLine(endPickupPlayer, scorePose3))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose3.getHeading())
+                .build();
 
         end = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, endPose))

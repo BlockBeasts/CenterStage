@@ -18,7 +18,10 @@ import org.firstinspires.ftc.masters.components.Lift;
 import org.firstinspires.ftc.masters.components.Outake;
 import org.firstinspires.ftc.masters.pedroPathing.Constants;
 import org.firstinspires.ftc.masters.vison.AprilTagDetectionPipeline;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
@@ -60,18 +63,16 @@ public class farAutoRedCV extends LinearOpMode {
     private final Pose startPose = new Pose(144-56, 8.8, Math.toRadians(90));
     private final Pose scorePose = new Pose(88.6, 17.4, Math.toRadians(67.9));
 
-    private final Pose pickupPlayer = new Pose (144-34, 14, Math.toRadians(0 ));
-    private final Pose pickupPlayer2 = new Pose (144-10.8, 11.1, Math.toRadians(-19));
-    private final Pose pickup2Pose = new Pose(49, 86-28, Math.toRadians(180)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(20, 86-28, Math.toRadians(180));
-    private final Pose pickup3Pose = new Pose(49, 86-48, Math.toRadians(180)); // Lowest (Third Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup3 = new Pose(20, 86-48, Math.toRadians(180));
-    private final Pose evilScore =  new Pose(88.6, 17.4, Math.toRadians(65.9));
+    private final Pose scorePose2 = new Pose( 144-48, 20.4, Math.toRadians(112));
+    private final Pose scorePose3 = new Pose (144-55, 20.4, Math.toRadians(112));
+
+    private final Pose pickupPlayer = new Pose (144-24, 13, Math.toRadians(0 ));
+    private final Pose endPickupPlayer = new Pose (144-12, 13, Math.toRadians(15));
 
     private final Pose endPose = new Pose (144-34, 12, Math.toRadians(90)); // need to change values to get off the line
 
-    private PathChain scorePreload, readTag;
-    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, pickupFromBoxEnd, pickupFromBox;
+    private PathChain scorePreload;
+    private PathChain  score1,  score2, end, pickupFromBox, pickupFromBoxEnd, score3;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
@@ -185,36 +186,27 @@ public class farAutoRedCV extends LinearOpMode {
 
                 break;
             case ToGoal:
-                if(!follower.isBusy() && init.getShooterLeft().getVelocity()>1820) {
+                if(!follower.isBusy() && init.getShooterLeft().getVelocity()>1880) {
 
                     if (beforeShoot){
-
                         outake.shootAll();
-                        if (shootWait ==null) {
-                            shootWait = new ElapsedTime();
-                            beforeShoot = false;
-                        }
+                        shootWait = new ElapsedTime();
+                        beforeShoot = false;
 
                     } else {
                         if (shootWait!=null && shootWait.milliseconds()>500){
-
                             shootWait =null;
                             beforeShoot = true;
-                            if (scored == 0) {
+                            if (scored == 0 || scored ==1 || scored ==2) {
                                 intake.intakeOn();
                                 follower.followPath(pickupFromBox, run, false);
                                 pathState = State.ToSpike;
-                            } else
-//
-                            {
+                            } else {
                                 follower.followPath(end, run, true);
                                 pathState = State.End;
                             }
-                            // }
                         }
                     }
-
-
                 }
 
                 break;
@@ -222,27 +214,30 @@ public class farAutoRedCV extends LinearOpMode {
                 if(!follower.isBusy()) {
                     //pick up
                     intake.intakeOn();
-                    if (scored == 0){
-                        intake.intakeOn();
-                        follower.followPath(pickupFromBoxEnd, pick, false);
-                    }
+                    follower.followPath(pickupFromBoxEnd, pick, false);
                     pathState= State.Pickup;
 
                 }
                 break;
             case Pickup:
                 if(!follower.isBusy()) {
-                    //intake.intakeReverse();
-                    //elapsedTime = new ElapsedTime();
-                    if (scored == 0){
-                        follower.followPath(score1, pick, false);
-//                    } else if (scored ==1){
-//                        follower.followPath(score2, run, false);
-//                    } else if (scored ==2 ){
-//                        follower.followPath(score3, run, false);
+                    if (elapsedTime==null){
+                        elapsedTime = new ElapsedTime();
                     }
-                    scored++;
-                    pathState = State.ToGoal;
+                    if (elapsedTime.milliseconds()>2000) {
+
+                        if (scored == 0 ) {
+                            follower.followPath(score1, pick, false);
+                        } else if (scored ==1){
+                            follower.followPath(score2, pick, false)
+                            ;                        } else if (scored ==2){
+                            follower.followPath(score3, pick, false);
+                        }
+
+                        scored++;
+                        pathState = State.ToGoal;
+                        elapsedTime= null;
+                    }
 
                 }
                 break;
@@ -268,41 +263,24 @@ public class farAutoRedCV extends LinearOpMode {
                 .build();
 
         pickupFromBoxEnd = follower.pathBuilder()
-                .addPath(new BezierLine(pickupPlayer, pickupPlayer2))
-                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), pickupPlayer2.getHeading())
+                .addPath(new BezierLine(pickupPlayer, endPickupPlayer))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), endPickupPlayer.getHeading())
                 .build();
 
         score1 = follower.pathBuilder()
-                .addPath(new BezierLine(pickupPlayer2, evilScore))
-                .setLinearHeadingInterpolation(pickupPlayer2.getHeading(), evilScore.getHeading())
+                .addPath(new BezierLine(endPickupPlayer, scorePose))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose.getHeading())
                 .build();
 
-        spike2 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup2Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup2Pose.getHeading())
-                .build();
-        pickup2 = follower.pathBuilder()
-                .addPath( new BezierLine(pickup2Pose, endPickup2))
-                .setLinearHeadingInterpolation(pickup2Pose.getHeading(), endPickup2.getHeading())
-                .build();
 
         score2 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup2Pose, evilScore))
-                .setLinearHeadingInterpolation(endPickup2.getHeading(), evilScore.getHeading())
-                .build();
-
-        spike3 = follower.pathBuilder()
-                .addPath(new BezierLine(scorePose, pickup3Pose))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickup3Pose.getHeading())
-                .build();
-        pickup3 = follower.pathBuilder()
-                .addPath( new BezierLine(pickup3Pose, endPickup3))
-                .setLinearHeadingInterpolation(pickup3Pose.getHeading(), endPickup3.getHeading())
+                .addPath(new BezierLine(endPickupPlayer, scorePose2))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose2.getHeading())
                 .build();
 
         score3 = follower.pathBuilder()
-                .addPath(new BezierLine(pickup3Pose, evilScore))
-                .setLinearHeadingInterpolation(endPickup3.getHeading(), evilScore.getHeading())
+                .addPath(new BezierLine(endPickupPlayer, scorePose3))
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose3.getHeading())
                 .build();
 
         end = follower.pathBuilder()
@@ -310,6 +288,7 @@ public class farAutoRedCV extends LinearOpMode {
                 .setLinearHeadingInterpolation(scorePose.getHeading(), endPose.getHeading())
                 .build();
     }
+    
 
     protected int getTag(ArrayList<AprilTagDetection> detections){
 
