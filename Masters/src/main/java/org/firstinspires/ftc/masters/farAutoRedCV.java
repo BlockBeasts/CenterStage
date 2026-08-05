@@ -30,7 +30,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Config
-@Autonomous(name = "far auto red")
+@Autonomous(name = "far auto red LOBSTER")
 
 public class farAutoRedCV extends LinearOpMode {
 
