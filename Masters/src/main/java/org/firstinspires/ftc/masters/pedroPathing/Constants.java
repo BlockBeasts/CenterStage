@@ -27,12 +27,12 @@ public class Constants {
     public static double headingF = 0.0;
     public static FollowerConstants followerConstants = new FollowerConstants()
             .mass(15.4)
-            .lateralZeroPowerAcceleration(-85.01)
-            .forwardZeroPowerAcceleration(-50.7)
+            .lateralZeroPowerAcceleration(-60)
+            .forwardZeroPowerAcceleration(-27.6)
             .translationalPIDFCoefficients(new PIDFCoefficients(0.25, 0, 0.01, 0))
             .headingPIDFCoefficients(new PIDFCoefficients(headingP, headingI, headingD, headingF))
             .drivePIDFCoefficients(new FilteredPIDFCoefficients(0.02, 0.0, 0.00001, 0.6, 0))
-            .centripetalScaling(0.00095);
+            .centripetalScaling(0.0035);
 
     public static MecanumConstants driveConstants = new MecanumConstants()
             .maxPower(1)
@@ -44,16 +44,17 @@ public class Constants {
             .leftRearMotorDirection(DcMotorSimple.Direction.REVERSE)
             .rightFrontMotorDirection(DcMotorSimple.Direction.FORWARD)
             .rightRearMotorDirection(DcMotorSimple.Direction.FORWARD)
-            .xVelocity(69.1)
-            .yVelocity(50.76);
+            .xVelocity(68)
+            .yVelocity(46);
 
 
     public static PathConstraints pathConstraints = new PathConstraints(0.99, 100, 0.8, 1);
 
     public static PinpointConstants localizerConstants = new PinpointConstants()
 
-            .forwardPodY(7.09)
-            .strafePodX(1.92)
+            .forwardPodY(7)
+            .strafePodX(3)
+            //todo: MIGHT BE 1.92 DONT TRUST ME PLEASE!!!! THIS IS A WARNING!!!
             .distanceUnit(DistanceUnit.INCH)
             .hardwareMapName("pinpoint")
             .encoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD)

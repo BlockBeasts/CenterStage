@@ -63,11 +63,11 @@ public class farAutoRedCV extends LinearOpMode {
     private final Pose startPose = new Pose(144-56, 8.8, Math.toRadians(90));
     private final Pose scorePose = new Pose(88.6, 17.4, Math.toRadians(67.9));
 
-    private final Pose scorePose2 = new Pose( 144-48, 20.4, Math.toRadians(112));
-    private final Pose scorePose3 = new Pose (144-55, 20.4, Math.toRadians(112));
+    private final Pose scorePose2 = new Pose( 88, 20, Math.toRadians(68));
+    private final Pose scorePose3 = new Pose (88, 20, Math.toRadians(68));
 
     private final Pose pickupPlayer = new Pose (144-24, 13, Math.toRadians(0 ));
-    private final Pose endPickupPlayer = new Pose (144-12, 13, Math.toRadians(15));
+    private final Pose endPickupPlayer = new Pose (144-14, 13, Math.toRadians(-10));
 
     private final Pose endPose = new Pose (144-34, 12, Math.toRadians(90)); // need to change values to get off the line
 
@@ -80,7 +80,7 @@ public class farAutoRedCV extends LinearOpMode {
     int scored = 0;
 
     double run = 1;
-    double pick = 0.6;
+    double pick = 1;
 
     ElapsedTime elapsedTime = null;
     ElapsedTime shootWait =null;
@@ -93,6 +93,7 @@ public class farAutoRedCV extends LinearOpMode {
     public static final String POSE_KEY = "Pose";
 
     public Lift lift;
+    private ElapsedTime stuckTimer = new ElapsedTime();
 
     public void runOpMode() throws InterruptedException {
 
@@ -220,6 +221,17 @@ public class farAutoRedCV extends LinearOpMode {
                 }
                 break;
             case Pickup:
+                if (follower.isBusy()){
+                    double currentVelocity = follower.getVelocity().getMagnitude();
+                    if (currentVelocity<0.3){
+                        if (stuckTimer.seconds()>0.75){
+                            follower.breakFollowing();
+                            stuckTimer.reset();
+                        }
+                    } else {
+                        stuckTimer.reset();
+                    }
+                }
                 if(!follower.isBusy()) {
                     if (elapsedTime==null){
                         elapsedTime = new ElapsedTime();
@@ -229,8 +241,8 @@ public class farAutoRedCV extends LinearOpMode {
                         if (scored == 0 ) {
                             follower.followPath(score1, pick, false);
                         } else if (scored ==1){
-                            follower.followPath(score2, pick, false)
-                            ;                        } else if (scored ==2){
+                            follower.followPath(score2, pick, false);
+                        } else if (scored ==2){
                             follower.followPath(score3, pick, false);
                         }
 
@@ -254,12 +266,12 @@ public class farAutoRedCV extends LinearOpMode {
 
         scorePreload= follower.pathBuilder()
                 .addPath(new BezierLine(startPose, scorePose))
-                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading())
+                .setLinearHeadingInterpolation(startPose.getHeading(), scorePose.getHeading(), 0.8)
                 .build();
 
         pickupFromBox = follower.pathBuilder()
                 .addPath(new BezierLine(scorePose, pickupPlayer))
-                .setLinearHeadingInterpolation(scorePose.getHeading(), pickupPlayer.getHeading())
+                .setLinearHeadingInterpolation(scorePose.getHeading(), pickupPlayer.getHeading(), 0.8)
                 .build();
 
         pickupFromBoxEnd = follower.pathBuilder()
@@ -269,18 +281,18 @@ public class farAutoRedCV extends LinearOpMode {
 
         score1 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickupPlayer, scorePose))
-                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose.getHeading())
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose.getHeading(), 0.8)
                 .build();
 
 
         score2 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickupPlayer, scorePose2))
-                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose2.getHeading())
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose2.getHeading(), 0.5)
                 .build();
 
         score3 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickupPlayer, scorePose3))
-                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose3.getHeading())
+                .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose3.getHeading(), 0.5)
                 .build();
 
         end = follower.pathBuilder()
