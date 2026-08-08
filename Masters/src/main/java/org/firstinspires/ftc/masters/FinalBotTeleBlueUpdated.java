@@ -104,11 +104,11 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             genPose = new Pose(StartX, StartY, StartH);
         }
 
-       // if (genPose != null) {
-         //   follower.setStartingPose(genPose);
-        //} else {
+        if (genPose != null) {
+            follower.setStartingPose(genPose);
+        } else {
             follower.setStartingPose(startPose);
-        //}
+        }
         init = new Init(hardwareMap);
         initializeHardwareAlliance();
 
@@ -276,9 +276,9 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 
 
             if (allianceColor == Constant.AllianceColor.BLUE) {
-                cartesianDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
-            } else {
                 cartesianDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
+            } else {
+                cartesianDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
             }
         }
     }
