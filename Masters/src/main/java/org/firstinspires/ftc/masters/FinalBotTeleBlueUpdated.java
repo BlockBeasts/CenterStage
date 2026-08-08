@@ -78,6 +78,8 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
     public static final String POSE_KEY_Y = "PoseY";
     public static final String POSE_KEY_H = "PoseH";
 
+    boolean isRobotCentric = false;
+
     public void runOpMode() throws InterruptedException {
 
         initAprilTag();
@@ -119,6 +121,8 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         frontRight = init.getFrontRight();
         backLeft = init.getBackLeft();
         backRight = init.getBackRight();
+
+
 
         double turnTo = 0;
 
@@ -213,6 +217,13 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             if(outake.upToSpeed()){
                 gamepad1.setLedColor(0, 255, 0, 750);
             }
+
+            if (gamepad2.cross && gamepad2.circle){
+                isRobotCentric = true;
+            }
+            if (gamepad2.right_trigger_pressed && gamepad2.left_trigger_pressed){
+                isRobotCentric = false;
+            }
 //            if (!follower.isBusy()){
 //                follower.breakFollowing();
 //            }
@@ -258,56 +269,51 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 
     public void cartesianDrive(double x, double y, double t) {
 
-        if (gamepad1.options) {
-            init.getPinpoint().setYawScalar(0);
+        double frontLeftPower = 0, backLeftPower = 0, frontRightPower = 0, backRightPower = 0;
+
+        if (!isRobotCentric) {
+            double botHeading = init.getPinpoint().getHeading(AngleUnit.RADIANS);
+
+            // Rotate the movement direction counter to the bot's rotation
+            double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
+            double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
+
+            rotX = rotX * 1.1;  // Counteract imperfect strafing
+
+            // Denominator is the largest motor power (absolute value) or 1
+            // This ensures all the powers maintain the same ratio,
+            // but only if at least one is out of the range [-1, 1]
+            double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(t), 1);
+            frontLeftPower = (rotY + rotX + t) / denominator;
+            backLeftPower = (rotY - rotX + t) / denominator;
+            frontRightPower = (rotY - rotX - t) / denominator;
+            backRightPower = (rotY + rotX - t) / denominator;
+        } else {
+            if (Math.abs(y) < 0.2) {
+                y = 0;
+            }
+            if (Math.abs(x) < 0.2) {
+                x = 0;
+            }
+
+            frontLeftPower = y + x + t;
+            backLeftPower = y - x + t;
+            frontRightPower = y - x - t;
+            backRightPower = y + x - t;
+
+            double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
+
+            frontLeftPower /= denominator;
+            backLeftPower /= denominator;
+           frontRightPower /= denominator;
+            backRightPower /= denominator;
         }
-
-        double botHeading = init.getPinpoint().getHeading(AngleUnit.RADIANS);
-
-        // Rotate the movement direction counter to the bot's rotation
-        double rotX = x * Math.cos(-botHeading) - y * Math.sin(-botHeading);
-        double rotY = x * Math.sin(-botHeading) + y * Math.cos(-botHeading);
-
-        rotX = rotX * 1.1;  // Counteract imperfect strafing
-
-        // Denominator is the largest motor power (absolute value) or 1
-        // This ensures all the powers maintain the same ratio,
-        // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(t), 1);
-        double frontLeftPower = (rotY + rotX + t) / denominator;
-        double backLeftPower = (rotY - rotX + t) / denominator;
-        double frontRightPower = (rotY - rotX - t) / denominator;
-        double backRightPower = (rotY + rotX - t) / denominator;
 
         frontLeft.setPower(frontLeftPower);
         backLeft.setPower(backLeftPower);
         frontRight.setPower(frontRightPower);
         backRight.setPower(backRightPower);
 
-
-//        if (Math.abs(y) < 0.2) {
-//            y = 0;
-//        }
-//        if (Math.abs(x) < 0.2) {
-//            x = 0;
-//        }
-//
-//        double leftFrontPower = y + x + t;
-//        double leftRearPower = y - x + t;
-//        double rightFrontPower = y - x - t;
-//        double rightRearPower = y + x - t;
-//
-//        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(t), 1);
-//
-//        leftFrontPower /= denominator;
-//        leftRearPower /= denominator;
-//        rightFrontPower /= denominator;
-//        rightRearPower /= denominator;
-
-//        frontLeft.setPower(leftFrontPower);
-//        backLeft.setPower(leftRearPower);
-//        frontRight.setPower(rightFrontPower);
-//        backRight.setPower(rightRearPower);
     }
 
     protected double getRotations(List<org.firstinspires.ftc.vision.apriltag.AprilTagDetection> detections){

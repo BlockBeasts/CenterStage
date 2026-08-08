@@ -165,14 +165,14 @@ public class spike3AutoBlueLobster extends LinearOpMode {
 //            telemetry.addData("saved pos h", blackboard.get(POSE_KEY_H));
 
             // Feedback to Driver Hub for debugging
-            telemetry.addData("tagId", tagId);
-            telemetry.addData("path state", pathState);
-            telemetry.addData("x", follower.getPose().getX());
-            telemetry.addData("y", follower.getPose().getY());
-            telemetry.addData("heading", follower.getPose().getHeading());
-            telemetry.addData("velocity", init.getShooterLeft().getVelocity());
-            telemetry.addData("lift", lift.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("tagId", tagId);
+//            telemetry.addData("path state", pathState);
+//            telemetry.addData("x", follower.getPose().getX());
+//            telemetry.addData("y", follower.getPose().getY());
+//            telemetry.addData("heading", follower.getPose().getHeading());
+//            telemetry.addData("velocity", init.getShooterLeft().getVelocity());
+//            telemetry.addData("lift", lift.getCurrentPosition());
+//            telemetry.update();
 
             outake.update(offsetNear, offsetFar);
             lift.update();

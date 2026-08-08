@@ -234,9 +234,8 @@ public class Outake {
                 break;
             }
         }
-
-        init.outakeTrayLeft.setPosition(liftLeftPos);
         init.outakeTrayMiddle.setPosition(liftMiddlePos);
+        init.outakeTrayLeft.setPosition(liftLeftPos);
         init.outakeTrayRight.setPosition(liftRightPos);
 
         telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
