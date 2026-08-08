@@ -66,7 +66,10 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 
     boolean touchpadPressed = false;
 
-    int emergencyOffset=0;
+    public static int emergencyOffset=0;
+
+    // 30 near
+    // 200 far
     private final Pose startPose = new Pose(8.5, 8.5, Math.toRadians(90));
 
     public void initializeHardwareAlliance(){
@@ -270,7 +273,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 //            }
 
             intake.update();
-            outake.update(emergencyOffset, emergencyOffset);
+            outake.update(emergencyOffset + 30, emergencyOffset + 200);
                follower.update();
             telemetry.update();
 
