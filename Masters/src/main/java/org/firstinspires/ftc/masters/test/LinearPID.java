@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "LinearPID")
+@Disabled
 public class LinearPID extends LinearOpMode {
 
     //TODO: https://www.youtube.com/watch?v=E6H6Nqe6qJo

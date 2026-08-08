@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
 <Robot type="FirstInspires-FTC">
 
-    <Webcam name="Webcam 1" serialNumber="06784940" />
-    <LynxUsbDevice name="Possably final Bot Config :3" serialNumber="(embedded)" parentModuleAddress="173">
+    <Webcam name="Webcam 1" serialNumber='06784940' />
+    <LynxUsbDevice name="Possably final Bot Config" serialNumber="(embedded)" parentModuleAddress="173">
         <!-- what do you mean "Possibly"???-->
 
         <!--Control Hub, Don't ask why it's port 173-->

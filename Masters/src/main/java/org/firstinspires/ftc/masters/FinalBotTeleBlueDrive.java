@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Decode Teleop Blue test")
+@Disabled
 public class FinalBotTeleBlueDrive extends LinearOpMode {
     protected final FtcDashboard dashboard = FtcDashboard.getInstance();
 

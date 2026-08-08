@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Wruff!")
+@Disabled
 public class newLeaf extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();

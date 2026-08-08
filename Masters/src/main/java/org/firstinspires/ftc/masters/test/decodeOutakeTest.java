@@ -16,6 +16,7 @@ import org.firstinspires.ftc.masters.components.Init;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "DecodeOutakeTest")
+@Disabled
 public class decodeOutakeTest extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();

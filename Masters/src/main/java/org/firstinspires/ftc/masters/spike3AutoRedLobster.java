@@ -8,6 +8,7 @@ import com.pedropathing.geometry.BezierCurve;
 import com.pedropathing.geometry.BezierLine;
 import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.PathChain;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -101,6 +102,8 @@ public class spike3AutoRedLobster extends LinearOpMode {
     public static final String POSE_KEY_H = "PoseH";
     public Lift lift;
 
+    private ElapsedTime stuckTimer = new ElapsedTime();
+
     public void runOpMode() throws InterruptedException {
 
         init = new Init(hardwareMap);
@@ -136,7 +139,16 @@ public class spike3AutoRedLobster extends LinearOpMode {
             }
         });
 
-
+        while (init.getPinpoint().getDeviceStatus() != GoBildaPinpointDriver.DeviceStatus.READY){
+            init.getPinpoint().update();
+            telemetry.addData("Pinpoint Status", init.getPinpoint().getDeviceStatus());
+            telemetry.update();
+            sleep(500);
+        } if (init.getPinpoint().getDeviceStatus() == GoBildaPinpointDriver.DeviceStatus.READY){
+            init.getPinpoint().update();
+            telemetry.addData("Pinpoint Status", init.getPinpoint().getDeviceStatus());
+            telemetry.update();
+        }
 
         waitForStart();
 
@@ -303,6 +315,16 @@ public class spike3AutoRedLobster extends LinearOpMode {
                     if (gateWait!=null && gateWait.milliseconds()>1300){
                         follower.followPath(gateToScore, run, true);
                         pathState = State.ToGoal;
+                    }
+                } else if (follower.isBusy()) {
+                    double currentVelocity = follower.getVelocity().getMagnitude();
+                    if (currentVelocity<0.3){
+                        if (stuckTimer.seconds()>0.75){
+                            follower.breakFollowing();
+                            stuckTimer.reset();
+                        }
+                    } else {
+                        stuckTimer.reset();
                     }
                 }
 

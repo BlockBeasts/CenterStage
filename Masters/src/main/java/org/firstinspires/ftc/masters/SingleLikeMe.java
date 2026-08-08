@@ -12,6 +12,7 @@ import org.firstinspires.ftc.masters.components.Init;
 
 @Config // Enables FTC Dashboard@
 @TeleOp(name = "Single")
+@Disabled
 public class SingleLikeMe extends LinearOpMode {
 
     Init init;

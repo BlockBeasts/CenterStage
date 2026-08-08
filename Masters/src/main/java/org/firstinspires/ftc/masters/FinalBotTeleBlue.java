@@ -9,6 +9,7 @@ import com.pedropathing.geometry.Pose;
 import com.pedropathing.paths.HeadingInterpolator;
 import com.pedropathing.paths.Path;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -40,6 +41,7 @@ import java.util.List;
 
 @Config // Enables FTC Dashboard
 @TeleOp(name = "Decode Teleop Blue")
+@Disabled
 public class FinalBotTeleBlue extends LinearOpMode {
     protected final FtcDashboard dashboard = FtcDashboard.getInstance();
 

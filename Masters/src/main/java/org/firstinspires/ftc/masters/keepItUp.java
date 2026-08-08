@@ -1,20 +1,29 @@
-package org.firstinspires.ftc.masters.test;
+package org.firstinspires.ftc.masters;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.masters.components.Init;
+import org.firstinspires.ftc.masters.components.Outake;
+
 @Config // Enables FTC Dashboard
-@TeleOp(name = "ServoTest")
+//@TeleOp(name = "Starter")
 @Disabled
-public class ServoTest extends LinearOpMode {
+public class keepItUp extends LinearOpMode {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
-    public static double position=0;
+
+    public static double Blank = 0;
+
+    Init init;
 
     public void runOpMode() throws InterruptedException {
 
@@ -22,13 +31,15 @@ public class ServoTest extends LinearOpMode {
 
         telemetry.update();
 
-        Servo servo = hardwareMap.servo.get("test");
+        init = new Init(hardwareMap);
 
         waitForStart();
 
-        while (opModeIsActive()) {
+        Servo left = init.getOutakeTrayLeft();
+        Servo middle = init.getOutakeTrayMiddle();
+        Servo right = init.getOutakeTrayRight();
 
-            servo.setPosition(position);
+        while (opModeIsActive()) {
 
         }
     }

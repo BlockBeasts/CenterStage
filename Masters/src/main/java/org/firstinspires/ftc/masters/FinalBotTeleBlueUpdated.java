@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.geometry.Pose;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -127,6 +128,17 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         double turnTo = 0;
 
         ElapsedTime turnCutOff = null;
+
+        while (init.getPinpoint().getDeviceStatus() != GoBildaPinpointDriver.DeviceStatus.READY){
+            init.getPinpoint().update();
+            telemetry.addData("Pinpoint Status", init.getPinpoint().getDeviceStatus());
+            telemetry.update();
+            sleep(500);
+        } if (init.getPinpoint().getDeviceStatus() == GoBildaPinpointDriver.DeviceStatus.READY){
+            init.getPinpoint().update();
+            telemetry.addData("Pinpoint Status", init.getPinpoint().getDeviceStatus());
+            telemetry.update();
+        }
 
         waitForStart();
 
@@ -263,7 +275,11 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             telemetry.update();
 
 
-            cartesianDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
+            if (allianceColor == Constant.AllianceColor.BLUE) {
+                cartesianDrive(gamepad1.left_stick_x, -gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
+            } else {
+                cartesianDrive(-gamepad1.left_stick_x, gamepad1.left_stick_y, (gamepad1.right_trigger * .8) - (gamepad1.left_trigger * .8));
+            }
         }
     }
 

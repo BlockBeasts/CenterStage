@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name="Color Test", group = "Test")
+@Disabled
 public class  ColorTest extends LinearOpMode {
 
 

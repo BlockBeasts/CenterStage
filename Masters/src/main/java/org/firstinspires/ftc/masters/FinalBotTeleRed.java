@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.masters;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.masters.components.Constant;
 
 @TeleOp(name = "Decode Teleop Red")
+@Disabled
 public class FinalBotTeleRed extends FinalBotTeleBlue {
 
 
