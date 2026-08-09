@@ -68,12 +68,12 @@ public class farAutoBlueCV extends LinearOpMode {
     private final Pose scorePose3 = new Pose (55, 20.4, Math.toRadians(112));
 
     private final Pose pickupPlayer = new Pose (24, 13, Math.toRadians(180 ));
-    private final Pose endPickupPlayer = new Pose (12, 13, Math.toRadians(175));
+    private final Pose endPickupPlayer = new Pose (16, 13, Math.toRadians(175));
 
     private final Pose endPose = new Pose (34, 12, Math.toRadians(90)); // need to change values to get off the line
 
     private PathChain scorePreload;
-    private PathChain  score1,  score2, end, pickupFromBox, pickupFromBoxEnd, score3;
+    private PathChain  score1,  score2, end, pickupFromBox, pickupFromBoxEnd, score3, score1Stuck, score2Stuck, score3Stuck;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
     private State pathState;
@@ -156,7 +156,7 @@ public class farAutoBlueCV extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
-            outake.update(30, 0);
+            outake.update(30, 200);
 
             if (outake.has3Balls()){
                 intake.intakeReverse();
@@ -207,17 +207,30 @@ public class farAutoBlueCV extends LinearOpMode {
                     intake.intakeOn();
                     follower.followPath(pickupFromBoxEnd, pick, false);
                     pathState= State.Pickup;
-
                 }
                 break;
             case Pickup:
                 if (follower.isBusy()){
+
                     double currentVelocity = follower.getVelocity().getMagnitude();
-                    if (currentVelocity<0.3){
-                        if (stuckTimer.seconds()>0.75){
+                    telemetry.addData("stuck", follower.isRobotStuck());
+                    if (follower.isRobotStuck()){
+                        //telemetry.addData("stuck", stuckTimer.seconds())
+
                             follower.breakFollowing();
-                            stuckTimer.reset();
-                        }
+
+                            if (scored == 0 ) {
+                                follower.followPath(score1Stuck, pick, false);
+                            } else if (scored ==1){
+                                follower.followPath(score2Stuck, pick, false);                        }
+                            else if (scored ==2){
+                                follower.followPath(score3Stuck, pick, false);
+                            }
+
+                            scored++;
+                            pathState = State.ToGoal;
+                            elapsedTime= null;
+
                     } else {
                         stuckTimer.reset();
                     }
@@ -274,15 +287,31 @@ public class farAutoBlueCV extends LinearOpMode {
                 .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose.getHeading())
                 .build();
 
+        score1Stuck = follower.pathBuilder()
+                .addPath(new BezierLine(pickupPlayer, scorePose))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), scorePose.getHeading())
+                .build();
+
 
         score2 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickupPlayer, scorePose2))
                 .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose2.getHeading())
                 .build();
 
+        score2Stuck = follower.pathBuilder()
+                .addPath(new BezierLine(pickupPlayer, scorePose2))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), scorePose2.getHeading())
+                .build();
+
         score3 = follower.pathBuilder()
                 .addPath(new BezierLine(endPickupPlayer, scorePose3))
                 .setLinearHeadingInterpolation(endPickupPlayer.getHeading(), scorePose3.getHeading())
+                .build();
+
+
+        score3Stuck = follower.pathBuilder()
+                .addPath(new BezierLine(pickupPlayer, scorePose3))
+                .setLinearHeadingInterpolation(pickupPlayer.getHeading(), scorePose3.getHeading())
                 .build();
 
         end = follower.pathBuilder()

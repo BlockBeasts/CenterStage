@@ -41,8 +41,8 @@ public class spike3AutoRedLobster extends LinearOpMode {
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
 
-    public static int offsetNear = -30;
-    public static int offsetFar = -50;
+    public static int offsetNear = 30;
+    public static int offsetFar = 200;
     static final double FEET_PER_METER = 3.28084;
 
     double fx = 822.317;
@@ -71,8 +71,8 @@ public class spike3AutoRedLobster extends LinearOpMode {
 
     private final Pose gatePoint = new Pose(125, 66, Math.toRadians(15));
     private final Pose intermediate = new Pose (144-50, 72, Math.toRadians(30));
-    private final Pose pickup2Pose = new Pose(144-55, 61, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(144-23, 61, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(144-55, 61-1, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(144-23, 61-1, Math.toRadians(0));
 
     private final Pose pickup3Pose = new Pose(144-49, 86-46, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose endPickup3 = new Pose(144-21, 86-46, Math.toRadians(0));
@@ -83,7 +83,7 @@ public class spike3AutoRedLobster extends LinearOpMode {
     private final Pose endPose = new Pose (60, 85, Math.toRadians(135)); // need to change values to get off the line
 
     private PathChain scorePreload;
-    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, toGate, gateToScore, pickup2ToGate;
+    private PathChain spike1, pickup1, score1, spike2, pickup2, score2, spike3, pickup3, score3, end, toGate, gateToScore, pickup2ToGate, score2Stuck;
 
     public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3, Gate, End};
     private State pathState;
@@ -316,15 +316,11 @@ public class spike3AutoRedLobster extends LinearOpMode {
                         follower.followPath(gateToScore, run, true);
                         pathState = State.ToGoal;
                     }
-                } else if (follower.isBusy()) {
-                    double currentVelocity = follower.getVelocity().getMagnitude();
-                    if (currentVelocity<0.3){
-                        if (stuckTimer.seconds()>0.75){
-                            follower.breakFollowing();
-                            stuckTimer.reset();
-                        }
-                    } else {
-                        stuckTimer.reset();
+                } else  {
+                    if (follower.isRobotStuck()){
+                        follower.breakFollowing();
+                        follower.followPath(score2Stuck, run, true);
+                        pathState = State.ToGoal;
                     }
                 }
 
@@ -384,12 +380,11 @@ public class spike3AutoRedLobster extends LinearOpMode {
                 .setLinearHeadingInterpolation(endPickup2.getHeading(), gatePoint.getHeading())
                 .build();
 
-//
-//        score2 = follower.pathBuilder()
-//                .addPath(new BezierLine(gatePoint, intermediate))
-//                .addPath(new BezierLine(intermediate, evilScore))
-//                .setLinearHeadingInterpolation(gatePoint.getHeading(), evilScore.getHeading())
-//                .build();
+        score2Stuck = follower.pathBuilder()
+                .addPath(new BezierLine(endPickup2, intermediate))
+                .addPath(new BezierLine(intermediate, evilScore))
+                .setLinearHeadingInterpolation(endPickup2.getHeading(), evilScore.getHeading())
+                .build();
 
         spike3 = follower.pathBuilder()
                 .addPath(new BezierLine(evilScore, pickup3Pose))

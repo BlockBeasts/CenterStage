@@ -291,6 +291,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
         double frontLeftPower = 0, backLeftPower = 0, frontRightPower = 0, backRightPower = 0;
 
         if (!isRobotCentric) {
+
             double botHeading = init.getPinpoint().getHeading(AngleUnit.RADIANS);
 
             // Rotate the movement direction counter to the bot's rotation
@@ -308,6 +309,8 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             frontRightPower = (rotY - rotX - t) / denominator;
             backRightPower = (rotY + rotX - t) / denominator;
         } else {
+            x= gamepad1.left_stick_x;
+            y = -gamepad1.left_stick_y;
             if (Math.abs(y) < 0.2) {
                 y = 0;
             }
@@ -324,7 +327,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 
             frontLeftPower /= denominator;
             backLeftPower /= denominator;
-           frontRightPower /= denominator;
+            frontRightPower /= denominator;
             backRightPower /= denominator;
         }
 
