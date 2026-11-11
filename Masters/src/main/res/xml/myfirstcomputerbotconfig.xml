@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<Robot type="FirstInspires-FTC">
+
+    <Webcam name="Webcam 1" serialNumber='06784940' />
+    <LynxUsbDevice name="Possably final Bot Config" serialNumber="(embedded)" parentModuleAddress="173">
+        <!-- what do you mean "Possibly"???-->
+
+        <!--Control Hub, Don't ask why it's port 173-->
+        <!--if you ask i will hit you with a hammer-->
+        <LynxModule name="Control Hub" port="173">
+
+            <!--Motor Colors-->
+
+            <!--light blue--><!--flourescent yellow-->
+            <goBILDA5202SeriesMotor name="leftMotor" port="3" />
+
+            <goBILDA5202SeriesMotor name="intakeMotor" port="2" />
+            <!--yellow-->
+            <goBILDA5202SeriesMotor name="frontLeft" port="0" />
+            <!--fuscia or Hot Pink either name works-->
+            <goBILDA5202SeriesMotor name="backLeft" port="1" />
+
+
+
+            <!--Servo Colors-->
+
+            <!--purple-->
+            <Servo name="flowerLeftServo" port="0" />
+
+            <!--translucent-->
+            <Servo name="flowerRightServo" port="1" />
+
+
+
+            <!--Other-->
+            <LynxEmbeddedIMU name="imu" port="0" bus="0" />
+            <goBILDAPinpoint name="pinpoint" port="0" bus="3" />
+        </LynxModule>
+
+
+        <!--Expansion Hub, No witty comment here-->
+        <!--is what i would say if there were no witty comment here-->
+
+        <LynxModule name="Expansion Hub" port="2">
+
+            <goBILDA5202SeriesMotor name="frontRight" port="1" />
+            <!--orange-->
+            <goBILDA5202SeriesMotor name="backRight" port="0" />
+            <!--red-->
+
+            <!--Motors-->
+            <goBILDA5202SeriesMotor name="rightMotor" port="3" />
+
+            <!--Servos-->
+
+
+
+
+        </LynxModule>
+
+    </LynxUsbDevice>
+
+</Robot>
