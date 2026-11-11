@@ -156,7 +156,7 @@ public class farAutoBlueCV extends LinearOpMode {
             telemetry.addData("heading", follower.getPose().getHeading());
             telemetry.update();
 
-            outake.update(30, 200);
+            outake.update(30, 190);
 
             if (outake.has3Balls()){
                 intake.intakeReverse();

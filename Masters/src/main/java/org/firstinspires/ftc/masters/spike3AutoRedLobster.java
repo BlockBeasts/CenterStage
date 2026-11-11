@@ -71,8 +71,8 @@ public class spike3AutoRedLobster extends LinearOpMode {
 
     private final Pose gatePoint = new Pose(125, 66, Math.toRadians(15));
     private final Pose intermediate = new Pose (144-50, 72, Math.toRadians(30));
-    private final Pose pickup2Pose = new Pose(144-55, 61-1, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
-    private final Pose endPickup2 = new Pose(144-23, 61-1, Math.toRadians(0));
+    private final Pose pickup2Pose = new Pose(144-55, 61, Math.toRadians(0)); // Middle (Second Set) of Artifacts from the Spike Mark.
+    private final Pose endPickup2 = new Pose(144-23, 61, Math.toRadians(0));
 
     private final Pose pickup3Pose = new Pose(144-49, 86-46, Math.toRadians(0)); // Lowest (Third Set) of Artifacts from the Spike Mark.
     private final Pose endPickup3 = new Pose(144-21, 86-46, Math.toRadians(0));

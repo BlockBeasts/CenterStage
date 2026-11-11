@@ -75,7 +75,7 @@ public class farAutoRedCV extends LinearOpMode {
     private PathChain scorePreload;
     private PathChain  score1,  score2, end, pickupFromBox, pickupFromBoxEnd, score3, score1Stuck, score2Stuck, score3Stuck;
 
-    public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End};
+    public enum State {Start, ToTag,  ToGoal,ToSpike, Pickup, ToSpike1, ToSpike2, ToSpike3,End, Reverse};
     private State pathState;
 
     int scored = 0;
@@ -177,7 +177,7 @@ public class farAutoRedCV extends LinearOpMode {
             telemetry.addData("heading", Math.toDegrees(follower.getPose().getHeading()));
             telemetry.update();
 
-            outake.update(30, 200);
+            outake.update(30, 190);
             lift.update();
 
 //            if (outake.has3Balls()){
@@ -254,8 +254,6 @@ public class farAutoRedCV extends LinearOpMode {
                         pathState = State.ToGoal;
                         elapsedTime= null;
 
-                    } else {
-                        stuckTimer.reset();
                     }
                 }
                 if(!follower.isBusy()) {
