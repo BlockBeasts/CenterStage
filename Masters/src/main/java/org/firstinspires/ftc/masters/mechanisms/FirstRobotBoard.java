@@ -14,23 +14,33 @@ public class FirstRobotBoard {
     private DcMotor intakeMotor;
     private Servo flowerLeftServo;
     private Servo flowerRightServo;
+    private DcMotor launcherMotorLeft;
+    private DcMotor launcherMotorRight;
 
     public void init(HardwareMap hwmap) {
         frontLeft = hwmap.get(DcMotor.class, "frontLeft");
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontRight = hwmap.get(DcMotor.class, "frontRight");
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backLeft = hwmap.get(DcMotor.class, "backLeft");
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight = hwmap.get(DcMotor.class, "backRight");
+        //set mode
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //intake
         intakeMotor = hwmap.get(DcMotor.class, "intakeMotor");
         intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //set drive motor direction
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        //flower servos
         flowerLeftServo = hwmap.get(Servo.class, "flowerLeftServo");
         flowerRightServo = hwmap.get(Servo.class, "flowerRightServo");
+        //launch motors
+        launcherMotorLeft = hwmap.get(DcMotor.class, "launcherMotorLeft")
+        lancherMotorRight = hwmap.get(DcMotor.class, "launcherMotorRight")
+        launcherMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION;
+        launcherMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION;
     }
 
     public void cartesianDrive(double x, double y, double t) {
@@ -66,5 +76,9 @@ public class FirstRobotBoard {
     }
     public void intakeControl(double speed) {
         intakeMotor.setPower(speed);
+    }
+    public void launchProjectiles(double position) {
+        launcherMotorLeft.setTargetPosition(position);
+        launcherMotorRight.setTargetPosition(position);
     }
 }

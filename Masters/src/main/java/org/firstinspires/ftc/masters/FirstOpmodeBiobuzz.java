@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.masters.mechanisms.FirstRobotBoard;
 
 @TeleOp
-public class FirstOpmode2026 extends OpMode {
+public class FirstOpmodeBiobuzz extends OpMode {
     FirstRobotBoard board = new FirstRobotBoard();
     boolean bWasPressed = false;
     @Override
@@ -29,6 +29,9 @@ public class FirstOpmode2026 extends OpMode {
         else {
             board.intakeControl(0.0);
             bWasPressed = !bWasPressed;
+        }
+        if (gamepad1.x) {
+            board.launchProjectiles();
         }
     }
 }
