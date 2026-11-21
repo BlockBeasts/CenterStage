@@ -77,7 +77,7 @@ public class FirstRobotBoard {
     public void intakeControl(double speed) {
         intakeMotor.setPower(speed);
     }
-    public void launchProjectiles(double position) {
+    public void launchProjectiles(int position) {
         launcherMotorLeft.setTargetPosition(position);
         launcherMotorRight.setTargetPosition(position);
     }
