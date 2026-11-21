@@ -154,9 +154,11 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             blackboard.put(POSE_KEY_X, follower.getPose().getX());
             blackboard.put(POSE_KEY_Y, follower.getPose().getY());
             blackboard.put(POSE_KEY_H,  follower.getPose().getHeading());
-            telemetry.addData("saved pos x", follower.getPose().getX());
-            telemetry.addData("saved pos y", follower.getPose().getY());
-            telemetry.addData("saved pos h",Math.toDegrees(follower.getPose().getHeading()) );
+//            telemetry.addData("saved pos x", follower.getPose().getX());
+//            telemetry.addData("saved pos y", follower.getPose().getY());
+//            telemetry.addData("saved pos h",Math.toDegrees(follower.getPose().getHeading()) );
+
+            telemetry.addData("emergency offset", emergencyOffset);
 
             for (LynxModule hub: allHubs){
                 hub.clearBulkCache();
@@ -171,28 +173,25 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
             if (gamepad1.dpad_down) {
                 lift.lowerBot();
             }
-            else if (gamepad1.dpad_up){
-                lift.liftRobot();
-            } else {
-                lift.stopLift();
-            }
-            if (gamepad2.leftStickButtonWasPressed() & gamepad2.rightStickButtonWasPressed()){
-                if (!outakeToggle) {
-                    outakeToggle = true;
-                    outake.startShooter();
+            else if (//            if (gamepad2.leftStickButtonWasPressed() & gamepad2.rightStickButtonWasPressed()){
+//                if (!outakeToggle) {
+//                    outakeToggle = true;
+//                    outake.startShooter();
+//
+//                }
+//                else {
+//                    outakeToggle = false;
+//                    outake.stopShooter();
+//                }
+//            }
 
-                }
-                else {
-                    outakeToggle = false;
-                    outake.stopShooter();
-                }
+            if (gamepad2.leftStickButtonWasPressed()){
+                emergencyOffset = emergencyOffset + 10;
             }
-            if (gamepad2.touchpadWasPressed()){
-                touchpadPressed = !touchpadPressed;
+            if (gamepad2.rightStickButtonWasPressed()){
+                emergencyOffset = emergencyOffset - 10;
             }
-            if (touchpadPressed) {
-                emergencyOffset = emergencyOffset- (int) (Math.round(gamepad2.right_stick_y)*10);
-            }
+
             if (gamepad1.crossWasPressed()) {
                 outake.shootMiddle();
             }
@@ -249,6 +248,7 @@ public class FinalBotTeleBlueUpdated extends LinearOpMode {
 //                }
 //
 //            }
+
 
 //            if(gamepad1.startWasPressed()){
 //                double currentTag = getRotations(currentDetections);
