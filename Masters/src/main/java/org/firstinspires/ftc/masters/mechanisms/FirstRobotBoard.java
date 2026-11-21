@@ -37,10 +37,10 @@ public class FirstRobotBoard {
         flowerLeftServo = hwmap.get(Servo.class, "flowerLeftServo");
         flowerRightServo = hwmap.get(Servo.class, "flowerRightServo");
         //launch motors
-        launcherMotorLeft = hwmap.get(DcMotor.class, "launcherMotorLeft")
-        lancherMotorRight = hwmap.get(DcMotor.class, "launcherMotorRight")
-        launcherMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION;
-        launcherMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION;
+        launcherMotorLeft = hwmap.get(DcMotor.class, "launcherMotorLeft");
+        launcherMotorRight = hwmap.get(DcMotor.class, "launcherMotorRight");
+        launcherMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        launcherMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void cartesianDrive(double x, double y, double t) {
@@ -77,7 +77,7 @@ public class FirstRobotBoard {
     public void intakeControl(double speed) {
         intakeMotor.setPower(speed);
     }
-    public void launchProjectiles(double position) {
+    public void launchProjectiles(int position) {
         launcherMotorLeft.setTargetPosition(position);
         launcherMotorRight.setTargetPosition(position);
     }

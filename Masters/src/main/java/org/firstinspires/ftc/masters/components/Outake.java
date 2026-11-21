@@ -1,453 +1,139 @@
 package org.firstinspires.ftc.masters.components;
 
-
-import com.pedropathing.follower.Follower;
-import com.qualcomm.robotcore.util.ElapsedTime;
+import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PIDController;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+@Config
 public class Outake {
+
     Init init;
-    Intake intake;
+    String mode = "off";
+    private final PIDController controller;
 
-    Telemetry telemetry;
-    public int shooterVelocity = 1500;
+    public static double p = 0.05, i = 0, d = 0.0000001;
+    public static double f = 0.01;
 
-    Constant.AllianceColor allianceColor= null;
-    Follower follower;
-    public Outake(Init init, Telemetry telemetry, Constant.AllianceColor allianceColor) {
+    public double target = 0;
+    public final double ticks_in_degree = 537.7 / 360;
+
+    public Outake(Init init) {
         this.init= init;
-        this.telemetry = telemetry;
-        this.allianceColor = allianceColor;
-        telemetry.setMsTransmissionInterval(100);
+        controller = new PIDController (p, i, d);
     }
 
-    public void setIntake(Intake intake){
-        this.intake = intake;
+    public void outakeUp() {
+
+        init.getShootMotorA().setPower(1);
+        init.getShootMotorB().setPower(1);
     }
-
-    public void setFollower(Follower follower){
-        this.follower = follower;
-    }
-
-    public static int motorVel = 1000;
-
-    public static double hoodServoPos = 0;
-
-    boolean calledIntake = false;
-
-
-
-    public static double liftLeftPos = Constant.leftTrayBottom;
-    public static double liftMiddlePos = Constant.middleTrayBottom;
-    public static double liftRightPos = Constant.rightTrayBottom;
-
-    private String leftColor = "nothing";
-    private String middleColor = "nothing";
-    private String rightColor = "nothing";
-
-    public static int delay =500;
-
-    ElapsedTime shootLeftDelay = null;
-    ElapsedTime shootRightDelay = null;
-    ElapsedTime shootMiddleDelay = null;
-
-    private boolean muteShoot = true;
-
-    public void disableAutoAim() {
-        muteShoot = true;
-    }
-
-    public void stopShooter() {
-        init.getShooterLeft().setPower(0);
-        init.getShooterRight().setPower(0);
-        muteShoot = true;
-    }
-    public void startShooter() {
-        muteShoot = false;
-    }
-    protected void colorLeft() {
-        leftColor = UsefullFunctions.getColor(init.getColorLeft(), "left");
-    }
-
-    protected void colorMiddle() {
-        middleColor = UsefullFunctions.getColor(init.getColorMiddle(), "middle");
-    }
-
-    protected void colorRight() {
-        rightColor = UsefullFunctions.getColor(init.getColorRight(), "right");
-    }
-
-    protected void delayLeft() {
-        if (shootLeftDelay!=null && shootLeftDelay.milliseconds()>delay){
-            liftLeftPos = Constant.leftTrayBottom;
-            shootLeftDelay = null;
-        }
-    }
-
-    protected void delayMiddle() {
-        if (shootMiddleDelay!=null && shootMiddleDelay.milliseconds()>delay){
-            liftMiddlePos = Constant.middleTrayBottom;
-            shootMiddleDelay = null;
-        }
-    }
-
-    protected void delayRight() {
-        if (shootRightDelay!=null && shootRightDelay.milliseconds()>delay){
-            liftRightPos = Constant.rightTrayBottom;
-            shootRightDelay = null;
-        }
-    }
-
-    public void updateShooter() {
-        if (muteShoot == false) {
-            double leftVel = init.getShooterLeft().getVelocity();
-
-            if (leftVel < shooterVelocity) {
-                init.getShooterLeft().setPower(1);
-                init.getShooterRight().setPower(1);
-            } else {
-                init.getShooterLeft().setPower(0);
-                init.getShooterRight().setPower(0);
-            }
-        }
-    }
-
-
-    public void update(int offsetNear,  int offsetFar) {
-        updateShooter();
-
-        if (muteShoot) {
-            shooterVelocity = 0;
-        } else {
-            if (allianceColor == Constant.AllianceColor.BLUE) {
-                if(follower.getPose().getY() > 90){
-                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose()) + offsetNear;
-
-                }else {
-                    shooterVelocity = UsefullMath.getVelocityBlue(follower.getPose()) + offsetFar;
-                }
-            }
-
-            if (allianceColor == Constant.AllianceColor.RED){
-                if(follower.getPose().getY() > 90){
-                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose()) + offsetNear;
-
-                }else {
-
-                    shooterVelocity = UsefullMath.getVelocityRed(follower.getPose())+ offsetFar;
-                }
-            }
-
-        }
-
-        if (follower.getPose().getY() < 50) {
-
-            init.getHoodLeftServo().setPosition(Constant.hoodFar);
-            init.getHoodRightServo().setPosition(Constant.hoodFar);
-        } else {
-
-            init.getHoodLeftServo().setPosition(Constant.hoodDown);
-            init.getHoodRightServo().setPosition(Constant.hoodDown);
-        }
-
-
-        if (has3Balls() && !calledIntake){
-            if (intake!=null){
-                intake.reverseForBalls();
-                calledIntake = true;
-            }
-        }
-
-
-//        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-            colorLeft();
-//        }
-//        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-            colorMiddle();
-//        }
+    //    public void outakeDown() {
 //
-//        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-            colorRight();
-       // }
-
-        delayLeft();
-
-        delayMiddle();
-
-        delayRight();
-
-        switch (leftColor) {
-            case ("nothing"): {
-                init.getLeftLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getLeftLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getLeftLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getLeftLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-
-        switch (middleColor) {
-            case ("nothing"): {
-                init.getMiddleLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getMiddleLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getMiddleLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getMiddleLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-
-        switch (rightColor) {
-            case ("nothing"): {
-                init.getRightLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getRightLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getRightLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getRightLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-        init.outakeTrayMiddle.setPosition(liftMiddlePos);
-        init.outakeTrayLeft.setPosition(liftLeftPos);
-        init.outakeTrayRight.setPosition(liftRightPos);
-
-        telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
-        telemetry.addData("x", follower.getPose().getX());
-        telemetry.addData("y", follower.getPose().getY());
-//        telemetry.addData("left color", leftColor);
-//        telemetry.addData("middle color", middleColor);
-//        telemetry.addData("right color", rightColor);
-//
-//        telemetry.addData("left green", init.getColorLeft().green());
-//        telemetry.addData("middle green", init.getColorMiddle().green());
-//        telemetry.addData("right green", init.getColorRight().green());
-//        telemetry.addData("left red", init.getColorLeft().red());
-//        telemetry.addData("left blue", init.getColorLeft().blue());
-//        telemetry.addData("left raw", init.getColorLeft().rawOptical());
-//        telemetry.addData("left argb", init.getColorLeft().argb());
-//        telemetry.addData("left distance", init.getColorLeft().getDistance(DistanceUnit.MM));
-    }
-
-    public void updateTest(){
-        updateShooter();
-
-
-//        if (!has3Balls() ||  "nothing".equals(leftColor) || "unknown".equals(leftColor) ) {
-        colorLeft();
-//        }
-//        if (!has3Balls() ||  "nothing".equals(middleColor) || "unknown".equals(middleColor) ) {
-        colorMiddle();
-//        }
-//
-//        if (!has3Balls() ||  "nothing".equals(rightColor) || "unknown".equals(rightColor) ) {
-        colorRight();
-        // }
-
-        delayLeft();
-
-        delayMiddle();
-
-        delayRight();
-
-        switch (leftColor) {
-            case ("nothing"): {
-                init.getLeftLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getLeftLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getLeftLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getLeftLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-
-        switch (middleColor) {
-            case ("nothing"): {
-                init.getMiddleLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getMiddleLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getMiddleLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getMiddleLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-
-        switch (rightColor) {
-            case ("nothing"): {
-                init.getRightLight().setPosition(0);
-                break;
-            }
-            case ("green"): {
-                init.getRightLight().setPosition(Constant.greenLed);
-                break;
-            }
-            case ("purple"): {
-                init.getRightLight().setPosition(Constant.purpleLed);
-                break;
-            }
-            case ("unknown"):{
-                init.getRightLight().setPosition(Constant.orangeLed);
-                break;
-            }
-        }
-
-        init.outakeTrayLeft.setPosition(liftLeftPos);
-        init.outakeTrayMiddle.setPosition(liftMiddlePos);
-        init.outakeTrayRight.setPosition(liftRightPos);
-
-        telemetry.addData("shooter velocity", init.getShooterLeft().getVelocity());
-        telemetry.addData("x", follower.getPose().getX());
-        telemetry.addData("y", follower.getPose().getY());
-    }
-
-
-    public void shootGreen() {
-        if ("green".equals(leftColor)){
-            shootLeft();
-        } else if ("green".equals(middleColor)){
-            shootMiddle();
-        } else if ("green".equals(rightColor)){
-            shootRight();
-        }
-    }
-
-    public void shootPurple() {
-        if ("purple".equals(leftColor)){
-            shootLeft();
-        } else if ("purple".equals(middleColor)){
-            shootMiddle();
-        } else if ("purple".equals(rightColor)){
-            shootRight();
-        }
-    }
-
-
-    public void shootLeft(){
-        if (shootLeftDelay == null) {
-            liftLeftPos = Constant.leftTrayTop;
-            shootLeftDelay = new ElapsedTime();
-            resetLeftColor();
-            calledIntake = false;
-        }
-    }
-
-    public void shootMiddle(){
-        if (shootMiddleDelay == null) {
-            liftMiddlePos = Constant.middleTrayTop;
-            shootMiddleDelay = new ElapsedTime();
-            resetMiddleColor();
-            calledIntake = false;
-        }
-    }
-
-    public void shootRight(){
-        if (shootRightDelay == null) {
-            liftRightPos = Constant.rightTrayTop;
-            shootRightDelay = new ElapsedTime();
-            resetRightColor();
-            calledIntake = false;
-        }
-    }
-
-    public void shootAll(){
-        shootLeft();
-        shootMiddle();
-        shootRight();
-        calledIntake = false;
-    }
-//    public void reset() {
-//        liftLeftPos = Constant.leftTrayBottom;
-//        liftMiddlePos = Constant.middleTrayBottom;
-//        liftRightPos = Constant.rightTrayBottom;
-//        shootLeftDelay = null;
-//        shootRightDelay = null;
-//        shootMiddleDelay = null;
+//        init.getShootMotorA().setPower(-1);
+//        init.getShootMotorB().setPower(-1);
 //    }
-//
-//    public void resetColor(){
-//        resetLeftColor();;
-//        resetMiddleColor();
-//        resetRightColor();
+    public void outakeOff() {
+
+        init.getShootMotorA().setPower(0.0);
+        init.getShootMotorB().setPower(0.0);
+    }
+//    public void outakeHold() {
+//        init.getShootMotorA().setPower(-1);
+//        init.getShootMotorB().setPower(-1);
 //    }
 
-    public void resetLeftColor(){
-        leftColor = "nothing";
-    }
+    public boolean isInDownPos() {
 
-    public void resetRightColor(){
-        rightColor = "nothing";
-    }
 
-    public void resetMiddleColor(){
-        middleColor = "nothing";
-    }
-
-    public boolean has3Balls(){
-        return ("unknown".equals(leftColor) || "green".equals(leftColor) || "purple".equals(leftColor) )&&
-                ("unknown".equals(middleColor) || "green".equals(middleColor) || "purple".equals(middleColor)) &&
-                ("unknown".equals(rightColor) || "green".equals(rightColor) || "purple".equals(rightColor) );
+        return (init.getShootMotorA().getCurrentPosition() >= ITDCons.downAngle-5
+                && init.getShootMotorB().getCurrentPosition() >= ITDCons.downAngle - 5);
 
     }
-
-    protected void setHoodLow(){
-        init.getHoodRightServo().setPosition(Constant.hoodDown);
+    public boolean isInUpPos() {
+        return (init.getShootMotorA().getCurrentPosition() <=ITDCons.launchAngle + 5
+                && init.getShootMotorB().getCurrentPosition() <= ITDCons.launchAngle + 5);
     }
 
-    public void setShooterVelocity(int shooterVelocity) {
-        this.shooterVelocity = shooterVelocity;
-    }
+    public void launch() {
 
-    public boolean upToSpeed() {
-        return (UsefullMath.getVelocityBlue(follower.getPose()) - 20) <= init.getShooterRight().getVelocity();
+        mode = "launch";
+        target = 0;
     }
+    public void down() {
 
-    public void updateHood(){
-        telemetry.addData("hood position", Constant.hoodDown);
-        init.getHoodLeftServo().setPosition(Constant.hoodDown);
-        init.getHoodRightServo().setPosition(Constant.hoodDown);
+        mode = "down";
+        target = ITDCons.downAngle;
     }
 
 
+
+    public void updatePID(Telemetry telemetry) {
+        controller.setPID(p, i, d);
+        int slidePos = init.getShootMotorA().getCurrentPosition();
+        double pid = controller.calculate(slidePos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * f;
+
+        double power = pid + ff;
+
+        init.getShootMotorA().setPower(power);
+        init.getShootMotorB().setPower(power);
+
+        telemetry.addData ("power", power);
+    }
+
+
+    public void  update(Telemetry telemetry) {
+
+
+        telemetry.addData(" motA pos: ", init.getShootMotorA().getCurrentPosition());
+        telemetry.addData(" motB pos: ", init.getShootMotorB().getCurrentPosition());
+        telemetry.addData("target", target );
+        telemetry.addData("mode", mode);
+        telemetry.update();
+
+
+        if (target == 0 && isInUpPos() ){
+            telemetry.addData ("power", 0);
+            outakeOff();
+//        } else if (target ==0){
+//            telemetry.addData ("power", 1);
+//            outakeUp();
+        } else {
+            updatePID(telemetry);
+        }
+
+
+
+//        if (Objects.equals(mode, "launch")) {
+//            outakeOn();
+//            if (!init.getShootAmoter().isBusy()) {
+//                init.getShootAmoter().setPower(0.0);
+//            }
+//            if (!init.getShootBmoter().isBusy()) {
+//                init.getShootBmoter().setPower(0.0);
+//            }
+//            if (isInLaunchPos()) {
+//                outakeOff();
+//                mode = "reset";
+//            }
+
+//        if (Objects.equals(mode, "reset")) {
+//            if (!init.getShootAmoter().isBusy()) {
+//                init.getShootAmoter().setPower(0.0);
+//            }
+//            if (!init.getShootBmoter().isBusy()) {
+//                init.getShootBmoter().setPower(0.0);
+//            }
+//            if (isInResetPos()) {
+//                mode = "off";
+//            }
+//        }
+    }
+
+//    private void setPIDFCoefficients(DcMotorEx motor, PIDFCoefficients coefficients) {
+//        motor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(
+//                coefficients.p, coefficients.i, coefficients.d, coefficients.f * 12 / batteryVoltageSensor.getVoltage()
+//        ));
+//    }
 }

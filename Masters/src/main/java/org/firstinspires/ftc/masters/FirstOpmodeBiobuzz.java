@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.masters.mechanisms.FirstRobotBoard;
+import org.firstinspires.ftc.masters.components.Outake;
+import org.firstinspires.ftc.masters.components.Init;
 
 @TeleOp
 public class FirstOpmodeBiobuzz extends OpMode {
@@ -31,7 +33,7 @@ public class FirstOpmodeBiobuzz extends OpMode {
             bWasPressed = !bWasPressed;
         }
         if (gamepad1.x) {
-            board.launchProjectiles();
+            board.launchProjectiles(0);
         }
     }
 }

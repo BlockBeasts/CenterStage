@@ -23,6 +23,8 @@ public class Init {
     Servo leftLight, middleLight, rightLight;
     Servo hoodLeftServo, hoodRightServo;
     RevColorSensorV3 colorLeft, colorMiddle, colorRight;
+    DcMotor shootA;
+    DcMotor shootB;
 
     public static double p=240;
     public static double f=13;
@@ -39,8 +41,16 @@ public class Init {
         backLeft.setDirection(DcMotor.Direction.REVERSE);
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
-        shooterLeft = hardwareMap.get(DcMotorEx.class, "leftMotor");
-        shooterRight = hardwareMap.get(DcMotorEx.class, "rightMotor");
+        shootA = hardwareMap.dcMotor.get("shoota");
+        shootB = hardwareMap.dcMotor.get("shootb");
+
+        shootA.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        shootA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shootB.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        shootA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shootB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         intakeMotor = hardwareMap.get(DcMotorEx.class, "intakeMotor");
 
@@ -94,12 +104,12 @@ public class Init {
         return backRight;
     }
 
-    public DcMotorEx getShooterLeft() {
-        return shooterLeft;
+    public DcMotor getShootMotorA() {
+        return shootA;
     }
 
-    public DcMotorEx getShooterRight() {
-        return shooterRight;
+    public DcMotor getShootMotorB() {
+        return shootB;
     }
 
     public DcMotorEx getIntakeMotor() {
